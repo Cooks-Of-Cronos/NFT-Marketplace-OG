@@ -2,8 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\styles"
+    "\\src\\pages",
+    "\\src\\provider",
+    "\\src\\redux",
+    "\\src\\redux\\blockchain",
+    "\\src\\redux\\data"
   ],
-  "SelectedNode": "\\src\\mint.js",
+  "SelectedNode": "\\package.json",
   "PreviewInSolutionExplorer": false
 }

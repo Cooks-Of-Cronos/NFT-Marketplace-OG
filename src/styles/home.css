@@ -1,14 +1,417 @@
 @import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;300;400;500;600;700&display=swap');
 
-.homeContainer {
-    display: flex;
-    /* height: 100vh; */
-    flex-direction: column;
-    font-family: 'Readex Pro', sans-serif;
+
+
+.home-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     background-color: #fff;
+    padding: 10px;
+    display: flex;
+    align-items: center;
 }
 
-.hero {
+.home-bar button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.home-bar button:hover {
+    background-color: #0069d9;
+}
+
+.learn-more-btn {
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 80px;
+    padding: 10px 30px;
+    background-color: royalblue;
+    color: #ffffff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    z-index: 2;
+}
+
+
+    .learn-more-btn:hover {
+        transform: scale(1.1);
+        background-color: #ffffff;
+        color: black;
+        border: 2px solid #b73a3a;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.white-text {
+    color: white;
+}
+
+
+
+.homeContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Section 1 styles */
+.section1 {
+    background-image: url("https://i.imgur.com/3wGpVdC.png");
+    color: #fff;
+    width: 100%;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+    .section1 h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .section1 .wolf {
+        width: 80px;
+        margin-bottom: 20px;
+    }
+
+/* Section 2 styles */
+.section2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.video {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+    .video video {
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+.videoText {
+    text-align: center;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+    .videoText h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .videoText p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .videoText a {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+@media only screen and (min-width: 768px) {
+    .section2 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .video {
+        width: 70%;
+    }
+
+    .videoText {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+        max-width: 800px;
+        margin: auto;
+        text-align: center;
+    }
+
+    .buttons-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+    }
+
+    .learn-more-btn {
+        background-color: #000;
+        color: #fff;
+        padding: 15px 30px;
+        margin: 10px;
+        font-size: 18px;
+        border-radius: 50px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        border: 2px solid #000;
+    }
+
+        .learn-more-btn:hover {
+            background-color: #fff;
+            color: #000;
+            border-color: #000;
+        }
+
+
+
+}
+
+/* Section 3 styles */
+.section3 {
+    background-color: #fff;
+    width: 100%;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.feature {
+    width: 100%;
+    max-width: 300px;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+}
+    .feature:hover {
+        cursor: pointer;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.5s;
+    }
+
+    .feature:hover img {
+        transform: scale(1.1);
+    }
+
+    .feature h3 {
+        font-size: 24px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .feature p {
+        font-size: 16px;
+    }
+
+    .feature::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+
+    .feature:hover::before {
+        opacity: 1;
+    }
+
+    .feature h3,
+    .feature p {
+        position: relative;
+        z-index: 2;
+        color: #fff;
+    }
+
+
+.section4 {
+    background-image: url("https://i.imgur.com/ho6SkPK.png");
+    background-size: 100% 100%;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+}
+
+    .overlay h2 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        color: #fff;
+    }
+
+    .overlay p {
+        font-size: 24px;
+        color: #fff;
+    }
+
+
+
+
+
+/* CSS for h2 and p elements */
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+
+
+
+
+.section5 {
+    background-color: #202020;
+    width: 100%;
+    padding: 50px 0;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.buttonLink,
+.buttonLink2,
+.buttonLink3,
+.buttonLinketh {
+    background-color: #fff;
+    color: #202020;
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 18px;
+    border-radius: 50px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid #fff;
+}
+
+    .buttonLink:hover,
+    .buttonLink2:hover,
+    .buttonLink3:hover,
+    .buttonLinketh:hover {
+        background-color: #fff;
+        color: #202020;
+        border-color: #202020;
+    }
+
+.buttonLinketh {
+    background-color: #202020;
+    color: #fff;
+}
+
+    .buttonLinketh:hover {
+        background-color: #fff;
+        color: #202020;
+        border-color: #fff;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
+
+/* Use the Bubblegum Sans font for all elements */
+* {
+    font-family: 'Bubblegum Sans', cursive;
+}
+
+.Header {
+    font-size: 3rem;
+    font-family: 'Bubblegum Sans', cursive;
+    /* Add any other styles you want to customize the look of the header */
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+
+.hero2 {
     height: 80vh;
     /* background-image: url("https://i.gifer.com/JdHm.gif");
     justify-content: center; */
@@ -110,6 +513,19 @@
 }
 
 
+
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    border: 1px solid black;
+    overflow: hidden; /* add this to contain floated children */
+    padding: 0 0 20px 0rem;
+}
+
+
 .blockquote {
     background: #f9f9f9;
     border-left: 10px solid #ccc;
@@ -191,7 +607,7 @@
     justify-content: center;
 }
 
-.linki {
+.link {
     flex-direction: row;
     display: flex;
     align-items: center;
@@ -251,6 +667,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 500px;
+    border: 1px solid black;
+    overflow: hidden; /* add this to contain floated children */
+    padding: 0 0 20px 0rem;
 }
 
 .stkid-input {
@@ -273,6 +693,9 @@
 }
 
 .input-container {
+    width: 500px;
+    border: 1px solid black;
+    overflow: hidden; /* add this to contain floated children */
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -286,6 +709,9 @@
         border-radius: 5px;
         margin-right: 0.5rem;
         flex: 1;
+        width: 500px;
+        border: 1px solid black;
+        overflow: hidden; /* add this to contain floated children */
     }
 
     .input-container label {
@@ -335,3 +761,371 @@
     .reward span {
         font-weight: bold;
     }
+
+
+#nftid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-rows: auto;
+    grid-gap: 1rem;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+
+    #nftid img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+        #nftid img:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+
+#actionButtons {
+    
+}
+
+
+
+
+.mconnect-button {
+    background-color: orange;
+    color: white;
+    font-size: 24px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.connect-button {
+    background-color: blue;
+    color: white;
+    font-size: 24px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+    .connect-button:hover {
+        background-color: darkblue;
+    }
+
+
+.watch-button {
+    background-color: green;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+    .watch-button:hover {
+        background-color: #fff;
+        color: green;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+
+
+
+
+#claimid {
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.AnalyticsDashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px 0;
+}
+
+    table td, table th {
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+
+    table th {
+        text-align: left;
+        background-color: #f2f2f2;
+    }
+
+@media (max-width: 768px) {
+    table {
+        font-size: 12px;
+    }
+}
+
+
+.Card-image img {
+    width: 100%;
+    height: auto;
+}
+
+@media (min-width: 768px) {
+    .Card-image img {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+
+.notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.loading-screen {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 200px;
+    height: 250px;
+    margin: 0 auto;
+}
+
+    .loading-screen img {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+        margin-bottom: 1rem;
+    }
+
+    .loading-screen p {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        
+        font-size: 1.2rem;
+        text-align: center;
+        color: black;
+    }
+.loading-screen-c {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    
+    height: 200px;
+    overflow: hidden;
+}
+
+
+.loading-screen-content {
+    padding: 1rem;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 90%;
+    margin: 0 auto;
+    height: 500px; /* set a fixed height */
+    overflow: auto; /* enable scrolling if needed */
+}
+
+.grid-item {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.btn-hover:hover {
+    background-color: #218838;
+}
+
+.zoom {
+    transition: transform 0.5s ease;
+}
+
+    .zoom:hover {
+        transform: scale(1.1);
+    }
+
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.card {
+    width: 80%;
+    margin: 20px 0;
+}
+
+.bg-primary {
+    background-color: #007bff !important;
+}
+
+.text-white {
+    color: #fff !important;
+}
+
+.dashboard-item {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.rewards-section {
+    background-color: darkred;
+    color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.rewards-section-title {
+    font-size: 1.75rem;
+    text-align: center;
+    margin-top: 0;
+}
+
+.rewards-section-description {
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.rewards-table {
+    display: flex;
+    flex-direction: column;
+}
+
+.rewards-row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+}
+
+.rewards-cell {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.rewards-step-number {
+    background-color: #fff;
+    color: #6c63ff;
+    font-size: 1.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+}
+
+.rewards-step-description {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+
+
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.button {
+    background-color: #6c63ff;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 20px;
+    padding: 0.75rem 1.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+    .button:hover {
+        background-color: #5b54e5;
+    }
+
+.reward {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+}
+
+
+
+.backgroundImage img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.backgroundImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

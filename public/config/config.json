@@ -1,16 +1,16 @@
 {
-  "CONTRACT_ADDRESS": "0x230Bb7ce185CD0042973202f5F38B7072440e2C9",
-  "SCAN_LINK": "https://cronos.org/explorer/address/0x230Bb7ce185CD0042973202f5F38B7072440e2C9/transactions",
+  "CONTRACT_ADDRESS": "0x646f4AfB0CEa2FAB3c44282BD764A91637D7781d",
+  "SCAN_LINK": "https://cronos.org/explorer/address/0x646f4AfB0CEa2FAB3c44282BD764A91637D7781d/transactions",
   "NETWORK": {
     "NAME": "Cronos",
     "SYMBOL": "CRO",
     "ID": 25
   },
-  "NFT_NAME": "CRO County Crooks",
-  "SYMBOL": "CROOK",
-  "MAX_SUPPLY": 1111,
-  "WEI_COST": 99000000000000000000,
-  "DISPLAY_COST": 99,
+  "NFT_NAME": "CroBoCop Official NFT",
+  "SYMBOL": "CROBO",
+  "MAX_SUPPLY": 350,
+  "WEI_COST": 599000000000000000000,
+  "DISPLAY_COST": 599,
   "GAS_LIMIT": 285000,
   "MARKETPLACE": "CroSea",
   "MARKETPLACE_LINK": "http://Crosea.io",

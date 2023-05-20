@@ -1,48 +1,87 @@
-@import "./stake.css";
+@import "./stake.module.css";
 
-@media all and (min-width: 0px) {
-    .nav-wrap {
-        background: #b73a3a;
-        /*var(--color1);*/
-        padding: 25px;
-    }
-
-        .nav-wrap ul {
-            display: flex;
-            justify-content: center;
-        }
-
-            .nav-wrap ul li {
-                margin: 0 1rem;
-            }
-
-                .nav-wrap ul li a {
-                    color: var(--white);
-                    font: 2.5rem/4rem var(--font1);
-                    text-decoration: none;
-                }
-
-    .mintbox {
-        background: linear-gradient(to bottom, #ff5722 0%, #ff6699 100%);
-        border-radius: 20px;
-        width: 100px;
-        text-align: center;
-    }
-
-    .stakebox {
-        background: linear-gradient(to bottom, #ff5722 0%, #ff6699 100%);
-        border-radius: 20px;
-        width: 100px;
-        text-align: center;
-    }
-
-    .logo {
-        /* background: white; */
-        width: 63px;
-        height: 60px;
-        margin-right: 600px;
-    }
+/* Navbar styling */
+.nav-wrap {
+    background: #b73a3a;
+    padding: 20px;
 }
 
+    .nav-wrap ul {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+        .nav-wrap ul li {
+            margin: 10px;
+            flex-basis: 100%;
+        }
+
+            .nav-wrap ul li a {
+                color: var(--white);
+                font-size: 20px;
+                line-height: 1.2;
+                text-decoration: none;
+                transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            }
+
+                .nav-wrap ul li a:hover {
+                    color: #ff6699;
+                    transform: scale(1.2);
+                }
+
+/* Mint and stake buttons */
+.mintbox {
+    background: linear-gradient(to bottom, #ff5722 0%, #ff6699 100%);
+    border-radius: 2vw;
+    width: 20vw;
+    max-width: 15rem;
+    text-align: center;
+    max-height: 15rem;
+    height: 20vw;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+    .mintbox:hover {
+        background-color: #ff6699;
+        transform: scale(1.1);
+    }
+
+.stakebox {
+    background: linear-gradient(to bottom, #ff5722 0%, #ff6699 100%);
+    border-radius: 2vw;
+    width: 20vw;
+    max-width: 15rem;
+    text-align: center;
+    max-height: 15rem;
+    height: 20vw;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+    .stakebox:hover {
+        background-color: green;
+        transform: scale(1.1);
+    }
+
 @media all and (min-width: 768px) {
+    .nav-wrap {
+        padding: 2vw;
+    }
+
+        .nav-wrap ul li {
+            margin: 0 1vw;
+        }
+
+            .nav-wrap ul li a {
+                font-size: 2vw;
+                line-height: 4vw;
+            }
+
+    .mintbox, .stakebox {
+        width: 10vw;
+        max-width: 10rem;
+        height: 10vw;
+        max-height: 10rem;
+        border-radius: 1vw;
+    }
 }

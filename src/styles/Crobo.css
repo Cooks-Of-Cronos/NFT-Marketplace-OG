@@ -1,0 +1,570 @@
+
+// CSS
+.white-text {
+    color: white;
+}
+
+
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f2f2f2;
+    padding: 1rem;
+}
+
+.header-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 1rem;
+}
+
+
+.custom-notification {
+    background-color: black;
+}
+
+.notification-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 300px;
+    background-color: blue;
+    padding: 16px;
+    border-radius: 8px;
+    color: white;
+}
+
+
+
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    padding: 20px;
+  }
+  
+  .section {
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 20px;
+  }
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 20px;
+    overflow: auto;
+    height: 100%;
+    padding: 20px;
+}
+
+.Card {
+    background-color: red;
+}
+
+
+.card-image {
+    height: auto;
+    object-fit: cover;
+    margin-bottom: 16px;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .card-actions button {
+        margin: 0;
+    }
+
+    .card-actions a {
+        text-decoration: none;
+    }
+
+        .card-actions a:first-child {
+            margin-right: 8px;
+        }
+
+.card-price {
+    margin-top: 16px;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 767px) {
+    .gridContainer {
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    }
+
+    .card {
+        max-width: 350px;
+        margin: 0 auto;
+    }
+    .section {
+        width: 100%;
+      }
+}
+
+
+.progress {
+    height: 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #007bff;
+    text-align: center;
+    line-height: 20px;
+    color: #ffffff;
+    font-weight: bold;
+    transition: width 0.6s ease;
+}
+
+.mint-progress-section {
+    background-color: #fff;
+    padding: 2rem;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.progress-bar-wrapper {
+    background-color: #f5f5f5;
+    height: 30px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: green;
+    height: 100%;
+    transition: width 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.progress-bar-text {
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    font-size: 1rem;
+}
+
+.mint-button {
+    background-color: blue;
+    color: #fff;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 20px;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+    .mint-button:hover {
+        background-color: red;
+    }
+
+.funds-needed, .contract-balance {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
+
+
+/* Roadmap section */
+.roadmap-section {
+    margin-top: 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header {
+    animation: fadeIn 1s ease-in-out;
+    animation-fill-mode: both;
+}
+
+.logo-container {
+    text-align: center;
+}
+
+.logo {
+    display: inline-block;
+    max-width: 600px;
+    max-height: 100%;
+    width: 600px;
+    height: 300px;
+    margin: 0 auto;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.logomain {
+    display: inline-block;
+    max-width: 300px;
+    max-height: 100%;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .logo {
+        max-width: 100%;
+    }
+
+    .roadmap-column {
+        flex-basis: 100%;
+    }
+
+    .roadmap-content h3 {
+        font-size: 28px;
+    }
+
+    .roadmap-content p {
+        font-size: 16px;
+    }
+}
+
+.roadmap-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.roadmap-column {
+    flex-basis: calc(20% - 30px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.roadmap-image {
+    width: 100%;
+    max-height: 300px;
+    margin-bottom: 20px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.roadmap-column:hover .roadmap-image {
+    transform: scale(1.1);
+}
+
+.card-overlay {
+    color: white;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.roadmap-content h3 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+}
+
+
+.roadmap-content p {
+    font-size: 18px;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: white;
+}
+
+roadmap-content ul {
+    color: white;
+}
+
+roadmap-content li {
+
+    color: white;
+}
+
+/* Roadmap progress bar */
+
+.roadmap-column ul li {
+    padding-bottom: 10px;
+    color: white;
+}
+
+.roadmap-column:hover .progress {
+    width: 100%;
+}
+
+.progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 5px;
+    background-color: #b73a3a;
+    transition: width 0.3s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 767px) {
+    .roadmap-column {
+        flex-basis: 100%;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .logomain {
+        max-width: 100px;
+    }
+}
+
+@media (max-width: 767px) {
+    .roadmap-content h3 {
+        font-size: 24px;
+    }
+
+    .roadmap-content p {
+        font-size: 16px;
+    }
+}
+
+
+@media (max-width: 767px) {
+    .card {
+        height: auto;
+    }
+}
+
+.roadmap-column {
+    animation: slideInUp 0.5s ease-in-out;
+    animation-fill-mode: both;
+    animation-delay: calc(var(--index) * 0.1s);
+}
+
+.header {
+    animation: fadeIn 1s ease-in-out;
+    animation-fill-mode: both;
+}
+
+/* Successful NFT project */
+.nft-project {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .nft-project h2 {
+        font-size: 36px;
+        font-weight: bold;
+        margin: 50px 0 30px 0;
+        text-align: center;
+    }
+
+    .nft-project p {
+        font-size: 18px;
+        line-height: 1.5;
+        text-align: center;
+        margin-bottom:
+    }
+
+
+/* Responsive design */
+@media screen and (min-width: 768px) {
+    .logo {
+        max-width: 80%;
+        padding: 20px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .logo {
+        max-width: 60%;
+        padding: 40px;
+    }
+}
+
+
+/* Bonus NFT Sneak Peeks section */
+.bonus-section {
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bonus-item {
+    position: relative;
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    margin: 20px;
+    border: 5px solid #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out;
+}
+
+    .bonus-item:hover {
+        transform: scale(1.1);
+    }
+
+    .bonus-item img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .bonus-item::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    .bonus-item:hover::before {
+        opacity: 1;
+    }
+
+    .bonus-item:hover::after {
+        opacity: 1;
+    }
+
+    .bonus-item::after {
+        content: "Sneak Peek";
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 28px;
+        font-weight: bold;
+        color: #fff;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+
+.nft-section {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.nft-section__title {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.nft-section__gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nft-section__item {
+    position: relative;
+    width: calc(33.33% - 20px);
+    height: 200px;
+    overflow: hidden;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+    .nft-section__item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .nft-section__item:hover img {
+        transform: scale(1.2);
+    }
+
+
+.nft-section__item-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nft-section__item:hover .nft-section__item-overlay {
+    opacity: 1;
+}

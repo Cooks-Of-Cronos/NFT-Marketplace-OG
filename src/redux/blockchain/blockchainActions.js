@@ -16,7 +16,6 @@ const INFURA_ID = "c66d5493eff848ca89349923e7d1131a";
 
 
 const providerOptions = {
-
     display: {
         logo: "",
         name: "Defi Wallet",
@@ -24,36 +23,38 @@ const providerOptions = {
     },
     package: DeFiWeb3Connector,
     options: {
-        supportedChainIds: [1, 25],
+        supportedChainIds: [1, 25, 338],
         rpc: {
             1: "https://mainnet.infura.io/v3/c66d5493eff848ca89349923e7d1131a",
-            25: "https://evm.cronos.org/", // cronos mainet
+            25: "https://evm.cronos.org/",
+            338: "https://evm-t3.cronos.org", // cronos testnet
         },
         pollingInterval: 15000,
     },
-
     walletconnect: {
-        package: WalletConnectProvider, // required
+        package: WalletConnectProvider,
         options: {
-            infuraId: INFURA_ID, // required
+            infuraId: INFURA_ID,
             rpc: {
                 1: "https://mainnet.infura.io/v3/c66d5493eff848ca89349923e7d1131a",
-                25: "https://evm.cronos.org/", // cronos mainet
+                25: "https://evm.cronos.org/",
+                338: "https://evm-t3.cronos.org", // cronos testnet
             },
         },
     },
     walletlink: {
-        package: WalletLink, // Required
+        package: WalletLink,
         options: {
-            appName: "Ava Sharks", // Required
-            infuraId: "c66d5493eff848ca89349923e7d1131a", // Required unless you provide a JSON RPC url; see `rpc` below
-            rpc: "https://mainnet.infura.io/v3/c66d5493eff848ca89349923e7d1131a", // Optional if `infuraId` is provided; otherwise it's required
-            chainId: 25, // Optional. It defaults to 1 if not provided
-            appLogoUrl: null, // Optional. Application logo image URL. favicon is used if unspecified
-            darkMode: false, // Optional. Use dark theme, defaults to false
+            appName: "Ava Sharks",
+            infuraId: "c66d5493eff848ca89349923e7d1131a",
+            rpc: "https://mainnet.infura.io/v3/c66d5493eff848ca89349923e7d1131a",
+            chainId: 25,
+            appLogoUrl: null,
+            darkMode: false,
         },
     },
 };
+
 
 const connectRequest = () => {
     return {
@@ -82,6 +83,9 @@ const updateAccountRequest = (payload) => {
     };
 };
 export let isConnected = false;
+
+export const DISCONNECT_FAILED = "DISCONNECT_FAILED";
+
 
 export const connect = () => {
     return async (dispatch) => {
@@ -168,6 +172,47 @@ export const connect = () => {
         }
     };
 };
+
+
+export const disconnect = () => {
+    return async (dispatch) => {
+        try {
+            const web3Modal = new Web3Modal({
+                network: "mainnet",
+                cacheProvider: false,
+                providerOptions,
+            });
+            setAccount("");
+            setSmartContract(null);
+            setConnector(null);
+
+            await web3Modal.close();
+            dispatch(disconnectSuccess());
+            // remove listeners start
+            const provider = web3Modal.provider;
+            provider.removeAllListeners();
+            // remove listeners end
+        } catch (err) {
+            dispatch(disconnectFailed("Something went wrong."));
+        }
+    };
+};
+
+export const disconnectFailed = (error) => {
+    return {
+        type: DISCONNECT_FAILED,
+        error: error
+    };
+};
+
+const disconnectSuccess = () => {
+    return {
+        type: "DISCONNECT_SUCCESS",
+    };
+};
+
+
+
 
 export const updateAccount = (account) => {
     return async (dispatch) => {

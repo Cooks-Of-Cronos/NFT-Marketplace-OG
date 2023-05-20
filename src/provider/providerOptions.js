@@ -13,10 +13,11 @@ export const providerOptions = {
 
         package: DeFiWeb3Connector,
         options: {
-            supportedChainIds: [1],
+            supportedChainIds: [1, 25],
             rpc: {
                 1: "https://mainnet.infura.io/v3/c66d5493eff848ca89349923e7d1131a",
                 25: "https://evm.cronos.org/", // cronos mainet
+                0x13881: "https://mainnet.infura.io/v3/c66d5493eff848ca89349923e7d1131a,"
             },
             pollingInterval: 15000,
         },
