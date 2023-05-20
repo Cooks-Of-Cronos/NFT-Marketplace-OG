@@ -5,8 +5,7 @@ import Staking from './staking'
 import Home from './home'
 import Marketplace from './marketplace';
 import Watch2Earn from './Watch2Earn';
-import CroboCop from './CroboCop';
-import NFTMintingPage from './Test';
+
 
 const App = () => {
     return (
@@ -14,7 +13,7 @@ const App = () => {
             <main>
                 
                 <Routes>
-                    <Route exact path="/" element={<Home />}
+                    <Route exact path="/" element={<Marketplace />}
                         render={(props) =>
                         (
                             <Home {...props}
@@ -59,24 +58,8 @@ const App = () => {
                         )
                         }
                     />
-                    <Route path="/CroboCop" element={<CroboCop />}
-                        render={(props) =>
-                        (
-                            <Staking {...props}
-
-                            />
-                        )
-                        }
-                    />
-                    <Route path="/Test" element={<NFTMintingPage />}
-                        render={(props) =>
-                        (
-                            <Staking {...props}
-
-                            />
-                        )
-                        }
-                    />
+                    
+                   
                 </Routes>
 
             </main>

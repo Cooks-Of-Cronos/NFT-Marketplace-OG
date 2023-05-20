@@ -9,7 +9,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { DISCONNECT_FAILED, disconnectFailed, disconnect, connect, isConnected } from "./redux/blockchain/blockchainActions";
 import NFTLendingPool from "./contracts/NFTLendingPool.json";
-import NFTStakingPool from "./components/StakingPool";
 // NFT LENDING POOL ABI 
 // NFT LENDING POOL CONTRACT ADDR
 import Footer from './Footer';

@@ -7,13 +7,11 @@ import Web3EthContract from "web3-eth-contract";
 import Modal from 'react-modal';
 import { store, ReactNotification, NotificationContainer, NotificationManager } from 'react-notifications';
 import CroboCopNFT from './images/CroboCopNFT.gif';
-import { Container, Row, Col, Button, Card, Badge, Form, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 // IMPORT STYLES
 import * as s from "./styles/globalStyles";
 import styled from "styled-components";
 import { Spinner } from "react-bootstrap";
-import LoadingSpinner from './loading-spinner';
 
 //IMPORT OTHER COMPONENTS FROM PAGES WITHIN OUR DIRECTORY
 import './App.js';
@@ -22,16 +20,7 @@ import './styles/home.css';
 
 
 
-// UNUSED IMPORTS
-import ReactDOM from 'react-dom';
-import $ from 'jquery';
-import Web3Modal from 'web3modal';
-import Web3 from 'web3';
-import axios from 'axios';
-import { providerOptions } from './provider/providerOptions';
-import { useNotifications } from 'react-notifications';
-import { balance, rewards } from "./redux/stakeData/dataActions";
-import { DeFiWeb3Connector } from 'deficonnect';
+
 
 import "animate.css/animate.min.css";
 
