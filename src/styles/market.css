@@ -1,3 +1,241 @@
+
+
+/* Normal mode styles */
+body {
+    background-color: #fff;
+    color: #000;
+  }
+
+
+
+
+/* Mobile optimizations */
+@media screen and (max-width: 768px) {
+    .intro-section {
+      padding-top: 75px;
+      margin-top: 75px;
+    }
+  
+    .intro-text h2 {
+      font-size: 1.5rem;
+    }
+  
+    .intro-text p {
+      font-size: 1rem;
+    }
+  
+    .intro-video {
+      max-width: 400px;
+    }
+  
+    .search-input {
+      flex-basis: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .hero {
+        padding: 2rem 0;
+      }
+      
+      .title {
+        font-size: 2rem;
+      }
+    
+      .subtitle {
+        font-size: 1rem;
+      }
+    
+      .btn, .btn-shop {
+        height: 40px;
+        width: 140px;
+        font-size: 14px;
+      }
+      
+      .btn-shop:hover {
+        height: 40px;
+        width: 140px;
+        font-size: 14px;
+      }
+      
+      .icon {
+        width: 4rem;
+        height: 4rem;
+      }
+    
+      .hero-image {
+        margin-top: 2rem;
+      }
+
+      .search-input {
+        flex-basis: 60%;
+    }
+
+    .filter-select {
+        flex-basis: 30%;
+    }
+
+    .filter-btn {
+        flex-basis: 10%;
+    }
+
+    .grid-item {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-gap: 10px;
+    }
+
+    .card-img-top {
+        height: 150px;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+    }
+
+    .badge {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .btn-purchase {
+        margin-top: 0.5rem;
+    }
+
+    .hero-image img {
+        max-width: 50%;
+        height: auto;
+    }
+
+    .btn-effect {
+        font-size: 1rem;
+        padding: 0.6rem 2rem;
+        margin-top: 1rem;
+      }
+    
+      .search-form {
+        flex-direction: column;
+      }
+    
+      .search-input, .filter-select {
+        flex-basis: 100%;
+        margin-bottom: 1rem;
+      }
+    
+      .filter-btn {
+        flex-basis: 100%;
+        margin-left: 0;
+      }
+    
+      .button {
+        height: 40px;
+        width: 140px;
+        font-size: 14px;
+      }
+    
+      .dashboard-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+    
+      .dashboard__title, .transactions__title {
+        font-size: 1.5rem;
+      }
+    
+      .dashboard__balance {
+        font-size: 1.2rem;
+      }
+    
+      .transactions__text {
+        font-size: 1rem;
+      }
+    
+      .icon {
+        width: 40px;
+        height: 40px;
+      }
+    
+      .button--test {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+      }
+
+      .trending-collections h2 {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+      }
+    
+      .trending-card {
+        margin: 0.5rem;
+      }
+    
+      .trending-card .card-image {
+        height: 150px;
+      }
+    
+      .trending-card .card-content {
+        padding: 0.5rem;
+      }
+    
+      .trending-card .card-content h3 {
+        font-size: 1rem;
+      }
+    
+      .trending-card .card-content p {
+        margin: 0.3rem 0;
+      }
+
+      .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input {
+        flex-basis: 100%;
+        margin-bottom: 1rem;
+    }
+
+    /* Search Bar */
+    .search-bar {
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .search-bar input {
+        margin-right: 0;
+        padding: 5px;
+        font-size: 0.8rem;
+    }
+
+    .search-bar button {
+        position:relative;
+        padding: 5px;
+        font-size: 0.8rem;
+    }
+
+    .always-visible {
+        position: fixed;
+        z-index: 9999;
+        top: 20px; /* adjust as needed */
+        right: 20px; /* adjust as needed */
+      }
+  }
+
+
+/* For screens between 768px and 992px */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .grid-item {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+
+    
+
+
+    /* INTRO */
 .intro-section {
     padding-top: 150px;
     margin-top: 150px;
@@ -44,7 +282,10 @@
 
 /* Container */
 .container {
-    margin: 2rem auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;  /* Adjust this to control space between grid items */
+    margin-top: 50px;
     max-width: 1200px;
     padding: 0 1rem;
     font-family: Arial, sans-serif;
@@ -52,6 +293,7 @@
     color: black;
     background-color: indianred;
 }
+
 
 /* Search Form */
 .search-form {
@@ -101,53 +343,34 @@
             background-color: #0069d9;
         }
 
-/* Media Queries */
-@media screen and (max-width: 767px) {
-    /* Intro Section */
-    .intro-section {
-        padding: 1rem;
-    }
-
-    /* Boom Section */
-    .boomSection {
-        padding: 1rem;
-    }
-
-    /* Container */
-    .container {
-        margin: 1rem auto;
-        max-width: 100%;
-        padding: 0 0.5rem;
-    }
-
-    /* Search Input */
-    .search-input {
-        flex-basis: 60%;
-    }
-
-    /* Search Bar */
-    .search-bar {
-        padding: 5px;
-    }
-
-        .search-bar input {
-            padding: 8px;
-            font-size: 0.9rem;
+        @media (max-width: 768px) {
+            .container {
+                display:grid;
+                grid-template-columns: auto;
+                max-width: 100%;
+                margin-top: 150px;
+            }
+            .search-form {
+                flex-direction: column;
+            }
+            .search-input, .search-bar input {
+                margin-bottom: 1rem;
+            }
+            .search-bar {
+                padding: 5px;
+            }
+            .search-bar input, .search-bar button {
+                padding: 5px;
+            }
         }
 
-        .search-bar button {
-            padding: 8px;
-            font-size: 0.9rem;
-        }
-}
 
 
 
 
 
 
-
-
+/* FILTER */
 .filter-select {
     flex-basis: 25%;
     margin-left: 1rem;
@@ -183,7 +406,7 @@
 
 
 
-
+/* CARDS */
 .card {
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -234,48 +457,7 @@
         border-color: #218838;
     }
 
-/* Media Queries */
 
-/* For screens less than 768px */
-@media only screen and (max-width: 767px) {
-    .search-input {
-        flex-basis: 60%;
-    }
-
-    .filter-select {
-        flex-basis: 30%;
-    }
-
-    .filter-btn {
-        flex-basis: 10%;
-    }
-
-    .grid-item {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        grid-gap: 10px;
-    }
-
-    .card-img-top {
-        height: 150px;
-    }
-
-    .card-title {
-        font-size: 1.2rem;
-    }
-
-    .card-text {
-        font-size: 0.9rem;
-    }
-
-    .badge {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.5rem;
-    }
-
-    .btn-purchase {
-        margin-top: 0.5rem;
-    }
-}
 
 /* For screens between 768px and 992px */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -291,10 +473,9 @@
 
 
 
-
+/* HERO */
 .hero {
     background-color: #f9f9f9;
-    padding: 5rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -427,12 +608,14 @@
         height: auto;
     }
 
-@media screen and (min-width: 768px) {
-    .hero-image img {
-        max-width: 50%;
-        height: auto;
-    }
-}
+
+
+
+
+
+
+
+/* BUTTON  */
 
 .btn-effect {
     border: none;
@@ -672,6 +855,10 @@
         color: #fff;
     }
 
+
+
+
+
 #marketplaceItems {
     background-color: #f5f5f5;
     display: grid;
@@ -767,6 +954,8 @@
 
 
 
+
+    /* //collections */
 .trending-collections {
     text-align: center;
     padding: 4rem 0;
@@ -869,6 +1058,8 @@
 
 
 
+
+/* STATS */
 .statistics {
     display: flex;
     justify-content: space-between;
@@ -1018,3 +1209,136 @@
     padding: 20px 30px;
     margin-top: 20px;
   }
+
+
+.appraiser-form {
+    display: grid;
+
+
+    max-width: 500px;
+    margin-bottom: 50px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+button.sidebar-toggle{
+    color: white;
+    position: fixed;
+
+}
+
+button.footer-button{
+    color: white;
+}
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+
+
+    
+      
+      .account, .chainId {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+      
+      .connect-button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px
+        
+      }
+      
+      .sidebar {
+        
+        color: #FFF;
+        width: 250px;
+        padding: 20px;
+        font-family: 'Arial', sans-serif;
+    }
+    
+    .sidebar-toggle {
+        background-color: #343434;
+        color: #FFF;
+        border: none;
+        padding: 10px;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+    
+    .sidebar-heading {
+        font-size: 1.2em;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+    
+    .sidebar-item {
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+    
+    .sidebar-value {
+        color: #02662f;
+        font-weight: bold;
+    }
+    
+    .disconnect-button,
+    .connect-button,
+    .button {
+        background-color: #1b1b1b;
+        color: #FFF;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 15px;
+        cursor: pointer;
+        display: inline-block;
+        text-transform: uppercase;
+    }
+    
+    .green {
+        color: green;
+    }
+    

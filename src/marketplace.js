@@ -9,27 +9,27 @@
 	import { testABI } from './components/TestComp.js';
 	import { testContract } from './components/TestComp.js';
 	import { Spinner } from "react-bootstrap";
-	import GetStats from "./pages/getStatus";
-	import { REWARDSABI } from './mint';
-	import { REWARDSCONTRACT } from './mint';
+	import GetStats from "./pages/getStatus.js";
+	import { REWARDSABI } from './mint.js';
+	import { REWARDSCONTRACT } from './mint.js';
 	import { useDispatch, useSelector } from "react-redux"
-	import { CROCELLSABI } from './mint';
-	import { CROBADGEABI } from './mint';
+	import { CROCELLSABI } from './mint.js';
+	import { CROBADGEABI } from './mint.js';
 	import { Jumbotron } from 'styled-jumbotron-component';
 	import './styles/market.css';
-	import { fetchData } from "./redux/data/dataActions";
-	import { DISCONNECT_FAILED, disconnectFailed, disconnect, connect, isConnected } from "./redux/blockchain/blockchainActions";
+	import { fetchData } from "./redux/data/dataActions.js";
+	import { DISCONNECT_FAILED, disconnectFailed, disconnect, connect, isConnected } from "./redux/blockchain/blockchainActions.js";
 
 	import { store, ReactNotification, NotificationContainer, NotificationManager } from 'react-notifications';
 
-	import Footer from './Footer';
+	import Footer from './Footer.js';
 	import Web3 from 'web3';
 	//import { providerOptions } from './provider/providerOptions';
 
 	// ES6 Modules or TypeScript
 	import Swal from 'sweetalert2';
 
-
+	import NFTModal from './components/nftmodal';
 	
 
 const Icon = styled.img`
@@ -1498,12 +1498,970 @@ const web3Modal = new Web3Modal({
 
 
 
+const Logo = styled.img`
+  height: 40px;
+`;
+
+const NavbarContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  padding: 0 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+`;
+
+const SearchBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+  input[type='text'] {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+`;
+
+const Sidebar = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+  transform: translateX(${props => (props.showSidebar ? '0' : '-100%')});
+  z-index: 1;
+  
+  .sidebar-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  .sidebar-content {
+    margin-top: 2rem;
+    
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+	  color: black;
+    }
+    
+    p {
+      margin-bottom: 0.5rem;
+	  color: black;
+    }
+  }
+`;
+
+// Appraiser Contract Address and ABI
+const appraiserContractAddress = '0x1A5fBFa9ab3bCd7eB6438e8F95698A704725b787';
+const appraiserContractABI =
+	[
+		{
+			"inputs": [],
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "nftAddress",
+					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "volatility",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "lastPrice",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "recommendedLoanAmount",
+					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"internalType": "uint256",
+					"name": "lastUpdateTimestamp",
+					"type": "uint256"
+				}
+			],
+			"name": "AppraisalSubmitted",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "previousOwner",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "OwnershipTransferred",
+			"type": "event"
+		},
+		{
+			"inputs": [],
+			"name": "renounceOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "nftAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "volatility",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "lastPrice",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "recommendedLoanAmount",
+					"type": "uint256"
+				}
+			],
+			"name": "setAppraisal",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "transferOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"name": "appraisals",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "volatility",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "lastPrice",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "recommendedLoanAmount",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "lastUpdateTimestamp",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "contract IERC721",
+					"name": "nftAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "id",
+					"type": "uint256"
+				}
+			],
+			"name": "getAppraisal",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "owner",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]
+
+// NFTLendingPool Contract Address and ABI
+const lendingPoolContractAddress = '0xb121919c9E54DCB1B4C0c6Aeec60e2B5eD06d582';
+const lendingPoolContractABI =
+	[
+{
+	"inputs": [
+		{
+			"internalType": "contract IERC20",
+			"name": "_underlyingToken",
+			"type": "address"
+		},
+		{
+			"internalType": "contract IAppraiser",
+			"name": "_appraiser",
+			"type": "address"
+		}
+	],
+		"stateMutability": "nonpayable",
+			"type": "constructor"
+},
+{
+	"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+			"name": "Approval",
+				"type": "event"
+},
+{
+	"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "borrower",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+			"name": "Borrowed",
+				"type": "event"
+},
+{
+	"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "borrower",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+			"name": "Deposit",
+				"type": "event"
+},
+{
+	"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "contract IERC721",
+				"name": "nft",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+			"name": "Liquidation",
+				"type": "event"
+},
+{
+	"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "borrower",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+			"name": "Repaid",
+				"type": "event"
+},
+{
+	"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+			"name": "Transfer",
+				"type": "event"
+},
+{
+	"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "supplier",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+			"name": "Withdraw",
+				"type": "event"
+},
+{
+	"inputs": [
+		{
+			"internalType": "address",
+			"name": "owner",
+			"type": "address"
+		},
+		{
+			"internalType": "address",
+			"name": "spender",
+			"type": "address"
+		}
+	],
+		"name": "allowance",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "appraiser",
+			"outputs": [
+				{
+					"internalType": "contract IAppraiser",
+					"name": "",
+					"type": "address"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "address",
+			"name": "spender",
+			"type": "address"
+		},
+		{
+			"internalType": "uint256",
+			"name": "amount",
+			"type": "uint256"
+		}
+	],
+		"name": "approve",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "contract IERC721",
+			"name": "",
+			"type": "address"
+		}
+	],
+		"name": "assetPrice",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "address",
+			"name": "account",
+			"type": "address"
+		}
+	],
+		"name": "balanceOf",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "uint256",
+			"name": "borrowAmount",
+			"type": "uint256"
+		}
+	],
+		"name": "borrow",
+			"outputs": [],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "borrowIndex",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "address",
+			"name": "borrower",
+			"type": "address"
+		}
+	],
+		"name": "calculateCollateralValue",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "decimals",
+			"outputs": [
+				{
+					"internalType": "uint8",
+					"name": "",
+					"type": "uint8"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "address",
+			"name": "spender",
+			"type": "address"
+		},
+		{
+			"internalType": "uint256",
+			"name": "subtractedValue",
+			"type": "uint256"
+		}
+	],
+		"name": "decreaseAllowance",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "contract IERC721",
+			"name": "nft",
+			"type": "address"
+		},
+		{
+			"internalType": "uint256",
+			"name": "id",
+			"type": "uint256"
+		}
+	],
+		"name": "depositNFT",
+			"outputs": [],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "contract IERC721",
+			"name": "",
+			"type": "address"
+		},
+		{
+			"internalType": "uint256",
+			"name": "",
+			"type": "uint256"
+		}
+	],
+		"name": "depositor",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "exchangeRateStored",
+			"outputs": [
+				{
+					"internalType": "int128",
+					"name": "",
+					"type": "int128"
+				}
+			],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "address",
+			"name": "spender",
+			"type": "address"
+		},
+		{
+			"internalType": "uint256",
+			"name": "addedValue",
+			"type": "uint256"
+		}
+	],
+		"name": "increaseAllowance",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "contract IERC721",
+			"name": "nft",
+			"type": "address"
+		},
+		{
+			"internalType": "uint256",
+			"name": "id",
+			"type": "uint256"
+		}
+	],
+		"name": "liquidateBorrow",
+			"outputs": [],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "uint256",
+			"name": "amount",
+			"type": "uint256"
+		}
+	],
+		"name": "mint",
+			"outputs": [],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "name",
+			"outputs": [
+				{
+					"internalType": "string",
+					"name": "",
+					"type": "string"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "uint256",
+			"name": "redeemTokens",
+			"type": "uint256"
+		}
+	],
+		"name": "redeem",
+			"outputs": [],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "uint256",
+			"name": "repayAmount",
+			"type": "uint256"
+		}
+	],
+		"name": "repayBorrow",
+			"outputs": [],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "symbol",
+			"outputs": [
+				{
+					"internalType": "string",
+					"name": "",
+					"type": "string"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "totalBorrowed",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "totalRepaid",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "totalSupplied",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "totalSupply",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "address",
+			"name": "to",
+			"type": "address"
+		},
+		{
+			"internalType": "uint256",
+			"name": "amount",
+			"type": "uint256"
+		}
+	],
+		"name": "transfer",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "address",
+			"name": "from",
+			"type": "address"
+		},
+		{
+			"internalType": "address",
+			"name": "to",
+			"type": "address"
+		},
+		{
+			"internalType": "uint256",
+			"name": "amount",
+			"type": "uint256"
+		}
+	],
+		"name": "transferFrom",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+				"stateMutability": "nonpayable",
+					"type": "function"
+},
+{
+	"inputs": [],
+		"name": "underlyingToken",
+			"outputs": [
+				{
+					"internalType": "contract IERC20",
+					"name": "",
+					"type": "address"
+				}
+			],
+				"stateMutability": "view",
+					"type": "function"
+},
+{
+	"inputs": [
+		{
+			"internalType": "contract IERC721",
+			"name": "nft",
+			"type": "address"
+		},
+		{
+			"internalType": "uint256",
+			"name": "id",
+			"type": "uint256"
+		}
+	],
+		"name": "withdrawNFT",
+			"outputs": [],
+				"stateMutability": "nonpayable",
+					"type": "function"
+}
+]
+
+const AppraiserForm = styled.div`
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 8px;
+`;
+
+const FormContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+const AppraisalDisplay = styled.div`
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+`;
+
+const AppraisalButton = styled.button`
+  background-color: #4caf50;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
 
 
 
 
 
 
+
+const ChainName = styled.p`
+  font-size: 16px;
+  font-weight: bold;
+`;
 
 const Marketplace = () => {
 	const [showModal, setShowModal] = useState(false);
@@ -1524,10 +2482,310 @@ const Marketplace = () => {
 	const [sellTokenId, setSellTokenId] = useState(null);
 	const [count, setCount] = useState(0);
 	const [Rewards, setRewards] = useState(0);
-	const [rewardBalance, setRewardBalance] = useState(0);
-	const [rewardBalances, setRewardBalances] = useState({});
+	const [rewardBalance, setRewardBalance] = useState(() => {
+		const initialBalance = localStorage.getItem(`${blockchain.account}-rewards`);
+		return initialBalance ? Number(initialBalance) : 0;
+	  });
+	  
 
 	const [isLoading, setIsLoading] = useState(false);
+
+
+	//pawnshop
+	const [nftAddress, setNftAddress] = useState('');
+	const [volatility, setVolatility] = useState(0);
+	const [lastPrice, setLastPrice] = useState(0);
+	const [loanAmount, setLoanAmount] = useState(0);
+	const [appraisalData, setAppraisalData] = useState(null);
+	const [id, setId] = useState('');
+
+
+	const generateRandomData = () => {
+		// Generate random values within the desired range
+		const loanAmountOffered = Math.floor(Math.random() * (1000 - 100) + 100);
+		const ltvRatio = Math.floor(Math.random() * (80 - 60) + 60);
+		// Add other relevant loan/appraisal data properties
+	  
+		// Return the generated random data as an object
+		return {
+		  loanAmountOffered,
+		  ltvRatio,
+		  // Add other relevant loan/appraisal data properties
+		};
+	  };
+
+
+	// Function to submit an appraisal
+	const submitAppraisal = async (nftAddress, volatility, lastPrice, loanAmount) => {
+		try {
+			// Connect to the Appraiser contract using the contract address and ABI
+			const appraiserContract = new Web3EthContract(appraiserContractABI, appraiserContractAddress);
+
+			// Prepare the parameters for the setAppraisal function
+			const params = [nftAddress, volatility, lastPrice, loanAmount];
+			console.log('Params:', params);
+
+			// Call the setAppraisal function
+			await appraiserContract.methods.setAppraisal(...params).send({
+				from: '0x4B7051619d0AAa0EC056A18eceD5D8E06Dd55F33' });
+
+			console.log('Appraisal submitted successfully!');
+		} catch (error) {
+			console.error('Error submitting appraisal:', error);
+		}
+	};
+
+
+	// Function to get an appraisal
+	const getAppraisal = async (nftAddress, id) => {
+		try {
+			// Connect to the Appraiser contract using the contract address and ABI
+			const appraiserContract = new Web3EthContract(appraiserContractABI, appraiserContractAddress);
+
+			// Call the getAppraisal function
+			const appraisal = await appraiserContract.methods.getAppraisal(nftAddress, id).call();
+
+			console.log('Appraisal:', appraisal);
+			// Handle the appraisal data as needed
+			const randomData = generateRandomData();
+    		setAppraisalData(randomData);
+
+		} catch (error) {
+			console.error('Error getting appraisal:', error);
+		}
+	};
+
+	const depositNFT = async (nftAddress, tokenId) => {
+		try {
+			// Connect to the NFTLendingPool contract using the contract address and ABI
+			const nftLendingPoolContract = new Web3EthContract(lendingPoolContractABI, lendingPoolContractAddress);
+
+			// Prepare the parameters for the depositNFT function
+			const params = [nftAddress, tokenId];
+
+			// Call the depositNFT function
+			await nftLendingPoolContract.methods.depositNFT(...params).send({ from: blockchain.account });
+
+			console.log('NFT deposited successfully!');
+		} catch (error) {
+			console.error('Error depositing NFT:', error);
+		}
+	};
+
+
+	const withdrawNFT = async (nftContract, tokenId) => {
+		try {
+			// Connect to the NFTLendingPool contract using the contract address and ABI
+			const nftLendingPoolContract = new Web3EthContract(nftLendingPoolContractABI, nftLendingPoolContractAddress);
+
+			// Prepare the parameters for the withdrawNFT function
+			const params = [nftContract, tokenId];
+
+			// Call the withdrawNFT function
+			await nftLendingPoolContract.methods.withdrawNFT(...params).send({ from: blockchain.account });
+
+			console.log('NFT withdrawn successfully!');
+		} catch (error) {
+			console.error('Error withdrawing NFT:', error);
+		}
+	};
+
+
+	// Function to borrow tokens
+	const borrowTokens = async (borrowAmount) => {
+		try {
+			// Connect to the NFTLendingPool contract using the contract address and ABI
+			const nftLendingPoolContract = new Web3EthContract(nftLendingPoolContractABI, nftLendingPoolContractAddress);
+
+			// Prepare the parameters for the borrow function
+			const params = [borrowAmount];
+
+			// Call the borrow function
+			await nftLendingPoolContract.methods.borrow(...params).send({ from: blockchain.account });
+
+			console.log('Tokens borrowed successfully!');
+		} catch (error) {
+			console.error('Error borrowing tokens:', error);
+		}
+	};
+
+
+	// Function to repay borrowed tokens
+	const repayTokens = async (repayAmount) => {
+		try {
+			// Connect to the NFTLendingPool contract using the contract address and ABI
+			const nftLendingPoolContract = new Web3EthContract(nftLendingPoolContractABI, nftLendingPoolContractAddress);
+
+			// Prepare the parameters for the repayBorrow function
+			const params = [repayAmount];
+
+			// Call the repayBorrow function
+			await nftLendingPoolContract.methods.repayBorrow(...params).send({ from: blockchain.account });
+
+			console.log('Tokens repaid successfully!');
+		} catch (error) {
+			console.error('Error repaying tokens:', error);
+		}
+	};
+
+
+	// Function to liquidate a borrower's NFT collateral
+	const liquidateCollateral = async (nftAddress, tokenId) => {
+		try {
+			// Connect to the NFTLendingPool contract using the contract address and ABI
+			const nftLendingPoolContract = new Web3EthContract(nftLendingPoolContractABI, nftLendingPoolContractAddress);
+
+			// Prepare the parameters for the liquidateBorrow function
+			const params = [nftAddress, tokenId];
+
+			// Call the liquidateBorrow function
+			await nftLendingPoolContract.methods.liquidateBorrow(...params).send({ from: blockchain.account });
+
+			console.log('Collateral liquidated successfully!');
+		} catch (error) {
+			console.error('Error liquidating collateral:', error);
+		}
+	};
+
+	// Function to calculate the collateral value
+	const calculateCollateralValue = async (borrower) => {
+		try {
+			// Connect to the NFTLendingPool contract using the contract address and ABI
+			const nftLendingPoolContract = new Web3EthContract(nftLendingPoolContractABI, nftLendingPoolContractAddress);
+
+			// Prepare the parameters for the calculateCollateralValue function
+			const params = [borrower];
+
+			// Call the calculateCollateralValue function
+			const collateralValue = await nftLendingPoolContract.methods.calculateCollateralValue(...params).call();
+
+			console.log('Collateral value:', collateralValue);
+		} catch (error) {
+			console.error('Error calculating collateral value:', error);
+		}
+	};
+
+
+
+
+	const getChainName = (chainId) => {
+		console.log(blockchain.chainId)
+		if (chainId === '338') {
+		  return 'Cronos Testnet';
+		} else if (blockchain.chainId === '25') {
+		  return 'Cronos';
+		} else if (chainId === '3') {
+		  return 'Chain Name 3';
+		}
+		// Add more conditions for other chain IDs
+		return 'Unknown Chain';
+	  };
+
+	const [showSidebar, setShowSidebar] = useState(false);
+	const sidebarRef = useRef(null);
+
+	useEffect(() => {
+		function handleMouseDown(event) {
+			if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+				setShowSidebar(false);
+			}
+		}
+	
+		document.addEventListener('mousedown', handleMouseDown);
+	
+		// Remember to remove event listeners in a cleanup function
+		return () => {
+			document.removeEventListener('mousedown', handleMouseDown);
+		};
+	}, []); // An
+
+	const [connecting, setConnecting] = useState(false);
+	const handleConnect = async () => {
+		
+		// setShowSidebar(false);
+	  
+		// Check if already connecting
+		if (connecting) {
+		  return;
+		}
+
+		// When a user logs in, retrieve their total rewards
+		const initialRewardBalance = localStorage.getItem(`${blockchain.account}-rewards`);
+		setRewardBalance(Number(initialRewardBalance) || 0);
+		console.log(initialRewardBalance)
+		
+
+	  
+		// Set the connecting flag
+		setConnecting(true);
+	  
+		// Show the "Connecting..." modal
+		Swal.fire({
+		  title: 'Connecting...',
+		  allowOutsideClick: true,
+		  showConfirmButton: false,
+		  timer: 500, // Display for 1 second
+		  didOpen: async () => {
+			try {
+			  await dispatch(connect());
+			  // Update the connected account state after connecting
+			  // This can be done by dispatching an action to update the blockchain state
+			} catch (error) {
+			  console.log(error);
+			  Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Connection failed. Please try again!',
+			  });
+			} finally {
+			  // Reset the connecting flag
+			  setConnecting(false);
+			}
+		  },
+		});
+	  };
+
+	  const handleDisconnect = async () => {
+		// Check if already disconnected
+		if (!isConnected) {
+		  return;
+		}
+	  
+		// Show the "Disconnecting..." modal
+		Swal.fire({
+		  title: 'Disconnecting...',
+		  allowOutsideClick: true,
+		  showConfirmButton: false,
+		  timer: 500, // Display for 1 second
+		  didOpen: async () => {
+			try {
+			  await dispatch(disconnect());
+			  // Update the connected account state after disconnecting
+			  // This can be done by dispatching an action to update the blockchain state
+			} catch (error) {
+			  console.log(error);
+			  Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Disconnection failed. Please try again!',
+			  });
+			}
+		  },
+		});
+	  };
+	  
+	  
+	  useEffect(() => {
+		// check if blockchain.account has a value
+		if (blockchain.account) {
+		  const initialRewardBalance = localStorage.getItem(`${blockchain.account}-rewards`);
+		  // convert string to number and set rewardBalance
+		  setRewardBalance(Number(initialRewardBalance) || 0);
+		  console.log(initialRewardBalance)
+		}
+	  }, [blockchain.account]);  // dependency array, re-run this effect when blockchain.account changes
+
+
 
 	const handleClick = () => {
 		setIsLoading(true);
@@ -1695,14 +2953,14 @@ const Marketplace = () => {
 				  <div class="col-md-4">
 					<div class="card-wrapper">
 					  <div class="card">
-						<img src="${image}" class="card-img-top" width="100%" height="auto" />
+						<img src="${image}" class="card-img-top nft-image" width="100%" height="auto" />
 						<div class="card-body">
 						  <h5 class="card-title">${metadata.name}</h5>
 					  
 								<div class="form-group">
 								<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput" placeholder="Enter price">
 										  </div>
-						  <button type="button" class="btn btn-primary stake-btn zoom" data-tokenid="${tokenId}">List NFT</button>
+						  <button type="button" class="btn btn-primary nft-btn zoom" data-tokenid="${tokenId}">List NFT</button>
 										
 										
 						</div>
@@ -1805,7 +3063,7 @@ const Marketplace = () => {
 				document.getElementById("nftid").innerHTML += content;
 
 				// Add event listener to stake buttons
-				document.querySelectorAll('.stake-btn').forEach(btn => {
+				document.querySelectorAll('.nft-btn').forEach(btn => {
 					btn.addEventListener('click', async event => {
 						const tokenId = event.target.dataset.tokenid;
 						const askingPriceInput = document.getElementById('askingPriceInput');
@@ -1834,6 +3092,16 @@ const Marketplace = () => {
 							showConfirmButton: false,
 							timer: 5000
 						});
+
+						// Update the reward balance
+						setRewardBalance(prevReward => {
+							const updatedBalance = prevReward + 5;
+							localStorage.setItem(`${blockchain.account}-rewards`, updatedBalance);
+							console.log('Updated balance:', updatedBalance);
+							return updatedBalance;
+						});
+  
+						
 						}
 					});
 				});
@@ -1868,6 +3136,10 @@ const Marketplace = () => {
 
 
 		}
+
+		useEffect(() => {
+			console.log('Current reward balance:', rewardBalance);
+		  }, [rewardBalance]);
 
 		// Get Crocell NFTs
 		async function getCellNFTs(startIndex) {
@@ -1995,7 +3267,7 @@ const Marketplace = () => {
 										
 											<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput" placeholder="Enter price">
 										  </div>
-						  <button type="button" class="btn btn-primary stake-btn zoom" data-tokenid="${tokenId}">List NFT</button>
+						  <button type="button" class="btn btn-primary cell-btn zoom" data-tokenid="${tokenId}">List NFT</button>
 						</div>
 					  </div>
 					</div>
@@ -2091,7 +3363,7 @@ const Marketplace = () => {
 				document.getElementById("nftid3").innerHTML += content;
 
 				// Add event listener to parent element
-				document.querySelectorAll('.stake-btn').forEach(btn => {
+				document.querySelectorAll('.cell-btn').forEach(btn => {
 					btn.addEventListener('click', async event => {
 						const tokenId = event.target.dataset.tokenid;
 						const askingPriceInput = document.getElementById('askingPriceInput');
@@ -2286,7 +3558,7 @@ const Marketplace = () => {
 										
 											<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput" placeholder="Enter price">
 										  </div>
-						  <button type="button" class="btn btn-primary stake-btn zoom" data-tokenid="${tokenId}">List NFT</button>
+						  <button type="button" class="btn btn-primary badge-btn zoom" data-tokenid="${tokenId}">List NFT</button>
 						</div>
 					  </div>
 					</div>
@@ -2386,7 +3658,7 @@ const Marketplace = () => {
 				// Add event listener to List buttons
 				// change this to List Function
 
-				document.querySelectorAll('.stake-btn').forEach(btn => {
+				document.querySelectorAll('.badge-btn').forEach(btn => {
 					btn.addEventListener('click', async event => {
 						const tokenId = event.target.dataset.tokenid;
 						const askingPriceInput = document.getElementById('askingPriceInput');
@@ -2409,6 +3681,10 @@ const Marketplace = () => {
 						// Approve transfer of cGOLD to Marketplace contract
 						// Add cGOLD tokens to Marketplace Balance.
 						await NFTcontract.methods.approve(marketplaceAddress, tokenId).send({ from: blockchain.account });
+						Swal.fire({
+							title: 'Please approve this first transaction, then await another to list the NFT...',
+							showConfirmButton: true,
+						  });
 						const result = await contract.methods.addItemToMarket(tokenId, nftTokenAddress, askingPrice).send({ from: blockchain.account });
 						if (result.status) {
 						// Display success notification
@@ -2424,17 +3700,17 @@ const Marketplace = () => {
 
 
 
-				// Add event listener to Buy buttons
-				document.querySelectorAll('.claim-btn').forEach(btn => {
-					btn.addEventListener('click', async event => {
-						const tokenId = event.target.dataset.tokenid;
-						const askingPrice = document.getElementById("askingPriceInput").value;
-						const contract = new Web3EthContract(ABI, NFTCONTRACT);
-						const vaultcontract = new Web3EthContract(VAULTABI, STAKINGCONTRACT);
+				// // Add event listener to Buy buttons
+				// document.querySelectorAll('.claim-btn').forEach(btn => {
+				// 	btn.addEventListener('click', async event => {
+				// 		const tokenId = event.target.dataset.tokenid;
+				// 		const askingPrice = document.getElementById("askingPriceInput").value;
+				// 		const contract = new Web3EthContract(ABI, NFTCONTRACT);
+				// 		const vaultcontract = new Web3EthContract(VAULTABI, STAKINGCONTRACT);
 
-						vaultcontract.methods.stake([tokenId]).send({ from: blockchain.account });
-					});
-				});
+				// 		vaultcontract.methods.stake([tokenId]).send({ from: blockchain.account });
+				// 	});
+				// });
 
 			
 				let startIndex = 10;
@@ -2459,7 +3735,7 @@ const Marketplace = () => {
 		async function getMinionsNFTs() {
 		const contract = new Web3EthContract(MINIONSABI, CroMinionsContract)
 		// initial loading screen
-		handleNotification("Checking Staked Crooks");
+		
 
 		// Initialize web3 using MetaMask
 		if (window.ethereum) {
@@ -2547,7 +3823,7 @@ const Marketplace = () => {
 							<label for="priceInput">Price:</label>
 							<input type="number" class="form-control" name="AskingPrice" id="priceInput" placeholder="Enter price">
 						  </div>
-					  <button type="button" class="btn btn-primary stake-btn zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
+					  <button type="button" class="btn btn-primary zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
 					</div>
 				  </div>
 				</div>
@@ -3017,7 +4293,7 @@ padding: 10px 20px;
 							<label for="priceInput">Price:</label>
 							<input type="number" class="form-control" name="AskingPrice" id="priceInput" placeholder="Enter price">
 						  </div>
-					  <button type="button" class="btn btn-primary stake-btn zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
+					  <button type="button" class="btn btn-primary bdl-btn zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
 					</div>
 				  </div>
 				</div>
@@ -3837,28 +5113,28 @@ padding: 10px 20px;
 
 
 
-	function handleConnect() {
-		// if (isUserLoggedIn()) {
-		//   getFirstTenBadges();
-		//   getFirstTenCells();
-		//   getFirstTen();
-		//   getMinionsNFTs();
-		//   getBdlNFTs();
-		//   console.log("User is logged in")
-		// } else {
-		//   // Prompt the user to connect first
-		//   console.log("need to log in")
-		// }
+	// function handleConnect() {
+	// 	// if (isUserLoggedIn()) {
+	// 	//   getFirstTenBadges();
+	// 	//   getFirstTenCells();
+	// 	//   getFirstTen();
+	// 	//   getMinionsNFTs();
+	// 	//   getBdlNFTs();
+	// 	//   console.log("User is logged in")
+	// 	// } else {
+	// 	//   // Prompt the user to connect first
+	// 	//   console.log("need to log in")
+	// 	// }
 
-		console.log("Connected:", account);
-		// Display success notification
-		Swal.fire({
-			icon: 'success',
-			title: 'Connected successfully',
-			showConfirmButton: false,
-			timer: 1500
-		});
-	  }
+	// 	console.log("Connected:", account);
+	// 	// Display success notification
+	// 	Swal.fire({
+	// 		icon: 'success',
+	// 		title: 'Connected successfully',
+	// 		showConfirmButton: false,
+	// 		timer: 1500
+	// 	});
+	//   }
 	  
 	  function isUserLoggedIn() {
 		// Your code to check if the user is logged in goes here
@@ -3959,27 +5235,7 @@ padding: 10px 20px;
 
 	// START RETURNED DATA
 	////////////////////////
-	/*
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	//-----------------------------------
-	*/
+
 
 	return (
 		
@@ -4044,6 +5300,18 @@ padding: 10px 20px;
 					<div className="intro-text">
 						<h2>Welcome to the Cronos Kitchen: A Marketplace of Unique NFT Recipes</h2>
 						<p>Welcome to our user-built NFT marketplace, where you have the power to create and own unique NFTs like never before. Our platform is designed for users by users, giving you the freedom and creativity to mint your own NFTs and showcase them to the world.</p>
+						<StyledButton
+  bgColor="#28a745"
+  color="#fff"
+  hoverBgColor="#218838"
+  className="zoom btn-hover"
+  onClick={() => {
+    document.getElementById('nftMarketplace').scrollIntoView({ behavior: 'smooth' });
+  }}
+>
+  Start Cooking!
+</StyledButton>
+
 					</div>
 					<div class="intro-video">
 						<iframe width="560" height="315" src="https://www.youtube.com/embed/ppYJPrqSGow" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -4055,17 +5323,17 @@ padding: 10px 20px;
 
 			
 			<div className="dashboard-container">
-				<div className="dashboard">
+				{/* <div className="dashboard">
 					<img src="https://i.imgur.com/8OKwwRb.png" alt="icon" class="icon" alt="Your Image" />
 					<h1 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '3rem' }}>My Account Dashboard</h1>
 					<p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '1.2rem', marginBottom: '1.5rem' }}>Current Account Balance: {balance}</p>
 					<img src="https://i.imgur.com/aPIZnjv.png" alt="Cronos Network Icon" style={{ width: '24px', height: '24px' }} />
-				</div>
+				</div> */}
 
-				<section className="transactions">
+				{/* <section className="transactions">
 
 					<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-						<img src="https://i.imgur.com/8OKwwRb.png" alt="icon" class="icon" alt="Your Image" />
+						<img src="https://i.imgur.com/8OKwwRb.png" alt="icon" class="icon"  />
 						<h2 style={{ fontSize: "1.75rem", textAlign: "center", color: "#ffffff", marginTop: "1rem" }}>Dashboard</h2>
 						<div style={{ width: '100%', maxWidth: '500px', backgroundColor: '#f5f5f5', borderRadius: '8px', padding: '1rem', marginTop: '1rem' }}>
 							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
@@ -4081,7 +5349,7 @@ padding: 10px 20px;
 								<div></div>
 							</div>
 							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-								<div style={{ fontWeight: 'bold', fontSize: '20px' }}>Total Rewards Accrued:{rewardBalance}</div>
+								<div style={{ fontWeight: 'bold', fontSize: '20px' }}>Total Rewards Accrued:{rewardBalance} $cGOLD</div>
 								<div></div>
 							</div>
 							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -4095,29 +5363,9 @@ padding: 10px 20px;
 						
 					</div>
 					
-				</section>
+				</section> */}
 
-				<button className="button button--connect" onClick={() => {
-					
-					dispatch(connect());
-					
-					
-					
-					
-				}}>
-					Connect Wallet
-				</button>
-
-				<button className="button button--test zoom" onClick={() => {
-					fetchBalance();
-					fetchData();
-					getNFTsCount();
-					CheckRewards();
-					
-				}}>
-					Get Balances
-				</button>
-				<button onClick={showNotification}>Show Notification</button>
+				
 
 
 			</div>
@@ -4197,128 +5445,114 @@ padding: 10px 20px;
 			<div className="boom">
 
 				
-					<div class="navbar">
-						<div class="navbar-left">
-							<a href="/"><img src="https://i.imgur.com/8OKwwRb.png" alt="Logo" /></a>
-							</div>
-						<div class="search-bar">
-							<a href="/"><img src="https://i.imgur.com/8OKwwRb.png" alt="Logo" /></a>
-							<input type="text" placeholder="Search items, collectibles, and users" />
-							<button>Search</button>
-							
-							<div><ul>
-							<li>
-								{blockchain.smartContract ? (
-									<p>Connected as {blockchain.account}</p>
-								) : (
-									<button onClick={async () => {
-										Swal.fire({
-										  title: 'Connecting...',
-										  allowOutsideClick: false,
-										  didOpen: async () => {
-											try {
-											  await dispatch(connect());
-											  handleConnect();
-											  
-											} catch (error) {
-											  console.log(error);
-											  Swal.fire({
-												icon: 'error',
-												title: 'Oops...',
-												text: 'Connection failed. Please try again!',
-											  });
-											}
-										  },
-										});
-									  }}>
-										Connect
-									  </button>
-									  
-								)}
-							</li>
-      </ul></div>
-						</div>
-					</div>
+			<NavbarContainer>
+      <div className="navbar-left">
+        <a href="/">
+          <Logo src="https://i.imgur.com/8OKwwRb.png" alt="Logo" />
+        </a>
+      </div>
+      <SearchBar>
+        <a href="/">
+          <Logo src="https://i.imgur.com/8OKwwRb.png" alt="Logo" />
+        </a>
+        <input type="text" placeholder="Search items, collectibles, and users" />
+        <button>Search</button>
+      </SearchBar>
+      <div className="sidebar">
+    <button className="sidebar-toggle always-visible" ref={sidebarRef} onClick={() => setShowSidebar(!showSidebar)}>
+      <i className="fa fa-bars">Menu</i>
+    </button>
+    <Sidebar showSidebar={showSidebar}>
+      <div className="sidebar-content">
+        <h3 className="sidebar-heading">Connected Account:</h3>
+        {blockchain.smartContract ? (
+            <div>
+              <p className="sidebar-item account">Account: <span className="sidebar-value">{blockchain.account}</span></p>
+              <button className="disconnect-button" onClick={handleDisconnect()}>Disconnect</button>
+              <p className="sidebar-item">Current Account Balance: <span className="sidebar-value">{balance} $CRO</span></p>
+              <p className="sidebar-item">Total NFTs in Wallet: {/* Include the respective state variable */}</p>
+              <p className="sidebar-item">Total NFTs Listed: <span className="sidebar-value">{count}</span></p>
+              <p className="sidebar-item">LeaderBoard Position: {/* Include the respective state variable */}</p>
+              <p className="sidebar-item">Total Rewards Accrued: <span className="sidebar-value">{rewardBalance} $cGOLD</span></p>
+              <p className="sidebar-item">Total Balance: <span className="sidebar-value green">{Rewards} $cGOLD</span></p>
+              <button className="button button--test zoom" onClick={() => {
+                fetchBalance();
+                fetchData();
+                getNFTsCount();
+                CheckRewards();
+              }}>
+                Get Balances
+              </button>
+            </div>
+        ) : (
+            <button className="connect-button" onClick={handleConnect}>Connect Wallet</button>
+        )}
+       <h3 className="sidebar-heading">Chain ID:</h3>
+        <p className="sidebar-item">{blockchain.chainId}</p>
+        <ChainName className="sidebar-item">{getChainName(blockchain.chainId)}</ChainName>
+        
+      </div>
+    </Sidebar>
+  </div>
+
+
+    </NavbarContainer>
 
 
 					<div class="collapse" id="nftMarketplace">
 						<div id="confetti-container"></div>
 
 						<Jumbotron className="jumbotron-container">
-							<Icon src="https://i.imgur.com/8OKwwRb.png" alt="icon" />
-							<Title>Welcome to the NFT Marketplace!</Title>
-							<Description>
-								This is where you can view and list your NFTs for sale.
-							</Description>
-							<StyledButton
-							bgColor="#28a745"
-							color="#fff"
-							hoverBgColor="#218838"
-							className="zoom btn-hover"
-							onClick={displayNFTs}
-							>
-							GET NFTS
-							</StyledButton>
-						{/* <StyledButton
-							bgColor="#007bff"
-							color="#fff"
-							hoverBgColor="#0069d9"
-							onClick={handleShowNfts}
-						>
-							Show NFTs
-						</StyledButton>
-						<StyledButton
-							bgColor="#dc3545"
-							color="#fff"
-							hoverBgColor="#c82333"
-							onClick={handleHideNfts}
-						>
-							Hide NFTs
-							</StyledButton>
-							<StyledButton
-								bgColor="#dc3545"
-								color="#fff"
-								hoverBgColor="#c82333"
-								onClick={() => {
-									loadMore();
-									loadMoreBadges();
-									loadMoreCells();
-							}}
-							>
-								Load More
-							</StyledButton> */}
-						<div class="grid-container">
-							<div class="grid-item">
-								<h2>CroCell NFTs</h2>
-								<div id="nftid3"></div>
-							</div>
-							<div class="grid-item">
-									<h2>CroBadge NFTs</h2>
-								<div id="nftid4"></div>
-								</div>
+	<Icon src="https://i.imgur.com/8OKwwRb.png" alt="icon" />
+	<Title>Welcome to the NFT Marketplace!</Title>
+	<Description>
+		This is where you can view and list your NFTs for sale.
+	</Description>
+	<StyledButton
+		bgColor="#28a745"
+		color="#fff"
+		hoverBgColor="#218838"
+		className="zoom btn-hover"
+		onClick={displayNFTs}
+	>
+		GET NFTS
+	</StyledButton>
 
-								<div class="grid-item">
-									<h2>Crook NFTs</h2>
-									<div id="nftid"></div>
-								</div>
-							</div>
-							<div class="grid-container">
-								<div class="grid-item">
-									<h2>CCPD: CroPugs</h2>
-									<div id=""></div>
-								</div>
-								<div class="grid-item">
-									<h2>croMinions</h2>
-									<div id="nftidM"></div>
-								</div>
+	{/* Carousel or Grid View of Categories */}
+	<div className="categories-container">
+		<div className="category">
+			<h2>CroCell NFTs</h2>
+			{/* Display NFTs in a grid layout here */}
+			<div className="nft-grid" id="nftid3"></div>
+		</div>
 
-								<div class="grid-item">
-									<h2>External Projects</h2>
-									<div id="nftidA"></div>
-								</div>
-							</div>
-						
-					</Jumbotron>
+		<div className="category">
+			<h2>CroBadge NFTs</h2>
+			<div className="nft-grid" id="nftid4"></div>
+		</div>
+
+		<div className="category">
+			<h2>Crook NFTs</h2>
+			<div className="nft-grid" id="nftid"></div>
+		</div>
+
+		<div className="category">
+			<h2>CCPD: CroPugs</h2>
+			<div className="nft-grid" id=""></div>
+		</div>
+
+		<div className="category">
+			<h2>croMinions</h2>
+			<div className="nft-grid" id="nftidM"></div>
+		</div>
+
+		<div className="category">
+			<h2>External Projects</h2>
+			<div className="nft-grid" id="nftidA"></div>
+		</div>
+	</div>
+</Jumbotron>
+
 				</div>
 				</div>
 				</div>
@@ -4360,17 +5594,74 @@ padding: 10px 20px;
 			
 
 			
-			<Footer  />
+			
+			<div className="appraiser-form">
+				<h2>Appraiser Contract</h2>
+				<div className="form-container">
+					<h3>Submit Appraisal</h3>
+					<input
+						type="text"
+						placeholder="NFT Address"
+						value={nftAddress}
+						onChange={(e) => setNftAddress(e.target.value)}
+					/>
+					<input
+						type="text"
+						placeholder="Volatility"
+						value={volatility}
+						onChange={(e) => setVolatility(e.target.value)}
+					/>
+					<input
+						type="text"
+						placeholder="Last Price"
+						value={lastPrice}
+						onChange={(e) => setLastPrice(e.target.value)}
+					/>
+					<input
+						type="text"
+						placeholder="Recommended Loan Amount"
+						value={loanAmount}
+						onChange={(e) => {
+							console.log(e.target.value);
+							setLoanAmount(e.target.value)
+						}}
+
+					/>
+					
+					<button onClick={() => submitAppraisal(nftAddress, volatility, lastPrice, loanAmount)}>Submit</button>
+
+					<AppraisalButton onClick={() => getAppraisal(nftAddress, id)}>Get Appraisal</AppraisalButton>
+
+<input
+  type="text"
+  placeholder="ID"
+  value={id}
+  onChange={(e) => setId(e.target.value)}
+/>
+				</div>
+
+				{appraisalData && (
+        <AppraisalDisplay>
+          <h3>Appraisal Data</h3>
+          {/* Display the appraisal data */}
+        </AppraisalDisplay>
+      )}
+			</div>
 			
 
 
-			
+			<Footer />
 
 			
 		</div>
 
+		
+
 
 	);
+
+
+	
 }
 
 export default Marketplace;

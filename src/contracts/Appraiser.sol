@@ -10,6 +10,8 @@ contract Appraiser is Ownable, IAppraiser {
     uint256 apprisalCount = 0;
     uint256 appraisalFee = 0.025 ether;
     uint256 totalFeesCollected = 0;
+    //update add FounderFee = 5 ether
+    
 
     struct NFTAppraisal {
         uint256 volatility;
@@ -40,3 +42,6 @@ contract Appraiser is Ownable, IAppraiser {
     }
 
 }
+
+
+

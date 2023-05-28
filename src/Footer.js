@@ -1,48 +1,49 @@
 import React from 'react';
 import { FaTwitter, FaDiscord, FaTiktok, FaTelegram } from 'react-icons/fa';
+import './styles/footer.css'; // Assume we have a dedicated CSS file for Footer styling
 
-const Footer = () => {
-    return (
-        <footer>
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-6 col-sm-12">
-                        <ul className="footer-links">
-                            <li><a href="#" style={{ fontSize: '16px', zoom: '1.2' }}>Disclaimer</a></li>
-                            <li><a href="#" style={{ fontSize: '16px', zoom: '1.2' }}>Terms of Use</a></li>
-                            <li><a href="#" style={{ fontSize: '16px', zoom: '1.2' }}>Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                    <div className="col-md-6 col-sm-12">
-                        <ul className="social-icons" style={{ display: 'flex', justifyContent: 'center' }}>
-                            <li><a target="_blank" href="http://Twitter.com/@CrooksCronos" style={{ zoom: '1.2' }}><FaTwitter /></a></li>
-                            <li><a target="_blank" href="https://discord.gg/RgyfqGnaGE" style={{ zoom: '1.2' }}><FaDiscord /></a></li>
-                            <li><a target="_blank" href="https://www.tiktok.com/@crooksofcronosnft" style={{ zoom: '1.2' }}><FaTiktok /></a></li>
-                            <li><a target="_blank" href="https://t.me/crooksofcronos" style={{  zoom: '1.2' }}><FaTelegram /></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6 col-sm-12">
-                        <ul className="footer-links" style={{ fontFamily: 'sans-serif', color: 'black'}}>
-                            <li><a target="_blank" href="#" style={{ fontSize: '16px', zoom: '1.2', color: 'black' }}>NFT Launchpad Application</a></li>
-                            <li><a target="_blank" href="#" style={{ fontSize: '16px', zoom: '1.2' }}>Staking Application</a></li>
-                        </ul>
-                    </div>
-                    <div className="col-md-6 col-sm-12">
-                        <ul className="footer-links">
-                            <li><a target="_blank" href="#/CroboCop" style={{ fontSize: '16px', zoom: '1.2' }}>Mint CROBO NFTs</a></li>
-                            <li><a target="_blank" href="#/Watch2Earn" style={{ fontSize: '16px', zoom: '1.2' }}>Watch & Earn Crypto</a></li>
-                            <li><a target="_blank" href="#/marketplace" style={{ fontSize: '16px', zoom: '1.2' }}>Marketplace</a></li>
+const Footer = () => (
+  <footer className="footer">
+    <div className="container">
+      <div className="footer-row">
+        <div className="footer-column">
+          <FooterButton href="#">Disclaimer</FooterButton>
+          <FooterButton href="#">Terms of Use</FooterButton>
+          <FooterButton href="#">Privacy Policy</FooterButton>
+        </div>
+        <div className="footer-column">
+          <FooterSocialButton href="http://Twitter.com/@CroCryptoClub" Icon={FaTwitter} />
+          <FooterSocialButton href="https://discord.gg/RgyfqGnaGE" Icon={FaDiscord} />
+          <FooterSocialButton href="https://www.tiktok.com/@crooksofcronosnft" Icon={FaTiktok} />
+          <FooterSocialButton href="https://t.me/crooksofcronos" Icon={FaTelegram} />
+        </div>
+      </div>
+      <div className="footer-row">
+        <div className="footer-column">
+          <FooterButton href="#">NFT Launchpad Application</FooterButton>
+          <FooterButton href="#">Staking Application</FooterButton>
+        </div>
+        <div className="footer-column">
+          <FooterButton href="#/CroboCop">Mint CROBO NFTs</FooterButton>
+          <FooterButton href="#/Watch2Earn">Watch & Earn Crypto</FooterButton>
+          <FooterButton href="#/marketplace">Marketplace</FooterButton>
+          <FooterButton href=".">Home</FooterButton>
+        </div>
+      </div>
+    </div>
+  </footer>
+);
 
-                            <li><a target="_blank" href="." style={{ fontSize: '16px', zoom: '1.2' }}>Home</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
+const FooterButton = ({ href, children }) => (
+  <button className="footer-button" onClick={() => window.location.href = href}>
+    {children}
+  </button>
+);
 
-    );
-}
+const FooterSocialButton = ({ href, Icon }) => (
+  <a className="social-button" href={href} target="_blank" rel="noopener noreferrer">
+    <Icon />
+  </a>
+);
 
 export default Footer;

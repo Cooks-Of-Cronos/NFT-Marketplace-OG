@@ -8,7 +8,7 @@ import { Typography, Box, Container, Button, Dialog, DialogActions, DialogConten
 import { makeStyles } from '@material-ui/core/styles';
 
 import { DISCONNECT_FAILED, disconnectFailed, disconnect, connect, isConnected } from "./redux/blockchain/blockchainActions";
-import NFTLendingPool from "./contracts/NFTLendingPool.json";
+// import NFTLendingPool from "./contracts/NFTLendingPool.json";
 // NFT LENDING POOL ABI 
 // NFT LENDING POOL CONTRACT ADDR
 import Footer from './Footer';
@@ -42,48 +42,48 @@ const home = () => {
     const [account, setAccount] = useState("");
     const blockchain = useSelector((state) => state.blockchain);
 
-    const handleAppraisal = () => {
-        setDialogOpen(true);
-        setLoading(true);
-        // Simulating API call
-        setTimeout(() => {
-            setLoading(false);
+    // const handleAppraisal = () => {
+    //     setDialogOpen(true);
+    //     setLoading(true);
+    //     // Simulating API call
+    //     setTimeout(() => {
+    //         setLoading(false);
             
-            setNftData({
-                amountOffered: 10,
-                collectionVolume: 50,
-                floorPrice: 0.5
-            });
-            /*alert(
-                `Amount Of CRO Offered: ${Math.floor(Math.random() * 100)}\nNFT Collection Volume: ${Math.floor(
-                    Math.random() * 1000
-                )}\nFloor Price: ${Math.floor(Math.random() * 10)} CRO`
-            );*/
-        }, 4000);
-    };
+    //         setNftData({
+    //             amountOffered: 10,
+    //             collectionVolume: 50,
+    //             floorPrice: 0.5
+    //         });
+    //         /*alert(
+    //             `Amount Of CRO Offered: ${Math.floor(Math.random() * 100)}\nNFT Collection Volume: ${Math.floor(
+    //                 Math.random() * 1000
+    //             )}\nFloor Price: ${Math.floor(Math.random() * 10)} CRO`
+    //         );*/
+    //     }, 4000);
+    // };
 
-    const handleAgree = async () => {
-        const nftLendingPoolAddress = "0x123456789...";
-        const nftLendingPool = new ethers.Contract(
-            nftLendingPoolAddress,
-            NFTLendingPool.abi,
-            library.getSigner(account)
-        );
-        await nftLendingPool.createLoan(nftName, nftId, appraisal);
-        setOpen(false);
-    };
+    // const handleAgree = async () => {
+    //     const nftLendingPoolAddress = "0x123456789...";
+    //     const nftLendingPool = new ethers.Contract(
+    //         nftLendingPoolAddress,
+    //         NFTLendingPool.abi,
+    //         library.getSigner(account)
+    //     );
+    //     await nftLendingPool.createLoan(nftName, nftId, appraisal);
+    //     setOpen(false);
+    // };
 
-    const handleDisagree = () => {
-        setOpen(false);
-    };
+    // const handleDisagree = () => {
+    //     setOpen(false);
+    // };
 
-    const handleCloseDialog = () => {
-        setDialogOpen(false);
-    }
+    // const handleCloseDialog = () => {
+    //     setDialogOpen(false);
+    // }
 
-    const handleClose = () => {
-        setDialogOpen(false);
-    };
+    // const handleClose = () => {
+    //     setDialogOpen(false);
+    // };
 
 
 
