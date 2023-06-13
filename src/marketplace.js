@@ -2681,23 +2681,35 @@ const Marketplace = () => {
 		return 'Unknown Chain';
 	  };
 
+
+
+	//   In the context of your question, you have a button with the class sidebar-toggle and always-visible that toggles the showSidebar state when clicked. The button contains an icon with class fa fa-bars and the text "Menu".
+	//   To close the sidebar when a user clicks outside of it, you will need to use a ref and the useEffect hook. Here's how you might modify your code:
+	//   Next, in a useEffect hook, add an event listener that listens for mousedown events on the document. When such an event occurs, the listener checks whether the event's target is inside the sidebar (using the ref). If it isn't, the sidebar is hidden:
+	//   With this setup, whenever a user clicks outside the sidebar, the handleMouseDown function is called, hiding the sidebar if the click was outside of it.
+
 	const [showSidebar, setShowSidebar] = useState(false);
 	const sidebarRef = useRef(null);
 
 	useEffect(() => {
-		function handleMouseDown(event) {
-			if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-				setShowSidebar(false);
-			}
-		}
-	
-		document.addEventListener('mousedown', handleMouseDown);
-	
-		// Remember to remove event listeners in a cleanup function
-		return () => {
-			document.removeEventListener('mousedown', handleMouseDown);
-		};
-	}, []); // An
+  function handleMouseDown(event) {
+    if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      setShowSidebar(false);
+    }
+  }
+
+  document.addEventListener('mousedown', handleMouseDown);
+
+  // Remember to remove event listeners in a cleanup function
+  return () => {
+    document.removeEventListener('mousedown', handleMouseDown);
+  };
+}, []);
+
+
+const handleButtonClick = () => {
+	setShowSidebar(false);
+  };
 
 	const [connecting, setConnecting] = useState(false);
 	const handleConnect = async () => {
@@ -2718,7 +2730,8 @@ const Marketplace = () => {
 	  
 		// Set the connecting flag
 		setConnecting(true);
-	  
+		 
+
 		// Show the "Connecting..." modal
 		Swal.fire({
 		  title: 'Connecting...',
@@ -2729,6 +2742,7 @@ const Marketplace = () => {
 			try {
 			  await dispatch(connect());
 			  // Update the connected account state after connecting
+			  
 			  // This can be done by dispatching an action to update the blockchain state
 			} catch (error) {
 			  console.log(error);
@@ -2870,7 +2884,48 @@ const Marketplace = () => {
 
 
 
+	async function getAllNFTs() {
+		console.log("It's running")
+		const contract = new Web3EthContract(ABI, NFTCONTRACT);
+	  
+		// Get the total number of NFTs minted
+		const totalNFTs = await contract.methods.totalSupply().call();
+	  console.log(totalNFTs)
+		let nfts = [];
+	  
+		// Loop through all the NFTs
+		for (let i = 0; i < totalNFTs; i++) {
+		  // Get the token ID for the NFT
+		  const tokenId = await contract.methods.tokenByIndex(i).call();
+		  
+	  
+		  // Get the NFT metadata and image URI
+		  const uri = await contract.methods.tokenURI(tokenId).call();
+		  
+		  const ipfsURL = addIPFSProxy(uri);
+		  const request = new Request(ipfsURL);
+		  const response = await fetch(request);
+		  
+		  const metadata = await response.json();
+		  
+	  
+		  const image = addIPFSProxy(metadata.image);
+		  
+	  
+		  // Add the NFT information to the array
+		  nfts.push({
+			tokenId: tokenId,
+			metadata: metadata,
+			image: image,
+		  });
 
+		  console.log(nfts);
+		setNfts(nfts);
+		}
+	  
+		
+	  }
+	  
 
 		// Load First Ten Partner Projects
 
@@ -2958,7 +3013,7 @@ const Marketplace = () => {
 						  <h5 class="card-title">${metadata.name}</h5>
 					  
 								<div class="form-group">
-								<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput" placeholder="Enter price">
+								<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput-${tokenId}" placeholder="Enter price">	
 										  </div>
 						  <button type="button" class="btn btn-primary nft-btn zoom" data-tokenid="${tokenId}">List NFT</button>
 										
@@ -3066,15 +3121,10 @@ const Marketplace = () => {
 				document.querySelectorAll('.nft-btn').forEach(btn => {
 					btn.addEventListener('click', async event => {
 						const tokenId = event.target.dataset.tokenid;
-						const askingPriceInput = document.getElementById('askingPriceInput');
+						const askingPriceInput = document.getElementById(`askingPriceInput-${tokenId}`);
 						const askingPrice = Number(askingPriceInput.value);
 						console.log(askingPrice);
-					
-
-
-					
-
-
+			
 						const nftTokenAddress = "0x230Bb7ce185CD0042973202f5F38B7072440e2C9";
 						const marketplaceAddress = "0xa12A3A4ED947e38Ad0c177799De37DD77F520E62"
 
@@ -3100,7 +3150,6 @@ const Marketplace = () => {
 							console.log('Updated balance:', updatedBalance);
 							return updatedBalance;
 						});
-  
 						
 						}
 					});
@@ -3265,7 +3314,7 @@ const Marketplace = () => {
 					  
 								<div class="form-group">
 										
-											<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput" placeholder="Enter price">
+								<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput-${tokenId}" placeholder="Enter price">		
 										  </div>
 						  <button type="button" class="btn btn-primary cell-btn zoom" data-tokenid="${tokenId}">List NFT</button>
 						</div>
@@ -3366,9 +3415,9 @@ const Marketplace = () => {
 				document.querySelectorAll('.cell-btn').forEach(btn => {
 					btn.addEventListener('click', async event => {
 						const tokenId = event.target.dataset.tokenid;
-						const askingPriceInput = document.getElementById('askingPriceInput');
+						const askingPriceInput = document.getElementById(`askingPriceInput-${tokenId}`);
 						const askingPrice = Number(askingPriceInput.value);
-						//console.log(askingPrice);
+						console.log(askingPrice);
 
 
 
@@ -3556,7 +3605,8 @@ const Marketplace = () => {
 					  
 								<div class="form-group">
 										
-											<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput" placeholder="Enter price">
+								<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput-${tokenId}" placeholder="Enter price">
+
 										  </div>
 						  <button type="button" class="btn btn-primary badge-btn zoom" data-tokenid="${tokenId}">List NFT</button>
 						</div>
@@ -3661,15 +3711,10 @@ const Marketplace = () => {
 				document.querySelectorAll('.badge-btn').forEach(btn => {
 					btn.addEventListener('click', async event => {
 						const tokenId = event.target.dataset.tokenid;
-						const askingPriceInput = document.getElementById('askingPriceInput');
+						const askingPriceInput = document.getElementById(`askingPriceInput-${tokenId}`);
 						const askingPrice = Number(askingPriceInput.value);
-						console.log(askingPrice);
+						console.log("THIS IS THE ASKING RIGHT... " + askingPrice);
 					
-
-
-					
-
-
 						const nftTokenAddress = "0x2e756776A63F936a6010Dd9ee5C5fE77b5E02562";
 						const marketplaceAddress = "0xa12A3A4ED947e38Ad0c177799De37DD77F520E62"
 
@@ -3821,9 +3866,9 @@ const Marketplace = () => {
 					  <p class="card-text">${metadata.description}</p>
 						<div class="form-group">
 							<label for="priceInput">Price:</label>
-							<input type="number" class="form-control" name="AskingPrice" id="priceInput" placeholder="Enter price">
+							<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput-${tokenId}" placeholder="Enter price">
 						  </div>
-					  <button type="button" class="btn btn-primary zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
+					  <button type="button" class="m-btn btn-primary  zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
 					</div>
 				  </div>
 				</div>
@@ -4198,9 +4243,32 @@ padding: 10px 20px;
 			`;
 
 			document.getElementById("nftidM").innerHTML += content;
-		}
 
-	}
+			document.querySelectorAll('.m-btn').forEach(btn => {
+				btn.addEventListener('click', async event => {
+					
+					Swal.fire({
+						title: 'Not available for listing yet..',
+						showConfirmButton: true,
+					  });
+				
+					
+				});
+			});
+
+
+
+}
+		}
+			
+
+		
+
+		
+
+
+			
+	
 
 	async function getBdlNFTs() {
 		const contract = new Web3EthContract( BDLABI, bdlContract)
@@ -4232,7 +4300,7 @@ padding: 10px 20px;
 
 
 		// Loop through all of the NFTs held by the user
-		for (let i = 0; i <= 0; i++) {
+		for (let i = 0; i <= totalNFTs; i++) {
 			if (i >= totalNFTs) {
 				break;
 			}
@@ -4291,9 +4359,9 @@ padding: 10px 20px;
 					  <p class="card-text">${metadata.description}</p>
 						<div class="form-group">
 							<label for="priceInput">Price:</label>
-							<input type="number" class="form-control" name="AskingPrice" id="priceInput" placeholder="Enter price">
+							<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput-${tokenId}" placeholder="Enter price">
 						  </div>
-					  <button type="button" class="btn btn-primary bdl-btn zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
+					  <button type="button" class="bdl-btn btn-primary bdl-btn zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
 					</div>
 				  </div>
 				</div>
@@ -4668,6 +4736,18 @@ padding: 10px 20px;
 			`;
 
 			document.getElementById("nftidA").innerHTML += content;
+
+			document.querySelectorAll('.bdl-btn').forEach(btn => {
+				btn.addEventListener('click', async event => {
+					
+					Swal.fire({
+						title: 'Not available for listing yet..',
+						showConfirmButton: true,
+					  });
+				
+					
+				});
+			});
 		}
 
 	}
@@ -5073,18 +5153,6 @@ padding: 10px 20px;
 
 
 
-	/*-----------------------------------------------------------------------------------------------------------------
-		// START RANDOM API FUNCTIONS
-		/*
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 * */
 
 
 
@@ -5113,28 +5181,6 @@ padding: 10px 20px;
 
 
 
-	// function handleConnect() {
-	// 	// if (isUserLoggedIn()) {
-	// 	//   getFirstTenBadges();
-	// 	//   getFirstTenCells();
-	// 	//   getFirstTen();
-	// 	//   getMinionsNFTs();
-	// 	//   getBdlNFTs();
-	// 	//   console.log("User is logged in")
-	// 	// } else {
-	// 	//   // Prompt the user to connect first
-	// 	//   console.log("need to log in")
-	// 	// }
-
-	// 	console.log("Connected:", account);
-	// 	// Display success notification
-	// 	Swal.fire({
-	// 		icon: 'success',
-	// 		title: 'Connected successfully',
-	// 		showConfirmButton: false,
-	// 		timer: 1500
-	// 	});
-	//   }
 	  
 	  function isUserLoggedIn() {
 		// Your code to check if the user is logged in goes here
@@ -5196,47 +5242,6 @@ padding: 10px 20px;
 
 
 
-
-	
-
-
-
-
-
-	
-
-
-	
-
-
-
-
-
-
-	
-
-	
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-	// START RETURNED DATA
-	////////////////////////
-
-
 	return (
 		
 		<div>
@@ -5244,11 +5249,6 @@ padding: 10px 20px;
 			
 			<div className="notification-wrapper">
 				<NotificationContainer position="top-center" contentClassName="custom-notification" />
-
-
-
-
-
 			</div>
 			{notification && (
 				<div className="notification animateanimated animatefadeIn">{notification}</div>
@@ -5269,28 +5269,6 @@ padding: 10px 20px;
 
 
 
-			{/* <button onClick={() => handleNotification("")}>Show Notification</button>
-			<button onClick="">Test</button> */}
-
-
-
-
-
-			<a href="./">
-				<button className="button button--connect">Back to Home</button>
-			</a>
-			{/* <NFTMarketPlaceLeaderboard
-				
-			/>
-
-			<Statistics
-			/>
-			 */}
-
-			
-
-			
-			
 			<div className="intro-section">
 				
 				<div className="intro-content">
@@ -5322,53 +5300,6 @@ padding: 10px 20px;
 
 
 			
-			<div className="dashboard-container">
-				{/* <div className="dashboard">
-					<img src="https://i.imgur.com/8OKwwRb.png" alt="icon" class="icon" alt="Your Image" />
-					<h1 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '3rem' }}>My Account Dashboard</h1>
-					<p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '1.2rem', marginBottom: '1.5rem' }}>Current Account Balance: {balance}</p>
-					<img src="https://i.imgur.com/aPIZnjv.png" alt="Cronos Network Icon" style={{ width: '24px', height: '24px' }} />
-				</div> */}
-
-				{/* <section className="transactions">
-
-					<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-						<img src="https://i.imgur.com/8OKwwRb.png" alt="icon" class="icon"  />
-						<h2 style={{ fontSize: "1.75rem", textAlign: "center", color: "#ffffff", marginTop: "1rem" }}>Dashboard</h2>
-						<div style={{ width: '100%', maxWidth: '500px', backgroundColor: '#f5f5f5', borderRadius: '8px', padding: '1rem', marginTop: '1rem' }}>
-							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-								<div style={{ fontWeight: 'bold', fontSize: '20px' }}>Total NFTs in Wallet:</div>
-								<div></div>
-							</div>
-							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-								<div style={{ fontWeight: 'bold', fontSize: '20px' }}>Total NFTs Listed:{count}</div>
-								<div></div>
-							</div>
-							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-								<div style={{ fontWeight: 'bold', fontSize: '20px' }}>LeaderBoard Position:</div>
-								<div></div>
-							</div>
-							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-								<div style={{ fontWeight: 'bold', fontSize: '20px' }}>Total Rewards Accrued:{rewardBalance} $cGOLD</div>
-								<div></div>
-							</div>
-							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-								<div style={{ fontWeight: 'bold', fontSize: '20px' }}>Total Balance ($cGOLD): <span style={{ color: 'green' }}> {Rewards}</span></div>
-								<img src="https://i.imgur.com/GRWYV9D.png" alt="Cronos network icon" />
-								<div></div>
-							</div>
-
-							
-						</div>
-						
-					</div>
-					
-				</section> */}
-
-				
-
-
-			</div>
 
 
 
@@ -5462,6 +5393,7 @@ padding: 10px 20px;
     <button className="sidebar-toggle always-visible" ref={sidebarRef} onClick={() => setShowSidebar(!showSidebar)}>
       <i className="fa fa-bars">Menu</i>
     </button>
+
     <Sidebar showSidebar={showSidebar}>
       <div className="sidebar-content">
         <h3 className="sidebar-heading">Connected Account:</h3>
@@ -5483,6 +5415,8 @@ padding: 10px 20px;
               }}>
                 Get Balances
               </button>
+
+			  <button onClick={handleButtonClick}>Close Sidebar</button>
             </div>
         ) : (
             <button className="connect-button" onClick={handleConnect}>Connect Wallet</button>
@@ -5513,7 +5447,18 @@ padding: 10px 20px;
 		color="#fff"
 		hoverBgColor="#218838"
 		className="zoom btn-hover"
-		onClick={displayNFTs}
+		onClick={displayNFTs
+		}
+	>
+		GET NFTS
+	</StyledButton>
+	<StyledButton
+		bgColor="#28a745"
+		color="#fff"
+		hoverBgColor="#218838"
+		className="zoom btn-hover"
+		onClick={getAllNFTs
+		}
 	>
 		GET NFTS
 	</StyledButton>
@@ -5589,64 +5534,7 @@ padding: 10px 20px;
 			
 
 
-			
 
-			
-
-			
-			
-			<div className="appraiser-form">
-				<h2>Appraiser Contract</h2>
-				<div className="form-container">
-					<h3>Submit Appraisal</h3>
-					<input
-						type="text"
-						placeholder="NFT Address"
-						value={nftAddress}
-						onChange={(e) => setNftAddress(e.target.value)}
-					/>
-					<input
-						type="text"
-						placeholder="Volatility"
-						value={volatility}
-						onChange={(e) => setVolatility(e.target.value)}
-					/>
-					<input
-						type="text"
-						placeholder="Last Price"
-						value={lastPrice}
-						onChange={(e) => setLastPrice(e.target.value)}
-					/>
-					<input
-						type="text"
-						placeholder="Recommended Loan Amount"
-						value={loanAmount}
-						onChange={(e) => {
-							console.log(e.target.value);
-							setLoanAmount(e.target.value)
-						}}
-
-					/>
-					
-					<button onClick={() => submitAppraisal(nftAddress, volatility, lastPrice, loanAmount)}>Submit</button>
-
-					<AppraisalButton onClick={() => getAppraisal(nftAddress, id)}>Get Appraisal</AppraisalButton>
-
-<input
-  type="text"
-  placeholder="ID"
-  value={id}
-  onChange={(e) => setId(e.target.value)}
-/>
-				</div>
-
-				{appraisalData && (
-        <AppraisalDisplay>
-          <h3>Appraisal Data</h3>
-          {/* Display the appraisal data */}
-        </AppraisalDisplay>
-      )}
-			</div>
 			
 
 

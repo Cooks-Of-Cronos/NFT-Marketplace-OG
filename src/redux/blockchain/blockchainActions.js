@@ -14,7 +14,7 @@ const INFURA_ID = "c66d5493eff848ca89349923e7d1131a";
 
 
 
-
+// Provider options for Web3Modal
 const providerOptions = {
     display: {
         logo: "",
@@ -55,6 +55,7 @@ const providerOptions = {
     },
 };
 
+// Action creators for connecting to the wallet
 
 const connectRequest = () => {
     return {
@@ -86,6 +87,9 @@ export let isConnected = false;
 
 export const DISCONNECT_FAILED = "DISCONNECT_FAILED";
 
+
+
+// Connect function to establish connection with the wallet
 
 export const connect = () => {
     return async (dispatch) => {
@@ -134,6 +138,7 @@ export const connect = () => {
                         account: accounts[0],
                         smartContract: SmartContractObj,
                         web3: web3,
+                        networkId: networkId,
                     })
                 );
                 // Add listeners start
@@ -174,6 +179,9 @@ export const connect = () => {
 };
 
 
+
+
+// Disconnect function to disconnect from the wallet
 export const disconnect = () => {
     return async (dispatch) => {
         try {
@@ -213,6 +221,7 @@ const disconnectSuccess = () => {
 
 
 
+// Action creator to update the account
 
 export const updateAccount = (account) => {
     return async (dispatch) => {

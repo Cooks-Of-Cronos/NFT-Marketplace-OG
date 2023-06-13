@@ -5,65 +5,31 @@ import Staking from './staking'
 import Home from './home'
 import Marketplace from './marketplace';
 import Watch2Earn from './Watch2Earn';
+import NFTCollectionPage from './NFTPage';  // import the NFTCollectionPage
+import { NFTProvider } from './components/nftcontext'; // import the NFTProvider
+import NFTMinter from './pages/mintNFTs';
 
 
 const App = () => {
     return (
+        <NFTProvider>
         <Router>
             <main>
                 
-                <Routes>
-                    <Route exact path="/" element={<Marketplace />}
-                        render={(props) =>
-                        (
-                            <Home {...props}
-
-                            />
-                        )
-                        }
-                    />
-                    <Route exact path="/mint" element={<Mint />}
-                        render={(props) =>
-                        (
-                            <Mint {...props}
-
-                            />
-                        )
-                        }
-                    />
-                    <Route path="/staking" element={<Staking />}
-                        render={(props) =>
-                        (
-                            <Staking {...props}
-
-                            />
-                        )
-                        }
-                    />
-                    <Route path="/marketplace" element={<Marketplace />}
-                        render={(props) =>
-                        (
-                            <Staking {...props}
-
-                            />
-                        )
-                        }
-                    />
-                    <Route path="/Watch2Earn" element={<Watch2Earn />}
-                        render={(props) =>
-                        (
-                            <Staking {...props}
-
-                            />
-                        )
-                        }
-                    />
-                    
-                   
-                </Routes>
+            <Routes>
+            <Route path="/" element={<Marketplace />} />
+            <Route path="/mint" element={<Mint />} />
+            <Route path="/staking" element={<Staking />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/Watch2Earn" element={<Watch2Earn />} />
+            <Route path="/minter" element={<NFTMinter />} />
+            <Route path="/collection" element={<NFTCollectionPage />} />  {/* add this line */}
+          </Routes>
+          
 
             </main>
         </Router>
+        </NFTProvider>
     )
 }
 

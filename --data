@@ -1,0 +1,10 @@
+      PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+     2837    2484    2837      20252  cons3     197610 08:50:21 /usr/bin/PS
+     1280       1    1280      16916  cons1     197610 21:03:57 /usr/bin/bash
+     2213       1    2213      21244  cons0     197610 07:19:49 /usr/bin/bash
+     1613       1    1613      14576  ?         197610 21:08:58 /usr/bin/ssh-agent
+     2675    2623    2623      12464  cons0     197610 07:20:05 /c/Users/Zoe/.nvm/versions/node/v14.21.3/bin/node
+     1915       1    1915      10504  ?         197610 21:16:50 /usr/bin/ssh-agent
+     1632       1    1632       7136  cons2     197610 21:16:17 /usr/bin/bash
+     2484       1    2484       4396  cons3     197610 07:19:59 /usr/bin/bash
+     2623    2213    2623       9520  cons0     197610 07:20:04 /usr/bin/sh
