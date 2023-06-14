@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import home from "./home.js";
+
 import './polyfills';
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";

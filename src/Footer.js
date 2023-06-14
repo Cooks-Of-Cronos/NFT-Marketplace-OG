@@ -24,10 +24,9 @@ const Footer = () => (
           <FooterButton href="#">Staking Application</FooterButton>
         </div>
         <div className="footer-column">
-          <FooterButton href="#/CroboCop">Mint CROBO NFTs</FooterButton>
-          <FooterButton href="#/Watch2Earn">Watch & Earn Crypto</FooterButton>
+          
           <FooterButton href="#/marketplace">Marketplace</FooterButton>
-          <FooterButton href=".">Home</FooterButton>
+          
         </div>
       </div>
     </div>

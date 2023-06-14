@@ -14,6 +14,7 @@ body {
     .intro-section {
       padding-top: 75px;
       margin-top: 75px;
+      background-color: #00bfff;
     }
   
     .intro-text h2 {
@@ -242,6 +243,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #0c3c7c;
 }
 
 
@@ -250,6 +252,7 @@ body {
     height: auto;
     display: flex;
     flex-direction: column;
+    margin-top: 50px;
 }
 
 .intro-text {
@@ -268,6 +271,7 @@ body {
     }
 
 .intro-video {
+    background-color: #0c3c7c;
     width: 100%;
     max-width: 800px;
     margin-top: 50px;
@@ -972,6 +976,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    background-color: #7cc5f2;
 }
 
 .trending-card {
@@ -1065,7 +1070,7 @@ body {
     justify-content: space-between;
     flex-wrap: wrap;
     margin: 20px;
-    background-color: cornflowerblue;
+    
 }
 
 .statistic-item {
@@ -1081,7 +1086,7 @@ body {
 
     .statistic-item h2 {
         font-size: 40px;
-        color: white;
+        color: black;
         font-family: 'Monserrat';
         font-weight: bold;
         border-top: solid 1px black;
@@ -1089,7 +1094,7 @@ body {
     }
 
     .statistic-item p {
-        
+        color:#000;
         font-family: 'Lora';
         font-weight: bold;
     }

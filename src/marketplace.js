@@ -6,32 +6,32 @@
 	import React, { useEffect, useState, useRef } from "react";
 	import Web3EthContract, { Contract } from "web3-eth-contract";
 	import styled from 'styled-components';
+	import { Spinner } from "react-bootstrap";
+	import { useDispatch, useSelector } from "react-redux"
+	import { Jumbotron } from 'styled-jumbotron-component';
+	import { store, ReactNotification, NotificationContainer, NotificationManager } from 'react-notifications';
+	import Web3 from 'web3';
+	//import { providerOptions } from './provider/providerOptions';
+	// ES6 Modules or TypeScript
+	import Swal from 'sweetalert2';
+	import ListGroup from 'react-bootstrap/ListGroup';
+
+	
 	import { testABI } from './components/TestComp.js';
 	import { testContract } from './components/TestComp.js';
-	import { Spinner } from "react-bootstrap";
 	import GetStats from "./pages/getStatus.js";
 	import { REWARDSABI } from './mint.js';
 	import { REWARDSCONTRACT } from './mint.js';
-	import { useDispatch, useSelector } from "react-redux"
 	import { CROCELLSABI } from './mint.js';
 	import { CROBADGEABI } from './mint.js';
-	import { Jumbotron } from 'styled-jumbotron-component';
+	import { DISCONNECT_FAILED, disconnectFailed, disconnect, connect, isConnected } from "./redux/blockchain/blockchainActions.js";
 	import './styles/market.css';
 	import { fetchData } from "./redux/data/dataActions.js";
-	import { DISCONNECT_FAILED, disconnectFailed, disconnect, connect, isConnected } from "./redux/blockchain/blockchainActions.js";
-
-	import { store, ReactNotification, NotificationContainer, NotificationManager } from 'react-notifications';
-
 	import Footer from './Footer.js';
-	import Web3 from 'web3';
-	//import { providerOptions } from './provider/providerOptions';
 
-	// ES6 Modules or TypeScript
-	import Swal from 'sweetalert2';
 
-	import NFTModal from './components/nftmodal';
-	
 
+// STYLED COMPONENTS
 const Icon = styled.img`
   height: 150px;
   width: 150px;
@@ -64,16 +64,97 @@ const StyledButton = styled.button`
 `;
 
 
+const NavbarContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  padding: 0 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+`;
+
+const SearchBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+  input[type='text'] {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+`;
+
+const Sidebar = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+  transform: translateX(${props => (props.showSidebar ? '0' : '-100%')});
+  z-index: 1;
+  
+  .sidebar-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  .sidebar-content {
+    margin-top: 2rem;
+    
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+	  color: black;
+    }
+    
+    p {
+      margin-bottom: 0.5rem;
+	  color: black;
+    }
+  }
+`;
+const ChainName = styled.p`
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+
 // VARIABLES 
 	//----------
 
-	const NFTCONTRACT = "0x230Bb7ce185CD0042973202f5F38B7072440e2C9";
-	const STAKINGCONTRACT = "0xe1882742713E415391b4815cB3833E9E03A6a895"
-	const CroMinionsContract = "0x3E2f91c31daf2467B5360EE85D78E99338fd4976"
-	const CROCELLSCONTRACT = "0x1632568C5DeA50b5738c6C7bE2786657A9840485"
-	const CroBadgesContract = "0x2e756776A63F936a6010Dd9ee5C5fE77b5E02562"
-	const bdlContract = "0xd05c62Dc7941B243cffCb7d3eF483279F21b08F0"
-	const blumiesContract = "0xB278947b945eB7dea7F1822A1801d7e9aEdD8e63"
+const NFTCONTRACT = "0x230Bb7ce185CD0042973202f5F38B7072440e2C9";
+const STAKINGCONTRACT = "0xe1882742713E415391b4815cB3833E9E03A6a895"
+const CroMinionsContract = "0x3E2f91c31daf2467B5360EE85D78E99338fd4976"
+const CROCELLSCONTRACT = "0x1632568C5DeA50b5738c6C7bE2786657A9840485"
+const CroBadgesContract = "0x2e756776A63F936a6010Dd9ee5C5fE77b5E02562"
+const bdlContract = "0xd05c62Dc7941B243cffCb7d3eF483279F21b08F0"
+const blumiesContract = "0xB278947b945eB7dea7F1822A1801d7e9aEdD8e63"
 const ABI = 
 	[
 		{
@@ -756,7 +837,6 @@ const ABI =
 			"type": "function"
 		}
 	]
-
 const MINIONSABI = [
 	{
 		"inputs": [
@@ -1438,14 +1518,12 @@ const MINIONSABI = [
 		"type": "function"
 	}
 ]
-
 const BDLABI = [
 	{ "inputs": [{ "internalType": "address", "name": "_lootersContract", "type": "address" }, { "internalType": "address", "name": "_artist", "type": "address" }, { "internalType": "address", "name": "_yako", "type": "address" }, { "internalType": "address", "name": "_lootContract", "type": "address" }, { "internalType": "address", "name": "_lootCoinContract", "type": "address" }, { "internalType": "address", "name": "_cdlContract", "type": "address" }, { "internalType": "address", "name": "_godContract", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "approved", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": false, "internalType": "bool", "name": "approved", "type": "bool" }], "name": "ApprovalForAll", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }], "name": "Paused", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }], "name": "Unpaused", "type": "event" }, { "inputs": [], "name": "_tokenIdCounter", "outputs": [{ "internalType": "uint256", "name": "_value", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address[]", "name": "_addresses", "type": "address[]" }], "name": "addWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "approve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "artist", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "cdlContract", "outputs": [{ "internalType": "contract ERC721", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "getApproved", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "godContract", "outputs": [{ "internalType": "contract ERC721", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "operator", "type": "address" }], "name": "isApprovedForAll", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "isDiscount", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "isMember", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "isWhiteList", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "lootCoinContract", "outputs": [{ "internalType": "contract ERC721", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "lootersContract", "outputs": [{ "internalType": "contract ERC721", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_count", "type": "uint256" }], "name": "mint", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "mintArtist", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "ownerOf", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "pause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "paused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "dest", "type": "address" }], "name": "payments", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "removeWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }, { "internalType": "bytes", "name": "_data", "type": "bytes" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "operator", "type": "address" }, { "internalType": "bool", "name": "approved", "type": "bool" }], "name": "setApprovalForAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_artist", "type": "address" }], "name": "setArtist", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_cost", "type": "uint256" }, { "internalType": "bool", "name": "isMember", "type": "bool" }], "name": "setCost", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_supply", "type": "uint256" }], "name": "setSupply", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_uri", "type": "string" }], "name": "setUri", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }], "name": "supportsInterface", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "index", "type": "uint256" }], "name": "tokenByIndex", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "uint256", "name": "index", "type": "uint256" }], "name": "tokenOfOwnerByIndex", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "tokenURI", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "transferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "unpause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "withdraw", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [{ "internalType": "address payable", "name": "payee", "type": "address" }], "name": "withdrawPayments", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "yako", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }
 ]
 const BlumiesABI = [
 	{ "inputs": [{ "internalType": "address", "name": "_marketAddress", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "approved", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": false, "internalType": "bool", "name": "approved", "type": "bool" }], "name": "ApprovalForAll", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "FundsDisperse", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256", "name": "milestone", "type": "uint256" }], "name": "MilestoneReached", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }], "name": "Paused", "type": "event" }, { "anonymous": false, "inputs": [], "name": "RefundModeStarted", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256[]", "name": "ids", "type": "uint256[]" }, { "indexed": false, "internalType": "address", "name": "refundee", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "Refunded", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }], "name": "Unpaused", "type": "event" }, { "inputs": [{ "internalType": "address[]", "name": "_addresses", "type": "address[]" }], "name": "addWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "addWhiteListAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_to", "type": "address" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "airdropMint", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "approve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "availableTokenCount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "baseURI", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "blacklist", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "burn", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "canMint", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" }], "name": "checkBlacklist", "outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint16", "name": "_percent", "type": "uint16" }, { "internalType": "address", "name": "_to", "type": "address" }], "name": "disperseFunds", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "getApproved", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getInfo", "outputs": [{ "components": [{ "internalType": "uint256", "name": "regularCost", "type": "uint256" }, { "internalType": "uint256", "name": "memberCost", "type": "uint256" }, { "internalType": "uint256", "name": "whitelistCost", "type": "uint256" }, { "internalType": "uint256", "name": "maxSupply", "type": "uint256" }, { "internalType": "uint256", "name": "totalSupply", "type": "uint256" }, { "internalType": "uint256", "name": "maxMintPerAddress", "type": "uint256" }, { "internalType": "uint256", "name": "maxMintPerTx", "type": "uint256" }], "internalType": "struct Drop.Infos", "name": "", "type": "tuple" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getPayees", "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getShares", "outputs": [{ "internalType": "uint16[]", "name": "", "type": "uint16[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "initiateRefunds", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "operator", "type": "address" }], "name": "isApprovedForAll", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "isPresale", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "isWhitelist", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "lock", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "maxAvailableSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "maxMintAmount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "maxMintPerAddress", "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "maxSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "memberCost", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "milestonesReached", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_mintAmount", "type": "uint256" }], "name": "mint", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "mintCost", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "ownerOf", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "pause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "paused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "refundAmount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "refunding", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "regularCost", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "removeWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" }], "name": "requestRefunds", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_to", "type": "address" }, { "internalType": "uint256", "name": "_mintAmount", "type": "uint256" }], "name": "reservedMint", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_to", "type": "address" }, { "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" }], "name": "reservedMintByIds", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "reservedMintedNFT", "outputs": [{ "internalType": "uint256", "name": "_value", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "reservedNft", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }, { "internalType": "uint256", "name": "_salePrice", "type": "uint256" }], "name": "royaltyInfo", "outputs": [{ "internalType": "address", "name": "", "type": "address" }, { "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }, { "internalType": "bytes", "name": "_data", "type": "bytes" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "scale", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "operator", "type": "address" }, { "internalType": "bool", "name": "approved", "type": "bool" }], "name": "setApprovalForAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_newBaseURI", "type": "string" }], "name": "setBaseURI", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "receiver", "type": "address" }, { "internalType": "uint96", "name": "feeNumerator", "type": "uint96" }], "name": "setDefaultRoyalty", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint16", "name": "maxAmount", "type": "uint16" }], "name": "setMaxMintPerAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_max", "type": "uint256" }], "name": "setMaxWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_cost", "type": "uint256" }], "name": "setMemberCost", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address[]", "name": "_newPayees", "type": "address[]" }, { "internalType": "uint16[]", "name": "_newShares", "type": "uint16[]" }], "name": "setPaymentShares", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_startTime", "type": "uint256" }], "name": "setPublicStartTime", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_cost", "type": "uint256" }], "name": "setRegularCost", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bool", "name": "_presaleOnly", "type": "bool" }], "name": "setWhiteListPresaleOnly", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_cost", "type": "uint256" }], "name": "setWhitelistCost", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_startTime", "type": "uint256" }], "name": "setWhitelistStartTime", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }], "name": "supportsInterface", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "index", "type": "uint256" }], "name": "tokenByIndex", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "tokenCount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "uint256", "name": "index", "type": "uint256" }], "name": "tokenOfOwnerByIndex", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "tokenURI", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "transferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "unpause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "whiteListPresaleOnly", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "whitelistCost", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "whitelistedAddresses", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }
 ]
-
 
 
 const Web3Utils = require('web3-utils');
@@ -1495,89 +1573,14 @@ const web3Modal = new Web3Modal({
         providerOptions
 });
 
-
-
-
 const Logo = styled.img`
   height: 40px;
 `;
 
-const NavbarContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  padding: 0 20px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 999;
-`;
 
-const SearchBar = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  
-  input[type='text'] {
-    padding: 0.5rem;
-    border: none;
-    border-radius: 4px;
-    outline: none;
-  }
-  
-  button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-  }
-`;
 
-const Sidebar = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 280px;
-  height: 100vh;
-  background-color: #f8f9fa;
-  padding: 1rem;
-  transition: transform 0.3s ease;
-  transform: translateX(${props => (props.showSidebar ? '0' : '-100%')});
-  z-index: 1;
-  
-  .sidebar-toggle {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.5rem;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-  }
-  
-  .sidebar-content {
-    margin-top: 2rem;
-    
-    h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-	  color: black;
-    }
-    
-    p {
-      margin-bottom: 0.5rem;
-	  color: black;
-    }
-  }
-`;
 
+// SEARCH HERE FOR PAWNSHOP
 // Appraiser Contract Address and ABI
 const appraiserContractAddress = '0x1A5fBFa9ab3bCd7eB6438e8F95698A704725b787';
 const appraiserContractABI =
@@ -2453,16 +2456,7 @@ const AppraisalButton = styled.button`
 `;
 
 
-
-
-
-
-
-const ChainName = styled.p`
-  font-size: 16px;
-  font-weight: bold;
-`;
-
+// SEARCH HERE FOR MARKETPLACE FUNCTIONALITY
 const Marketplace = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [account, setAccount] = useState("");
@@ -2487,9 +2481,7 @@ const Marketplace = () => {
 		return initialBalance ? Number(initialBalance) : 0;
 	  });
 	  
-
 	const [isLoading, setIsLoading] = useState(false);
-
 
 	//pawnshop
 	const [nftAddress, setNftAddress] = useState('');
@@ -2513,7 +2505,6 @@ const Marketplace = () => {
 		  // Add other relevant loan/appraisal data properties
 		};
 	  };
-
 
 	// Function to submit an appraisal
 	const submitAppraisal = async (nftAddress, volatility, lastPrice, loanAmount) => {
@@ -2665,9 +2656,6 @@ const Marketplace = () => {
 		}
 	};
 
-
-
-
 	const getChainName = (chainId) => {
 		console.log(blockchain.chainId)
 		if (chainId === '338') {
@@ -2691,20 +2679,7 @@ const Marketplace = () => {
 	const [showSidebar, setShowSidebar] = useState(false);
 	const sidebarRef = useRef(null);
 
-	useEffect(() => {
-  function handleMouseDown(event) {
-    if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-      setShowSidebar(false);
-    }
-  }
 
-  document.addEventListener('mousedown', handleMouseDown);
-
-  // Remember to remove event listeners in a cleanup function
-  return () => {
-    document.removeEventListener('mousedown', handleMouseDown);
-  };
-}, []);
 
 
 const handleButtonClick = () => {
@@ -2789,15 +2764,7 @@ const handleButtonClick = () => {
 	  };
 	  
 	  
-	  useEffect(() => {
-		// check if blockchain.account has a value
-		if (blockchain.account) {
-		  const initialRewardBalance = localStorage.getItem(`${blockchain.account}-rewards`);
-		  // convert string to number and set rewardBalance
-		  setRewardBalance(Number(initialRewardBalance) || 0);
-		  console.log(initialRewardBalance)
-		}
-	  }, [blockchain.account]);  // dependency array, re-run this effect when blockchain.account changes
+	 
 
 
 
@@ -2872,7 +2839,7 @@ const handleButtonClick = () => {
 			getNFTs(startIndex + 0);
 		};
 
-		const getFirstTenMinions = () => {
+	const getFirstTenMinions = () => {
 			setStartIndex(startIndex + 0);
 			getMinionsNFTs(startIndex + 0);
 	};
@@ -2924,7 +2891,7 @@ const handleButtonClick = () => {
 		}
 	  
 		
-	  }
+	}
 	  
 
 		// Load First Ten Partner Projects
@@ -2938,7 +2905,7 @@ const handleButtonClick = () => {
 	//-----------------------
 
 		// Get NFTs
-		async function getNFTs(startIndex) {
+	async function getNFTs(startIndex) {
 			const contract = new Web3EthContract(ABI, NFTCONTRACT)
 			const address = blockchain.account;
 
@@ -3184,14 +3151,12 @@ const handleButtonClick = () => {
 			setNfts(nfts);
 
 
-		}
+	}
 
-		useEffect(() => {
-			console.log('Current reward balance:', rewardBalance);
-		  }, [rewardBalance]);
+		
 
 		// Get Crocell NFTs
-		async function getCellNFTs(startIndex) {
+	async function getCellNFTs(startIndex) {
 			const contract = new Web3EthContract(CROCELLSABI, CROCELLSCONTRACT)
 			// initial loading screen
 			handleNotification("Checking Staked Crooks");
@@ -3481,10 +3446,10 @@ const handleButtonClick = () => {
 
 		
 
-		}
+	}
 
 		// Get CroBadge NFTs
-		async function getBadgeNFTs(startIndex) {
+	async function getBadgeNFTs(startIndex) {
 			const contract = new Web3EthContract(CROBADGEABI, CroBadgesContract)
 			// initial loading screen
 			handleNotification("Checking Staked Crooks");
@@ -3773,11 +3738,11 @@ const handleButtonClick = () => {
 
 
 
-		}
+	}
 
 		// Get Minions NFTs
 
-		async function getMinionsNFTs() {
+	async function getMinionsNFTs() {
 		const contract = new Web3EthContract(MINIONSABI, CroMinionsContract)
 		// initial loading screen
 		
@@ -4259,17 +4224,8 @@ padding: 10px 20px;
 
 
 }
-		}
+	}
 			
-
-		
-
-		
-
-
-			
-	
-
 	async function getBdlNFTs() {
 		const contract = new Web3EthContract( BDLABI, bdlContract)
 		// initial loading screen
@@ -4753,9 +4709,6 @@ padding: 10px 20px;
 	}
 
 
-		
-
-
 	function showNotification() {
 			Swal.fire({
 			  title: 'Success!',
@@ -4766,13 +4719,6 @@ padding: 10px 20px;
 
 			
 	}
-
-
-
-
-	
-	// MARKETPLACE FUNCTIONS
-	//-----------------------
 
 	async function getNFTsCount() {
 			const marketplaceAddress = "0xa12A3A4ED947e38Ad0c177799De37DD77F520E62";
@@ -4838,7 +4784,7 @@ padding: 10px 20px;
 				alert(error.message);
 			
 			}
-		}
+	}
 
 	async function displayNFTsFeatures() {
 		const nftTokenAddress = "0x1632568C5DeA50b5738c6C7bE2786657A9840485";
@@ -5025,10 +4971,6 @@ padding: 10px 20px;
 		}
 	}
 
-	
-
-
-
 	async function displayNFTs() {
 		// Show loading spinner while fetching NFTs
 		const loadingSwal = Swal.fire({
@@ -5069,7 +5011,7 @@ padding: 10px 20px;
 			confirmButtonText: 'Ok',
 		  });
 		}
-	  }
+	}
 
 
 	// REWARDS FUNCTIONS
@@ -5099,64 +5041,40 @@ padding: 10px 20px;
 		}
 	};
 
-
-
-
-
-	// START RANDOM FUNCTIONALITY
-	/*
-	 * 
-	//------------------
-	*/
-		function addIPFSProxy(ipfsHash) {
+	function addIPFSProxy(ipfsHash) {
 			const URL = "https://idm.infura-ipfs.io/ipfs/"
 			const hash = ipfsHash.replace(/^ipfs?:\/\//, '')
 			const ipfsURL = URL + hash
 
 			//console.log(ipfsURL)
 			return ipfsURL
-		}
-
-
-
-
-		
-
+	}
 
 		// SHOW AND HIDE NFTS 
 		/////////////////////
-		const [showNfts, setShowNfts] = useState(false);
+	const [showNfts, setShowNfts] = useState(false);
 
-		function handleShowNfts() {
+	function handleShowNfts() {
 			setShowNfts(true);
 			getBadgeNFTs();
-		}
+	}
 
-		function handleHideNfts() {
+	function handleHideNfts() {
 			setShowNfts(false);
-		}
+	}
 
 
 
 		// LATE VARIABLES
 		//////////////////
-		const [showBetaWarning, setShowBetaWarning] = useState(true);
-		const [itemsForSale, setItemsForSale] = useState([]);
+	const [showBetaWarning, setShowBetaWarning] = useState(true);
+	const [itemsForSale, setItemsForSale] = useState([]);
 
-		const getData = () => {
+	const getData = () => {
 			if (blockchain.account !== "") {
 				dispatch(fetchData(blockchain.account));
 			}
-		};
-
-
-
-
-
-
-
-
-
+	};
 
 	const [balance, setBalance] = useState(null);
 
@@ -5173,16 +5091,7 @@ padding: 10px 20px;
 		setBalance(balance.toFixed(2));
 	}
 
-	useEffect(() => {
-		fetchBalance();
-	}, []);
-
-
-
-
-
-	  
-	  function isUserLoggedIn() {
+	function isUserLoggedIn() {
 		// Your code to check if the user is logged in goes here
 		// Return true if the user is logged in, false otherwise
 		if (blockchain.account = true) {
@@ -5190,15 +5099,7 @@ padding: 10px 20px;
 		} else {
 			return false
 		}
-	  }
-
-
-
-
-
-
-
-
+	}
 
 
 	const modalCloseButtons = document.querySelectorAll('.modal-close');
@@ -5236,16 +5137,43 @@ padding: 10px 20px;
 	});
 
 
+	// USE EFFECTS
+	useEffect(() => {
+		fetchBalance();
+	}, []);
 
-
-
-
+	useEffect(() => {
+		console.log('Current reward balance:', rewardBalance);
+	  }, [rewardBalance]);
+	  
+	useEffect(() => {
+		// check if blockchain.account has a value
+		if (blockchain.account) {
+		  const initialRewardBalance = localStorage.getItem(`${blockchain.account}-rewards`);
+		  // convert string to number and set rewardBalance
+		  setRewardBalance(Number(initialRewardBalance) || 0);
+		  console.log(initialRewardBalance)
+		}
+	  }, [blockchain.account]);  // dependency array, re-run this effect when blockchain.account changes
+	
+	  useEffect(() => {
+		function handleMouseDown(event) {
+		  if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+			
+		  }
+		}
+	  
+		document.addEventListener('mousedown', handleMouseDown);
+		// Remember to remove event listeners in a cleanup function
+		return () => {
+		  document.removeEventListener('mousedown', handleMouseDown);
+		};
+	  }, []);
 
 
 	return (
 		
 		<div>
-			
 			
 			<div className="notification-wrapper">
 				<NotificationContainer position="top-center" contentClassName="custom-notification" />
@@ -5266,11 +5194,6 @@ padding: 10px 20px;
 					</div>
 				</div>
 			)}
-
-
-
-			<div className="intro-section">
-				
 				<div className="intro-content">
 					<div className="intro-image text-center img-center">
 						<img src="https://i.imgur.com/DXvGEnC.png" height="150px" width="150px" alt="Your Image" />
@@ -5279,16 +5202,16 @@ padding: 10px 20px;
 						<h2>Welcome to the Cronos Kitchen: A Marketplace of Unique NFT Recipes</h2>
 						<p>Welcome to our user-built NFT marketplace, where you have the power to create and own unique NFTs like never before. Our platform is designed for users by users, giving you the freedom and creativity to mint your own NFTs and showcase them to the world.</p>
 						<StyledButton
-  bgColor="#28a745"
-  color="#fff"
-  hoverBgColor="#218838"
-  className="zoom btn-hover"
-  onClick={() => {
-    document.getElementById('nftMarketplace').scrollIntoView({ behavior: 'smooth' });
-  }}
+						bgColor="#28a745"
+						color="#fff"
+						hoverBgColor="#218838"
+						className="zoom btn-hover"
+						onClick={() => {
+							document.getElementById('nftMarketplace').scrollIntoView({ behavior: 'smooth' });
+						}}
 >
-  Start Cooking!
-</StyledButton>
+							Start Cooking!
+							</StyledButton>
 
 					</div>
 					<div class="intro-video">
@@ -5296,15 +5219,8 @@ padding: 10px 20px;
 					</div>
 
 				</div>
-			</div>
-
-
 			
 
-
-
-
-			
 			<section className="transactions">
 
 				{/* existing transactions content goes here */}
@@ -5396,7 +5312,10 @@ padding: 10px 20px;
 
     <Sidebar showSidebar={showSidebar}>
       <div className="sidebar-content">
+	  <ListGroup>
+	  <ListGroup.Item>Cras justo odio</ListGroup.Item>
         <h3 className="sidebar-heading">Connected Account:</h3>
+		</ListGroup>
         {blockchain.smartContract ? (
             <div>
               <p className="sidebar-item account">Account: <span className="sidebar-value">{blockchain.account}</span></p>
@@ -5424,6 +5343,13 @@ padding: 10px 20px;
        <h3 className="sidebar-heading">Chain ID:</h3>
         <p className="sidebar-item">{blockchain.chainId}</p>
         <ChainName className="sidebar-item">{getChainName(blockchain.chainId)}</ChainName>
+		<ListGroup>
+      <ListGroup.Item>Cras justo odio</ListGroup.Item>
+      <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+      <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+    </ListGroup>
         
       </div>
     </Sidebar>
@@ -5450,18 +5376,9 @@ padding: 10px 20px;
 		onClick={displayNFTs
 		}
 	>
-		GET NFTS
+		SHOW MY NFTS
 	</StyledButton>
-	<StyledButton
-		bgColor="#28a745"
-		color="#fff"
-		hoverBgColor="#218838"
-		className="zoom btn-hover"
-		onClick={getAllNFTs
-		}
-	>
-		GET NFTS
-	</StyledButton>
+	
 
 	{/* Carousel or Grid View of Categories */}
 	<div className="categories-container">

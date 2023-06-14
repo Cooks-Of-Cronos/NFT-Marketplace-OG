@@ -28,10 +28,8 @@ const Navbar = () => {
                 }}>
                     <Link to="/CroboCop">MINT</Link>
                 </li>
-                <li className="stakebox"><Link to="/CroboCop">2023</Link></li>
-                <li className="stakebox"><Link to="/Watch2Earn">W2E</Link></li>
                 <li className="stakebox"><Link to="/mint">STAKE</Link></li>
-                <li className="stakebox"><Link to="">Home</Link></li>
+               
                 
             </ul>
         </nav>
