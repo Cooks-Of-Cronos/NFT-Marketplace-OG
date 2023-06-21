@@ -4,6 +4,7 @@ const initialState = {
   smartContract: null,
   web3: null,
   errorMsg: "",
+  connected: false,
 };
 
 const blockchainReducer = (state = initialState, action) => {
@@ -32,6 +33,7 @@ const blockchainReducer = (state = initialState, action) => {
         ...state,
         account: action.payload.account,
       };
+      
     default:
       return state;
   }

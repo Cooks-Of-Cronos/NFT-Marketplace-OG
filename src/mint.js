@@ -44,7 +44,7 @@ import "animate.css/animate.min.css";
 
 
 //----------------------------
-const ABI = [
+export const ABI = [
 	{
 		"inputs": [
 			{
@@ -2927,7 +2927,7 @@ const BN = require('bn.js');
 
 export const CroBadgesContract = "0x2e756776A63F936a6010Dd9ee5C5fE77b5E02562"
 
-
+export const NFTCONTRACT = "0x230Bb7ce185CD0042973202f5F38B7072440e2C9";
 
 
 
@@ -3038,8 +3038,6 @@ export const StyledLink = styled.a`
   color: var(--secondary);
   text-decoration: none;
 `;
-
-
 
 
 

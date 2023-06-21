@@ -6,7 +6,8 @@ import Marketplace from './marketplace';
 import NFTCollectionPage from './NFTPage';  // import the NFTCollectionPage
 import { NFTProvider } from './components/nftcontext'; // import the NFTProvider
 import NFTMinter from './pages/mintNFTs';
-
+import Dashboard from './pages/Dashboard';
+import PreviewUI from './pages/Preview';
 
 const App = () => {
     return (
@@ -20,7 +21,9 @@ const App = () => {
             
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/minter" element={<NFTMinter />} />
-            <Route path="/collection" element={<NFTCollectionPage />} />  {/* add this line */}
+            <Route path="/collection" element={<NFTCollectionPage />} /> 
+            <Route path="/dashboard" element={<Dashboard />} /> 
+            <Route path="/preview" element={<PreviewUI />} />
           </Routes>
           
 

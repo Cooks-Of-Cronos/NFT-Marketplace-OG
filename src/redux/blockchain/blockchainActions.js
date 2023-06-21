@@ -6,8 +6,12 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import WalletLink from "walletlink";
 import { DeFiWeb3Connector } from 'deficonnect'
 
+import { useDispatch, useSelector } from 'react-redux';
 // log
 import { fetchData } from "../data/dataActions";
+
+
+
 
 
 const INFURA_ID = "c66d5493eff848ca89349923e7d1131a";
@@ -63,10 +67,17 @@ const connectRequest = () => {
     };
 };
 
+const fs = require("fs");
 const connectSuccess = (payload) => {
+
+   
+
+
+
     return {
         type: "CONNECTION_SUCCESS",
         payload: payload,
+        
     };
 };
 
@@ -92,9 +103,14 @@ export const DISCONNECT_FAILED = "DISCONNECT_FAILED";
 // Connect function to establish connection with the wallet
 
 export const connect = () => {
+
+    
+    
     return async (dispatch) => {
+        
         dispatch(connectRequest());
         try {
+            
             const abiResponse = await fetch("/config/abi.json", {
                 headers: {
                     "Content-Type": "application/json",
@@ -126,7 +142,7 @@ export const connect = () => {
                 method: "net_version",
             });
 
-            
+           
             console.log("networkId", networkId);
             if (networkId == CONFIG.NETWORK.ID) {
                 const SmartContractObj = new Web3EthContract(
@@ -139,10 +155,13 @@ export const connect = () => {
                         smartContract: SmartContractObj,
                         web3: web3,
                         networkId: networkId,
+                        connected: true,
                     })
                 );
-                // Add listeners start
+                
 
+                // Add listeners start
+                console.log(connected);
                 // Subscribe to session connection
                 provider.on('connect', () => {
                     console.log('connect')
@@ -155,6 +174,7 @@ export const connect = () => {
                     window.location.reload();
                 });
                 // Add listeners end
+                
             } else {
                 dispatch(connectFailed(`Change network to ${CONFIG.NETWORK.NAME}.`));
             }
@@ -176,6 +196,7 @@ export const connect = () => {
             }
         }
     };
+    
 };
 
 
@@ -229,3 +250,16 @@ export const updateAccount = (account) => {
         dispatch(fetchData(account));
     };
 };
+
+
+
+export const UPDATE_CONNECTION_STATUS = 'UPDATE_CONNECTION_STATUS';
+
+export const updateConnectionStatus = (connected) => {
+    console.log(connected);
+    return {
+      type: UPDATE_CONNECTION_STATUS,
+      payload: connected,
+      
+    };
+  };

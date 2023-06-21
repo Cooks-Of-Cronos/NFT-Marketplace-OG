@@ -6,6 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { connect } from '../redux/blockchain/blockchainActions';
 import { fetchData } from "../redux/data/dataActions.js";
 
+import Dashboard from './Dashboard';
+import { CroBadgesContract } from '../mint';
+import { REWARDSCONTRACT } from '../mint';
+import { NFTCONTRACT } from '../mint';
+import { ABI } from '../mint';
+
 
 
 
@@ -983,7 +989,7 @@ const NFTMinter = () => {
   const blockchain = useSelector((state) => state.blockchain);
   const [account, setAccount] = useState('');
   const [latestNFT, setLatestNFT] = useState(null);
-
+  const [contractData, setContractData] = useState('')
 //   const onDrop = async (acceptedFiles) => {
 //     const file = acceptedFiles[0];
 //     const reader = new FileReader();
@@ -1010,6 +1016,17 @@ const NFTMinter = () => {
   
 //     reader.readAsArrayBuffer(file);
 //   };
+
+
+const handleButtonClick = async () => {
+	// your code to fetch contract data here 
+	// For now, let's set a placeholder string 
+	const address = blockchain.account;
+	const firstContract = new Web3EthContract(ABI, NFTCONTRACT);
+	const firstBalance = await firstContract.methods.balanceOf(address).call();
+	setContractData(firstBalance);
+	console.log(firstBalance);
+};
 
 const onDrop = async (acceptedFiles) => {
 	const file = acceptedFiles[0];
@@ -1355,6 +1372,9 @@ useEffect(() => {
 </div>
 
     </div>
+	<button onClick={handleButtonClick} >Button</button>
+	<input type="text" placeholder="input 2"/>
+                    <h2>{contractData}</h2>
 	</div>
   );
 };
