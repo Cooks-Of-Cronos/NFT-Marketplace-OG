@@ -18,6 +18,7 @@ const blockchainReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        connected: true,
         account: action.payload.account,
         smartContract: action.payload.smartContract,
         web3: action.payload.web3,

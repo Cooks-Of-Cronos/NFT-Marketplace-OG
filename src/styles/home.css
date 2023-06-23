@@ -193,6 +193,15 @@
             border-color: #000;
         }
 
+        .nftid{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 10px;
+            width: 100%;
+
+        }
+
 
 
 }
@@ -763,27 +772,28 @@ p {
     }
 
 
-#nftid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-template-rows: auto;
-    grid-gap: 1rem;
-    max-width: 100%;
-    overflow: hidden;
-}
 
-
-    #nftid img {
+    #nftid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 10px;
         width: 100%;
+      }
+      
+      #nftid img {
+        width: 70%;
         height: auto;
         object-fit: cover;
-    }
-
-        #nftid img:hover {
-            transform: scale(1.1);
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-        }
+        align-self: center;
+        justify-content: center;
+      }
+      
+      #nftid img:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
 
 
 #actionButtons {

@@ -8,6 +8,11 @@ body {
 
 
 
+  .modal-img{
+    width: 50px;
+    height: 50px;
+  }
+
 
 /* Mobile optimizations */
 @media screen and (max-width: 768px) {
@@ -131,8 +136,8 @@ body {
       }
     
       .button {
-        height: 40px;
-        width: 140px;
+        height: auto;
+        width: auto;
         font-size: 14px;
       }
     
@@ -159,7 +164,7 @@ body {
     
       .button--test {
         font-size: 0.8rem;
-        padding: 0.5rem 1rem;
+        
       }
 
       .trending-collections h2 {
@@ -222,6 +227,15 @@ body {
         top: 20px; /* adjust as needed */
         right: 20px; /* adjust as needed */
       }
+
+
+      .col-md-4 {
+        margin-bottom: 1rem;
+        align-items: center;
+        width: 100%;
+        background-image:url();
+        
+    }
   }
 
 
@@ -393,6 +407,7 @@ body {
 
 .col-md-4 {
     margin-bottom: 1rem;
+
 }
 
 .grid-container {
@@ -507,8 +522,8 @@ body {
 
 .btn {
     display: flex;
-    height: 50px;
-    width: 180px;
+    height: auto;
+    width: auto;
     align-items: center;
     justify-content: center;
     border-radius: 15px;
@@ -864,13 +879,14 @@ body {
 
 
 #marketplaceItems {
-    background-color: #f5f5f5;
+    background-color: #c33f56;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     grid-gap: 2rem;
     justify-items: center;
     align-items: center;
     padding: 2rem;
+    opacity: 100;
 }
 
     #marketplaceItems div {
@@ -879,6 +895,7 @@ body {
         border-radius: 0.5rem;
         overflow: hidden;
         position: relative;
+        width:70%;
     }
 
     #marketplaceItems img {
