@@ -32,7 +32,12 @@ import Modal from 'react-modal';
 import logo from '../src/images/logo.png'
 
 import { Tooltip } from "@material-ui/core";
+import { FaUserCircle, FaDiscord, FaEthereum, FaItunesNote, FaMedium, FaTelegram, FaAngleUp } from 'react-icons/fa';
+import { AiFillTwitterCircle } from "react-icons/ai"; 
+import { FcAbout } from "react-icons/fc"; 
+import { VscDebugDisconnect } from "react-icons/vsc";
 
+import { TiFlowSwitch } from "react-icons/vsc";
 // STYLED COMPONENTS
 const Icon = styled.img`
 height: 150px;
@@ -64,7 +69,6 @@ cursor: pointer;
 background-color: ${(props) => props.hoverBgColor};
 }
 `;
-
 
 const NavbarContainer = styled.div`
 display: flex;
@@ -168,7 +172,7 @@ height: 100vh;
 `;
 
 const Sidebar = styled.div`
-width: 300px;
+width: 20%;
 background-color: #69a4d9;
 padding-right: 20px;
 position: fixed;
@@ -177,13 +181,12 @@ height: 100%;
 top: 0;
 left: 0;
 bottom: 0;
-overflow-y: auto;
+
 
 @media (max-width: 768px) {
 width: 100px;
 position: fixed;
 height: 100%;
-overflow-y: auto;
 background-color: #69a4d9;
 padding: 10px;
 border: 5px solid white;
@@ -269,7 +272,6 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -279,6 +281,7 @@ const MainContent = styled.div`
   flex: 1;
   overflow-y: scroll;
   width: 300px;
+  background-image:url(https://i.imgur.com/gaevovg.gif);
 
   @media (max-width: 768px) {
 	width: 300px;
@@ -325,11 +328,23 @@ flex-wrap: wrap;
 justify-content: space-between;
 `;
 
+const ModalTitle = styled.h3`
+  /* Styles for the modal title */
+  /* Add your custom styles here */
+`;
 
+const ModalCloseButton = styled.button`
+  /* Styles for the modal close button */
+  /* Add your custom styles here */
+`;
 
-
-
-
+const BigWhiteButton = styled.button`
+  font-size: 2rem;
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
 
 
 // VARIABLES 
@@ -1712,6 +1727,7 @@ const BlumiesABI = [
 { "inputs": [{ "internalType": "address", "name": "_marketAddress", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "approved", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": false, "internalType": "bool", "name": "approved", "type": "bool" }], "name": "ApprovalForAll", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "FundsDisperse", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256", "name": "milestone", "type": "uint256" }], "name": "MilestoneReached", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }], "name": "Paused", "type": "event" }, { "anonymous": false, "inputs": [], "name": "RefundModeStarted", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256[]", "name": "ids", "type": "uint256[]" }, { "indexed": false, "internalType": "address", "name": "refundee", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "Refunded", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }], "name": "Unpaused", "type": "event" }, { "inputs": [{ "internalType": "address[]", "name": "_addresses", "type": "address[]" }], "name": "addWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "addWhiteListAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_to", "type": "address" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "airdropMint", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "approve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "availableTokenCount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "baseURI", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "blacklist", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "burn", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "canMint", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" }], "name": "checkBlacklist", "outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint16", "name": "_percent", "type": "uint16" }, { "internalType": "address", "name": "_to", "type": "address" }], "name": "disperseFunds", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "getApproved", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getInfo", "outputs": [{ "components": [{ "internalType": "uint256", "name": "regularCost", "type": "uint256" }, { "internalType": "uint256", "name": "memberCost", "type": "uint256" }, { "internalType": "uint256", "name": "whitelistCost", "type": "uint256" }, { "internalType": "uint256", "name": "maxSupply", "type": "uint256" }, { "internalType": "uint256", "name": "totalSupply", "type": "uint256" }, { "internalType": "uint256", "name": "maxMintPerAddress", "type": "uint256" }, { "internalType": "uint256", "name": "maxMintPerTx", "type": "uint256" }], "internalType": "struct Drop.Infos", "name": "", "type": "tuple" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getPayees", "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getShares", "outputs": [{ "internalType": "uint16[]", "name": "", "type": "uint16[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "initiateRefunds", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "operator", "type": "address" }], "name": "isApprovedForAll", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "isPresale", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "isWhitelist", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "lock", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "maxAvailableSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "maxMintAmount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "maxMintPerAddress", "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "maxSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "memberCost", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "milestonesReached", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_mintAmount", "type": "uint256" }], "name": "mint", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "mintCost", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "ownerOf", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "pause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "paused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "refundAmount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "refunding", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "regularCost", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "removeWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" }], "name": "requestRefunds", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_to", "type": "address" }, { "internalType": "uint256", "name": "_mintAmount", "type": "uint256" }], "name": "reservedMint", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_to", "type": "address" }, { "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" }], "name": "reservedMintByIds", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "reservedMintedNFT", "outputs": [{ "internalType": "uint256", "name": "_value", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "reservedNft", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }, { "internalType": "uint256", "name": "_salePrice", "type": "uint256" }], "name": "royaltyInfo", "outputs": [{ "internalType": "address", "name": "", "type": "address" }, { "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }, { "internalType": "bytes", "name": "_data", "type": "bytes" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "scale", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "operator", "type": "address" }, { "internalType": "bool", "name": "approved", "type": "bool" }], "name": "setApprovalForAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_newBaseURI", "type": "string" }], "name": "setBaseURI", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "receiver", "type": "address" }, { "internalType": "uint96", "name": "feeNumerator", "type": "uint96" }], "name": "setDefaultRoyalty", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint16", "name": "maxAmount", "type": "uint16" }], "name": "setMaxMintPerAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_max", "type": "uint256" }], "name": "setMaxWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_cost", "type": "uint256" }], "name": "setMemberCost", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address[]", "name": "_newPayees", "type": "address[]" }, { "internalType": "uint16[]", "name": "_newShares", "type": "uint16[]" }], "name": "setPaymentShares", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_startTime", "type": "uint256" }], "name": "setPublicStartTime", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_cost", "type": "uint256" }], "name": "setRegularCost", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bool", "name": "_presaleOnly", "type": "bool" }], "name": "setWhiteListPresaleOnly", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_cost", "type": "uint256" }], "name": "setWhitelistCost", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_startTime", "type": "uint256" }], "name": "setWhitelistStartTime", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }], "name": "supportsInterface", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "index", "type": "uint256" }], "name": "tokenByIndex", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "tokenCount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "uint256", "name": "index", "type": "uint256" }], "name": "tokenOfOwnerByIndex", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "tokenURI", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "name": "transferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "unpause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "whiteListPresaleOnly", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "whitelistCost", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "whitelistedAddresses", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }
 ]
 
+
 const Web3Utils = require('web3-utils');
 
 const providerOptions = {
@@ -1774,9 +1790,7 @@ const MarketplaceModal = ({ isOpen, closeModal }) => {
 	);
   };
 
-
-
-
+ 
 
 
 // SEARCH HERE FOR PAWNSHOP
@@ -2657,8 +2671,6 @@ background-color: #45a049;
 
 
 
-
-
 // SEARCH HERE FOR MARKETPLACE FUNCTIONALITY
 const Marketplace = () => {
 const dispatch = useDispatch();
@@ -2691,91 +2703,89 @@ const wrapperRef = useRef(null);
 const contentRef = useRef(null);
 
 const [activeFeed, setActiveFeed] = useState("nft"); // Default active feed is "nft"
-
-
 const [modalOpen, setModalOpen] = useState(false);
+const currentNFT = nftData[currentIndex];
+const [modal2Open, setModal2Open] = useState(false);
 
-  const openModal = () => {
+
+const openModal = () => {
     setModalOpen(true);
+};
+
+const closeModal = () => {
+    setModalOpen(false);
+};
+
+const handleModalOpen = () => {
+    setModal2Open(true);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
+  const handleModalClose = () => {
+    setModal2Open(false);
   };
 
 const handleNFTCollapse = () => {
 	setIsNFTCollapsed((prevState) => !prevState);
 	console.log(isNFTCollapsed);
-  };
+};
 
-const handleSwitchFeed =  async () => {
-	handleNFTCollapse();
-
-	await setActiveFeed((prevFeed) => (prevFeed === "nft" ? "market" : "nft"));
-	console.log(activeFeed);
-	if (activeFeed === "market") {
-		setIsNFTCollapsed("true");
-		setTimeout(3000)
-		return activeFeed;
+const handleSwitchFeed = async () => {
+	const newActiveFeed = activeFeed === "nft" ? "market" : "nft";
+  
+	if (activeFeed === "nft" && !isNFTCollapsed) {
+	  // Collapse the NFT feed before switching
+	  handleNFTCollapse(); 
+	  await new Promise((resolve) => setTimeout(resolve, 300)); // Delay to allow the UI to update
+		
+	  await setActiveFeed(newActiveFeed);
+	  console.log(newActiveFeed);
+  
+	  if (newActiveFeed === "market") {
 		// Fetch market NFTs when switching to Market Feed
 		await displayNFTsFeatures();
-	  } else if (activeFeed ==="nft") {
-		setIsNFTCollapsed("false");
-		setTimeout(3000)
-		return activeFeed;
+	  } 
 
+	} else if (activeFeed === "market" )  {
+		handleNFTCollapse(); 
+		await new Promise((resolve) => setTimeout(resolve, 100));
+	  await setActiveFeed(newActiveFeed);
+	  console.log(newActiveFeed);
+	  await displayNFTs();
+  
+	  if (activeFeed === "nft") {
+		// Fetch market NFTs when switching to Market Feed
+		await displayNFTs();
 	  }
+	}
   };
 
 
-useEffect(() => {
-	if (blockchain.connected && blockchain.account) {
-	  // Account information is available after connecting
-	  console.log(blockchain.account);
-	}
-  }, [blockchain.connected, blockchain.account]);
 
-  useEffect(() => {
-    // Update displayed elements based on activeFeed value
-    // Here, you can add your logic to render the appropriate elements
-    console.log('Active feed:', activeFeed);
-	
 
-    if (activeFeed === 'market') {
-      // Perform any logic specific to the Market Feed
-      // For example, you can fetch market NFTs here
-      displayNFTsFeatures();
-    }
-  }, [activeFeed]);
 
 const handleBackToTop = () => {
 	console.log("firing");
 	wrapperRef.current?.scrollTo(0, 0);
 	contentRef.current?.scrollTo(0, 0);
-  };
-
+};
 
 const handleNextClick = () => {
 	setCurrentIndex((prevIndex) => (prevIndex + 1) % nftData.length);
 	console.log(currentIndex)
-  };
-
-  const currentNFT = nftData[currentIndex];
-
-
+};
 
 const handleConnect  = async () => {
 	dispatch(connect());
 	
 	
 	
-  };
+};
 
-  const handleDisconnect = () => {
+const handleDisconnect = () => {
 	dispatch(disconnect());
-  };
+};
 
-  const fetchBalance = async () => {
+const fetchBalance = async () => {
 	const apiKey = "WACBMAWJB6171MP98GMUPN585QSR7BWRU8";
 	const address = blockchain.account;
 	const url = `https://api.cronoscan.com/api?module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`;
@@ -2802,22 +2812,22 @@ function isUserLoggedIn() {
 //-----------------------
 
 	// Load More NFTs
-	const loadMore = () => {
+const loadMore = () => {
 		setStartIndex(startIndex + 10);
 		getNFTs(startIndex + 10);
-	};
+};
 
 	// Load More NFTs
-	const loadMoreCells = () => {
+const loadMoreCells = () => {
 		setStartIndex(startIndex + 10);
 		getCellNFTs(startIndex + 10);
-	};
+};
 
 	// Load More Badges
-	const loadMoreBadges = () => {
+const loadMoreBadges = () => {
 		setStartIndex(startIndex + 10);
 		getBadgeNFTs(startIndex + 10);
-	};
+};
 
 	// Load More Minions
 
@@ -2825,22 +2835,22 @@ function isUserLoggedIn() {
 
 
 	// Load First Ten NFTs
-	const getFirstTenCells = () => {
+const getFirstTenCells = () => {
 		setStartIndex(startIndex + 0);
 		getCellNFTs(startIndex + 0);
-	};
+};
 
 	// Load First Ten NFTs
-	const getFirstTenBadges = () => {
+const getFirstTenBadges = () => {
 		setStartIndex(startIndex + 0);
 		getBadgeNFTs(startIndex + 0);
-	};
+};
 
 	// Load First Ten NFTs
-	const getFirstTen = () => {
+const getFirstTen = () => {
 		setStartIndex(startIndex + 0);
 		getNFTs(startIndex + 0);
-	};
+};
 
 const getFirstTenMinions = () => {
 		setStartIndex(startIndex + 0);
@@ -2851,6 +2861,7 @@ const getFirstTenBdl = () => {
 	setStartIndex(startIndex + 0);
 	getMinionsNFTs(startIndex + 0);
 };
+
 
 
 async function getAllNFTs() {
@@ -4708,7 +4719,6 @@ async function getBdlNFTs() {
 }
 
 
-
 function showNotification() {
 		Swal.fire({
 		  title: 'Success!',
@@ -4994,26 +5004,26 @@ async function displayNFTs() {
 
 	// Call functions to get NFTs here
 	const firstTenBadges =  getFirstTenBadges();
-	console.log(firstTenBadges)
+	
 	const firstTenCells = getFirstTenCells();
 	const firstTen = getFirstTen();
 	const minionsNFTs = getMinionsNFTs();
 	const bdlNFTs = getBdlNFTs();
 
 	//  Combine the fetched NFTs into a single array
-	 const allNFTs = [
-		...firstTenBadges,
-		...firstTenCells,
-		...firstTen,
-		...minionsNFTs,
-		...bdlNFTs,
-	  ];
+	//  const allNFTs = [
+		
+	// 	...firstTenCells,
+	// 	...firstTen,
+	// 	...minionsNFTs,
+	// 	...bdlNFTs,
+	//   ];
 
-	//   Set the NFT data state
-	  setNFTData(allNFTs);
+	// //   Set the NFT data state
+	//   setNFTData(allNFTs);
 	  
-	  console.log(nftData)
-	  console.log(allNFTs);
+	//   console.log(nftData)
+	//   console.log(allNFTs);
 
   
 	  // Close the loading spinner when NFTs are fetched successfully
@@ -5092,8 +5102,6 @@ modals.forEach(modal => {
 	});
 });
 
-
-
 const images = document.querySelectorAll('#marketplaceItems img');
 images.forEach(image => {
 	const targetSelector = image.dataset.modalTarget;
@@ -5119,8 +5127,6 @@ const handleNotification = (message) => {
 		}, 4000);
 	}, 2000);
 };
-
-
 
 
 // USE EFFECTS
@@ -5167,6 +5173,55 @@ useEffect(() => {
 	};
   }, []);
 
+  useEffect(() => {
+	if (blockchain.connected && blockchain.account) {
+	  // Account information is available after connecting
+	  console.log(blockchain.account);
+	}
+  }, [blockchain.connected, blockchain.account]);
+
+useEffect(() => {
+    // Update displayed elements based on activeFeed value
+    // Here, you can add your logic to render the appropriate elements
+    console.log('Active feed:', activeFeed);
+	
+
+    if (activeFeed === 'market') {
+      // Perform any logic specific to the Market Feed
+      // For example, you can fetch market NFTs here
+      displayNFTsFeatures();
+    }
+  }, [activeFeed]);
+
+
+  const AccountModal = ({ isOpen, closeModal }) => {
+	return (
+	  <Modal isOpen={isOpen} onRequestClose={closeModal}>
+		<ModalContent>
+	<ModalTitle>Account Information</ModalTitle>
+	
+	<SidebarItem className="sidebar-item account">
+	  Account: <SidebarValue>{blockchain.account}</SidebarValue>
+	</SidebarItem>
+	<SidebarItem className="sidebar-item">
+	  Current Account Balance: <SidebarValue>{balance} $CRO</SidebarValue>
+	</SidebarItem>
+	<SidebarItem className="sidebar-item">Total NFTs in Wallet: {/* Include the respective state variable */}</SidebarItem>
+	<SidebarItem className="sidebar-item">
+	  Total NFTs Listed: <SidebarValue>{count}</SidebarValue>
+	</SidebarItem>
+	<SidebarItem className="sidebar-item">LeaderBoard Position: {/* Include the respective state variable */}</SidebarItem>
+	<SidebarItem className="sidebar-item">
+	  Total Rewards Accrued: <span className="sidebar-value">{rewardBalance} $cGOLD</span>
+	</SidebarItem>
+	<SidebarItem className="sidebar-item">
+	  Total Balance: <SidebarValue className="green">{Rewards} $cGOLD</SidebarValue>
+	</SidebarItem>
+  </ModalContent>
+	  </Modal>
+	);
+  };
+
   return (
 	<Wrapper ref={wrapperRef}>
 	 <Sidebar>
@@ -5179,6 +5234,19 @@ make it small 10x10
 {/* Add account-related components and functionality here */}
 { blockchain.account ? (
 <div>
+
+<BigWhiteButton onClick={handleModalOpen}>
+        <FaUserCircle />
+      </BigWhiteButton>
+      <a target="_blank" href="http://Twitter.com/@CroCryptoClub"><BigWhiteButton>
+        <AiFillTwitterCircle />
+      </BigWhiteButton>  </a>
+	  <a target="_blank" href="https://discord.gg/RgyfqGnaGE"><BigWhiteButton>
+        <FaDiscord />
+      </BigWhiteButton>  </a>
+	  <BigWhiteButton>
+        <FaEthereum disabled />
+      </BigWhiteButton> 
   <Button onClick={handleDisconnect}>Disconnect</Button>
   <Button onClick={handleSwitchFeed}>
         {activeFeed === "nft" ? "Display Market Feed" : "Display NFT Feed"}
@@ -5191,56 +5259,48 @@ make it small 10x10
               }}>
                 Get Balances
               </Button>
+			  <Button onClick={handleBackToTop}>Back to Top</Button>
 			  <DisabledButton disabled>Appraise NFTs</DisabledButton>
 
   {/* Add other account-related options */}
-  <div>
+  
 	
-  <SidebarItem className="sidebar-item account">
-            Account: <SidebarValue>{blockchain.account}</SidebarValue>
-          </SidebarItem>
-             
-              <SidebarItem className="sidebar-item">
-            Current Account Balance:{" "}
-            <SidebarValue>{balance} $CRO</SidebarValue>
-          </SidebarItem>
-              <SidebarItem className="sidebar-item">Total NFTs in Wallet: {/* Include the respective state variable */}</SidebarItem>
-              <SidebarItem className="sidebar-item">
-            Total NFTs Listed: <SidebarValue>{count}</SidebarValue>
-          </SidebarItem>
-              <SidebarItem className="sidebar-item">LeaderBoard Position: {/* Include the respective state variable */}</SidebarItem>
-              <SidebarItem className="sidebar-item">Total Rewards Accrued: <span className="sidebar-value">{rewardBalance} $cGOLD</span></SidebarItem>
-              <SidebarItem className="sidebar-item">
-            Total Balance: <SidebarValue className="green">{Rewards} $cGOLD</SidebarValue>
-          </SidebarItem>
+  
               
 
 			  
-            </div>
+            
 </div>
 ) : (
 <div>
 <Tooltip title="Connect Wallet">
   <button onClick={handleConnect}>Connect Wallet</button>
   </Tooltip>
-  <Button onClick={displayNFTs}>Get NFTs</Button>
-  <Button onClick={handleNextClick}>Next</Button>
-  <Button onClick={handleSwitchFeed}>
-        {activeFeed === "nft" ? "Display Market Feed" : "Display NFT Feed"}
-      </Button>
+  
+  {/* <Button onClick={handleNextClick}>Next</Button> */}
+  
   {/* Add other wallet connection options */}
 </div>
 )}
-<Button onClick={handleBackToTop}>Back to Top</Button>
-<Button onClick={handleNFTCollapse}>
-    {isNFTCollapsed ? 'Expand' : 'Collapse'}
-	</Button>
-	<SidebarButton onClick={openModal}>About</SidebarButton>
+
+
+	
+	<BigWhiteButton>
+	<a target="_blank" href="https://medium.com/@crooksofcronos"><FaMedium /> </a>
+      </BigWhiteButton> 
+	  <BigWhiteButton>
+	  <a target="_blank" href="https://t.me/crooksofcronos"><FaTelegram /> </a>
+      </BigWhiteButton>
+	  <BigWhiteButton>
+        <FcAbout onClick={openModal} />
+      </BigWhiteButton>  
       <MarketplaceModal isOpen={modalOpen} closeModal={closeModal} />
 </SidebarWrapper>
 </Sidebar>
 <MainContent>
 	  <Content>
+	  <AccountModal isOpen={modal2Open} closeModal={handleModalClose} />
+	  
 		{}
 		<h2>{activeFeed === "nft" ? "NFT Feed" : "Market Feed"}</h2>
 		<Feed>

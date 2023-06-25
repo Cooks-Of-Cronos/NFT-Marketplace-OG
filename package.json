@@ -4,10 +4,13 @@
   "description": "HashLips minting dapp is a quick and easy way to connect your smart contract and start minting NFTs.",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@material-ui/core": "^4.12.4",
     "@material-ui/lab": "^4.0.0-alpha.61",
+    "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.11.11",
     "@rainbow-me/rainbowkit": "^0.11.1",
     "@walletconnect/web3-provider": "^1.7.8",
@@ -47,7 +50,6 @@
     "styled-components": "^5.3.0",
     "styled-jumbotron-component": "^4.0.0",
     "sweetalert2": "^11.7.3",
-    
     "walletlink": "^2.5.0",
     "web-vitals": "^1.0.1",
     "web3": "^1.5.1",

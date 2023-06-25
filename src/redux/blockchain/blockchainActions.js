@@ -182,9 +182,9 @@ export const disconnect = () => {
                 cacheProvider: false,
                 providerOptions,
             });
-            setAccount("");
-            setSmartContract(null);
-            setConnector(null);
+            dispatch(updateAccount('')); // Dispatch action to update account state
+            dispatch(updateSmartContract(null)); // Dispatch action to update smart contract state
+            dispatch(updateConnector(null)); // Dispatch action to update connector state
 
             await web3Modal.close();
             dispatch(disconnectSuccess());
