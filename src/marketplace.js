@@ -181,11 +181,13 @@ height: 100%;
 top: 0;
 left: 0;
 bottom: 0;
+overflow: auto;
 
 
 @media (max-width: 768px) {
 width: 100px;
 position: fixed;
+overflow: auto;
 height: 100%;
 background-color: #69a4d9;
 padding: 10px;
@@ -2947,6 +2949,7 @@ async function getNFTs(startIndex) {
 			const request = new Request(ipfsURL);
 			const response = await fetch(request);
 			const metadata = await response.json();
+			console.log(metadata)
 			//console.log(metadata.name); // Metadata in JSON
 
 			const image = addIPFSProxy(metadata.image);
@@ -5226,7 +5229,7 @@ useEffect(() => {
 	<Wrapper ref={wrapperRef}>
 	 <Sidebar>
 	 <SidebarWrapper>
-	 <img src={logo}></img>
+	 <img class="logo-img" src={logo}></img>
 
 {/* ADD LOGO RIGHT HERE 
 make it small 10x10
