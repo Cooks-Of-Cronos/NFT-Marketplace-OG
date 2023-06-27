@@ -30,14 +30,19 @@ import { fetchData } from "./redux/data/dataActions.js";
 import Footer from './Footer.js';
 import Modal from 'react-modal';
 import logo from '../src/images/logo.png'
+import logokitchen from '../src/images/logokitchen.gif'
 
 import { Tooltip } from "@material-ui/core";
 import { FaUserCircle, FaDiscord, FaEthereum, FaItunesNote, FaMedium, FaTelegram, FaAngleUp } from 'react-icons/fa';
-import { AiFillTwitterCircle } from "react-icons/ai"; 
+import { AiFillTwitterCircle, AiOutlineVerticalAlignTop } from "react-icons/ai"; 
 import { FcAbout } from "react-icons/fc"; 
 import { VscDebugDisconnect } from "react-icons/vsc";
 
-import { TiFlowSwitch } from "react-icons/vsc";
+import { TiFlowSwitch } from "react-icons/ti";
+import { AiOutlineLogin } from "react-icons/ai"
+
+
+
 // STYLED COMPONENTS
 const Icon = styled.img`
 height: 150px;
@@ -160,14 +165,19 @@ display: flex;
 justify-content: flex-start;
 align-items: flex-start;
 height: 100vh;
-overflow: hidden;
+overflow: auto;
 overflow-y: scroll;
+background-image:url(https://i.imgur.com/gaevovg.gif);
+
 
 @media (max-width: 768px) {
 	display: flex;
 	justify-content: flex-start;
 align-items: flex-start;
 height: 100vh;
+background-image:url(https://i.imgur.com/gaevovg.gif);
+overflow: auto;
+
 }
 `;
 
@@ -196,12 +206,12 @@ border: 5px solid white;
 `;
 
 const SidebarItem = styled.p`
-  color: white;
+  color:black;
   font-size: 14px;
   margin-bottom: 10px;
 
   &.account {
-    color: white;
+    color: black;
   }
 
   &.total-balance {
@@ -262,6 +272,9 @@ const SidebarButton = styled.button`
 
 const ModalContent = styled.div`
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const CloseButton = styled.button`
@@ -281,9 +294,8 @@ const MainContent = styled.div`
   padding: 20px;
 
   flex: 1;
-  overflow-y: scroll;
+ 
   width: 300px;
-  background-image:url(https://i.imgur.com/gaevovg.gif);
 
   @media (max-width: 768px) {
 	width: 300px;
@@ -291,11 +303,7 @@ const MainContent = styled.div`
 	overflow-y: scroll;
 	padding: 20px;
 	height: 100vh;
-	background-image:url(https://i.imgur.com/gaevovg.gif);
-	
-	
 
-	
 	flex-direction: column;
 	
 	}
@@ -306,7 +314,8 @@ const MainContent = styled.div`
 const Content = styled.div`
 flex: 1;
 padding: 20px;
-overflow-y: scroll;
+overflow-y: hidden;
+overflow-x: hidden;
 `;
 
 const Feed = styled.div`
@@ -315,6 +324,7 @@ flex-direction: column;
 flex-wrap: nowrap;
 align-items: center;
 width: 100%;
+margin-left: 20%;
 
 `;
 
@@ -333,12 +343,41 @@ justify-content: space-between;
 const ModalTitle = styled.h3`
   /* Styles for the modal title */
   /* Add your custom styles here */
+  font-size: 1.5rem;
+  margin-top: 1rem;
+`;
+
+
+/* Styling for the modal image */
+const ModalImage = styled.img`
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-top: 1rem;
 `;
 
 const ModalCloseButton = styled.button`
   /* Styles for the modal close button */
   /* Add your custom styles here */
+  padding: 0.5rem 1rem;
+  background-color: #008080;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: #006666;
+  }
 `;
+
+const ModalDescription = styled.p`
+  font-size: 1.2rem;
+  margin: 1rem 0;
+`;
+
 
 const BigWhiteButton = styled.button`
   font-size: 2rem;
@@ -1779,16 +1818,24 @@ const web3Modal = new Web3Modal({
 
 const MarketplaceModal = ({ isOpen, closeModal }) => {
 	return (
-	  <Modal isOpen={isOpen} onRequestClose={closeModal}>
+		<Modal isOpen={isOpen} onRequestClose={closeModal}>
 		<ModalContent>
-		<img class="modal-img" src={logo}></img>
-		  <p>
-		  Our NFT Rewards marketplace is a user-friendly platform for trading and exchanging NFTs (Non-Fungible Tokens). It provides collectors and artists with a seamless experience to connect, discover, and trade unique digital assets. With a diverse range of NFTs available, from artwork to digital collectibles and virtual real estate, our marketplace caters to various interests. What sets us apart is the incorporation of rewards, allowing users to earn exclusive incentives such as limited edition NFTs and discounts by participating in trading activities. We prioritize security and transparency, ensuring a safe environment for buying, selling, and trading NFTs. Join our dynamic community, discover incredible digital creations, and be part of an evolving ecosystem of NFT enthusiasts on our NFT Rewards marketplace.
-		  </p>
+		  <ModalTitle>Our NFT Rewards Marketplace</ModalTitle>
+		  <ModalImage src={logokitchen} alt="Logo" />
+		  <ModalDescription>
+			Our NFT Rewards marketplace is a user-friendly platform for trading and exchanging NFTs (Non-Fungible Tokens). It provides collectors and artists with a seamless experience to connect, discover, and trade unique digital assets. With a diverse range of NFTs available, from artwork to digital collectibles and virtual real estate, our marketplace caters to various interests.
+		  </ModalDescription>
+		  <ModalDescription>
+			What sets us apart is the incorporation of rewards, allowing users to earn exclusive incentives such as limited edition NFTs and discounts by participating in trading activities. We prioritize security and transparency, ensuring a safe environment for buying, selling, and trading NFTs.
+		  </ModalDescription>
+		  <ModalDescription>
+			Join our dynamic community, discover incredible digital creations, and be part of an evolving ecosystem of NFT enthusiasts on our NFT Rewards marketplace.
+		  </ModalDescription>
 		  {/* Add more information about the marketplace */}
-		  <CloseButton onClick={closeModal}>Close</CloseButton>
+		  <ModalCloseButton onClick={closeModal}>Close</ModalCloseButton>
 		</ModalContent>
 	  </Modal>
+	  
 	);
   };
 
@@ -2681,12 +2728,12 @@ const [account, setAccount] = useState("");
 const [Nfts, setNfts] = useState([]);
 const [startIndex, setStartIndex] = useState(0);
 const blockchain = useSelector((state) => state.blockchain);
+
+
 const [count, setCount] = useState(0);
 const [Rewards, setRewards] = useState(0);
-const [rewardBalance, setRewardBalance] = useState(() => {
-	const initialBalance = localStorage.getItem(`${blockchain.account}-rewards`);
-	return initialBalance ? Number(initialBalance) : 0;
-  });
+const [rewardBalances, setRewardBalances] = useState({});
+
 
   const [showSidebar, setShowSidebar] = useState(false);
 const sidebarRef = useRef(null);
@@ -2708,6 +2755,24 @@ const [activeFeed, setActiveFeed] = useState("nft"); // Default active feed is "
 const [modalOpen, setModalOpen] = useState(false);
 const currentNFT = nftData[currentIndex];
 const [modal2Open, setModal2Open] = useState(false);
+
+// Example initial reward balances
+
+
+
+// Function to update the reward balance for the user's account address
+const updateRewardBalance = () => {
+    const account = blockchain.account; // Assuming blockchain.account holds the user's account address
+    const currentBalance = rewardBalances[account] || 0;
+    const newBalance = currentBalance + 10;
+
+    setRewardBalances(prevRewardBalances => ({
+      ...prevRewardBalances,
+      [account]: newBalance
+    }));
+  };
+
+  // Render the current reward balance as a string
 
 
 const openModal = () => {
@@ -3126,7 +3191,7 @@ async function getNFTs(startIndex) {
 					});
 
 					// Update the reward balance
-					setRewardBalance(prevReward => {
+					setRewardBalances(prevReward => {
 						const updatedBalance = prevReward + 5;
 						localStorage.setItem(`${blockchain.account}-rewards`, updatedBalance);
 						console.log('Updated balance:', updatedBalance);
@@ -4919,21 +4984,23 @@ async function displayNFTsFeatures() {
 
 				
 
-				// Update the buyItem function to add rewards to rewardBalance
+				// Update the buyItem function to add rewards to rewardBalances
 				buyButton.addEventListener("click", async () => {
 					try {
 						// Call the "buyItem" function on the smart contract to purchase the NFT
 						const result = await marketplaceContract.methods.buyItem(item[0]).send({ from: blockchain.account, value: Web3Utils.toWei(askingPrice, 'ether') });
 
 						if (result.status) {
-							// Get the current reward balance for the user's account address
 							const currentBalance = rewardBalances[blockchain.account] || 0;
+    						const newBalance = currentBalance + 10;
+							// // Get the current reward balance for the user's account address
+							// const currentBalance = rewardBalances[blockchain.account] || 0;
 
-							// Increment the reward balance by the amount earned
-							const newBalance = currentBalance + 10;
+							// // Increment the reward balance by the amount earned
+							// const newBalance = currentBalance + 10;
 
-							// Update the reward balance in the state variable
-							setRewardBalances({ ...rewardBalances, [blockchain.account]: newBalance });
+							// // Update the reward balance in the state variable
+							// setRewardBalances({ ...rewardBalances, [blockchain.account]: newBalance });
 
 							// Display success notification
 							Swal.fire({
@@ -5146,18 +5213,10 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-	console.log('Current reward balance:', rewardBalance);
-  }, [rewardBalance]);
+	console.log('Current reward balance:', rewardBalances);
+  }, [rewardBalances]);
   
-useEffect(() => {
-	// check if blockchain.account has a value
-	if (blockchain.account) {
-	  const initialRewardBalance = localStorage.getItem(`${blockchain.account}-rewards`);
-	  // convert string to number and set rewardBalance
-	  setRewardBalance(Number(initialRewardBalance) || 0);
-	//   console.log(initialRewardBalance)
-	}
-  }, [blockchain.account]);  // dependency array, re-run this effect when blockchain.account changes
+
 
   useEffect(() => {
 	function handleMouseDown(event) {
@@ -5202,6 +5261,8 @@ useEffect(() => {
 	  <Modal isOpen={isOpen} onRequestClose={closeModal}>
 		<ModalContent>
 	<ModalTitle>Account Information</ModalTitle>
+	<button onClick={updateRewardBalance}>Earn Rewards</button>
+	
 	
 	<SidebarItem className="sidebar-item account">
 	  Account: <SidebarValue>{blockchain.account}</SidebarValue>
@@ -5214,12 +5275,18 @@ useEffect(() => {
 	  Total NFTs Listed: <SidebarValue>{count}</SidebarValue>
 	</SidebarItem>
 	<SidebarItem className="sidebar-item">LeaderBoard Position: {/* Include the respective state variable */}</SidebarItem>
-	<SidebarItem className="sidebar-item">
-	  Total Rewards Accrued: <span className="sidebar-value">{rewardBalance} $cGOLD</span>
-	</SidebarItem>
+	
 	<SidebarItem className="sidebar-item">
 	  Total Balance: <SidebarValue className="green">{Rewards} $cGOLD</SidebarValue>
 	</SidebarItem>
+	<Button className="" onClick={() => {
+                fetchBalance();
+                fetchData();
+                getNFTsCount();
+                CheckRewards();
+              }}>
+                Get Balances
+              </Button>
   </ModalContent>
 	  </Modal>
 	);
@@ -5229,7 +5296,7 @@ useEffect(() => {
 	<Wrapper ref={wrapperRef}>
 	 <Sidebar>
 	 <SidebarWrapper>
-	 <img class="logo-img" src={logo}></img>
+	 <img class="logo-img" src={logokitchen}></img>
 
 {/* ADD LOGO RIGHT HERE 
 make it small 10x10
@@ -5238,31 +5305,41 @@ make it small 10x10
 { blockchain.account ? (
 <div>
 
-<BigWhiteButton onClick={handleModalOpen}>
+<Tooltip title="Account Information"><BigWhiteButton onClick={handleModalOpen}>
         <FaUserCircle />
       </BigWhiteButton>
-      <a target="_blank" href="http://Twitter.com/@CroCryptoClub"><BigWhiteButton>
+	  </Tooltip>
+      
+	  
+	  <Tooltip title="Disconnect Wallet">
+		<BigWhiteButton>
+        <VscDebugDisconnect onClick={handleDisconnect}  />
+      </BigWhiteButton> 
+	  </Tooltip>
+  
+	  <Tooltip title="Switch Feeds">
+	  <BigWhiteButton><TiFlowSwitch onClick={handleSwitchFeed}/>
+        
+      
+	  </BigWhiteButton>
+	  </Tooltip>
+	  
+	  <Tooltip title="Go Back to Top of Page"><BigWhiteButton>
+        <AiOutlineVerticalAlignTop onClick={handleBackToTop}  />
+      </BigWhiteButton> 
+	  </Tooltip>
+	  <Tooltip title="Switch To Ethereum(Soon)"><BigWhiteButton>
+        <FaEthereum disabled />
+      </BigWhiteButton> 
+	  </Tooltip>
+
+	  <a target="_blank" href="http://Twitter.com/@CroCryptoClub"><BigWhiteButton>
         <AiFillTwitterCircle />
       </BigWhiteButton>  </a>
 	  <a target="_blank" href="https://discord.gg/RgyfqGnaGE"><BigWhiteButton>
         <FaDiscord />
       </BigWhiteButton>  </a>
-	  <BigWhiteButton>
-        <FaEthereum disabled />
-      </BigWhiteButton> 
-  <Button onClick={handleDisconnect}>Disconnect</Button>
-  <Button onClick={handleSwitchFeed}>
-        {activeFeed === "nft" ? "Display Market Feed" : "Display NFT Feed"}
-      </Button>
-	  <Button className="" onClick={() => {
-                fetchBalance();
-                fetchData();
-                getNFTsCount();
-                CheckRewards();
-              }}>
-                Get Balances
-              </Button>
-			  <Button onClick={handleBackToTop}>Back to Top</Button>
+	  
 			  <DisabledButton disabled>Appraise NFTs</DisabledButton>
 
   {/* Add other account-related options */}

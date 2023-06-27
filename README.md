@@ -1,6 +1,40 @@
 # Welcome to 4C's Dapp 👄
+
+
+## Description
 This dapp was created and expanded from the HashLips NFT Minting dapp and has evolved a Ton since then. 
 Below is the rest of the ReadMe for the original HashLips Repo.
+
+We've done a ton of work and I've learned a lot from working with this repository, so much so that I've started rebuilding the application from scratch using NextJS and wagmi with Rainbow Wallet.
+
+Keep up with those updates here > 
+
+## Features 
+Mobile-First Approach
+NFT Minter 
+
+
+## Sections
+Featured
+Listed
+User NFTs
+
+## Soon
+User Profiles
+User Rewards
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Welcome to HashLips 👄
@@ -135,20 +169,6 @@ That's it! you're done.
 
 
 
-CHAT GPT PROMPTS 
-#################
-
-Build a Component
-	I have a Javascript function that [does this]
-	I want to build an [page description] that [does something]
-
-Wireframe
-	Wireframe me a page using the provided Code:
-	Be sure to include a button in the top right corner to connect to a User's wallet.
-
-Hero Section
-	Create a hero section which features a dashboard with some information about the current Collection and information about the page.
-	Be sure to style the page ussing react-bootstrap and also include notifications using react-notifications.
 
 
 

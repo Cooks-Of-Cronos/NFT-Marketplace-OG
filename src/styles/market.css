@@ -13,6 +13,12 @@ body {
     height: 50px;
   }
 
+  .logo-img{
+    width: 100%;
+    height: 30%;
+    max-height: 30%;
+  }
+    
 
 /* Mobile optimizations */
 @media screen and (max-width: 768px) {
@@ -23,9 +29,9 @@ body {
       }
 
       .logo-img{
-        width: 30%;
-        height: 30%;
-        max-height: 30%;
+        width: 100%;
+        height: 20%;
+        max-height: 20%;
       }
         
     .intro-section {
@@ -899,6 +905,7 @@ body {
         padding: 2rem;
         opacity: 100;
         height: 100%;
+       
       }
 
     #marketplaceItems div {
@@ -909,6 +916,7 @@ body {
         position: relative;
         width:70%;
         margin: 1rem; /* Optional: Add some spacing between items */
+        margin-left: 10%;
     }
 
     #marketplaceItems img {
