@@ -8,6 +8,9 @@ import { NFTProvider } from './components/nftcontext'; // import the NFTProvider
 import NFTMinter from './pages/mintNFTs';
 import Dashboard from './pages/Dashboard';
 import PreviewUI from './pages/Preview';
+import BattleUI from './BattleRoyale';
+
+
 
 const App = () => {
     return (
@@ -24,6 +27,7 @@ const App = () => {
             <Route path="/collection" element={<NFTCollectionPage />} /> 
             <Route path="/dashboard" element={<Dashboard />} /> 
             <Route path="/preview" element={<PreviewUI />} />
+            <Route path="/battle" element={<BattleUI />} />
           </Routes>
           
 

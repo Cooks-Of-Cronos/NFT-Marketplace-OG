@@ -14,24 +14,25 @@ body {
   }
 
   .logo-img{
-    width: 100%;
-    height: 30%;
-    max-height: 30%;
+    width: 80%;
+    height: 10%;
+    max-height: 15%;
+    align-self: center;
   }
     
 
 /* Mobile optimizations */
 @media screen and (max-width: 768px) {
     .modal-img{
-        width: 40%;
-        height: 40%;
-        max-height: 10%;
+        width: 30%;
+        height: 30%;
+        max-height: 20%;
       }
 
       .logo-img{
         width: 100%;
-        height: 20%;
-        max-height: 20%;
+        height: 10%;
+        max-height: 10%;
       }
         
     .intro-section {
@@ -905,64 +906,63 @@ body {
         padding: 2rem;
         opacity: 100;
         height: 100%;
-       
       }
-
-    #marketplaceItems div {
+      
+      #marketplaceItems div {
         background-color: #fff;
         border: 1px solid #ccc;
         border-radius: 0.5rem;
         overflow: hidden;
         position: relative;
-        width:70%;
-        margin: 1rem; /* Optional: Add some spacing between items */
+        width: 70%;
+        margin: 1rem;
         margin-left: 10%;
-    }
-
-    #marketplaceItems img {
+      }
+      
+      #marketplaceItems img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         object-position: center;
         transition: transform 0.3s ease-in-out;
-    }
-
-    #marketplaceItems div:hover img {
+      }
+      
+      #marketplaceItems div:hover img {
         transform: scale(1.1);
-    }
-
-    #marketplaceItems .item-content {
+      }
+      
+      #marketplaceItems .item-content {
         padding: 1rem;
         text-align: center;
-    }
-
-        #marketplaceItems .item-content h2 {
-            font-size: 1.5rem;
-            margin: 0;
-        }
-
-        #marketplaceItems .item-content p {
-            font-size: 1.2rem;
-            margin: 0.5rem 0;
-        }
-
-    #marketplaceItems button {
+      }
+      
+      #marketplaceItems .item-content h2 {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+      
+      #marketplaceItems .item-content p {
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+      }
+      
+      #marketplaceItems button {
         display: block;
         margin-top: 1rem;
         padding: 0.5rem 1rem;
-        background-color: #008080;
+        background-color: #c33f56;
         color: #fff;
         border: none;
         border-radius: 0.25rem;
         cursor: pointer;
         transition: background-color 0.3s ease-in-out;
-    }
-
-        #marketplaceItems button:hover {
-            background-color: #006666;
-        }
-
-    #marketplaceItems .item-overlay {
+      }
+      
+      #marketplaceItems button:hover {
+        background-color: #c33f56;
+      }
+      
+      #marketplaceItems .item-overlay {
         position: absolute;
         top: 0;
         left: 0;
@@ -971,13 +971,13 @@ body {
         opacity: 0;
         background-color: rgba(0, 0, 0, 0.5);
         transition: opacity 0.3s ease-in-out;
-    }
-
-    #marketplaceItems div:hover .item-overlay {
+      }
+      
+      #marketplaceItems div:hover .item-overlay {
         opacity: 1;
-    }
-
-    #marketplaceItems .item-text {
+      }
+      
+      #marketplaceItems .item-text {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -988,11 +988,12 @@ body {
         font-weight: bold;
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
-    }
-
-    #marketplaceItems div:hover .item-text {
+      }
+      
+      #marketplaceItems div:hover .item-text {
         opacity: 1;
-    }
+      }
+      
 
 
 

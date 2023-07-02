@@ -11,8 +11,9 @@ import { CroBadgesContract } from '../mint';
 import { REWARDSCONTRACT } from '../mint';
 import { NFTCONTRACT } from '../mint';
 import { ABI } from '../mint';
-
-
+import { Button, Grid, TextField } from '@material-ui/core';
+import styled from 'styled-components';
+import nftImage from '../images/nft.png'
 
 
 
@@ -974,6 +975,26 @@ const abi2 = [
 ]
 
 
+const BannerImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+`;
+
+
+const Title = styled.h1`
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+`;
+
+const Description = styled.p`
+  font-size: 18px;
+  color: #666;
+  line-height: 1.5;
+`;
+
 
 
 const web3 = new Web3('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID');
@@ -1220,162 +1241,158 @@ useEffect(() => {
 
   return (
     <div>
-    <button
-      style={{
-        backgroundColor: '#000',
-        color: '#fff',
-        padding: '10px 20px',
-        borderRadius: '4px',
-        marginBottom: '20px',
-        cursor: 'pointer',
-      }}
-      onClick={() => dispatch(connect())}
-    >
-      CONNECT
-    </button>
-    <button
-      style={{
-        backgroundColor: '#000',
-        color: '#fff',
-        padding: '10px 20px',
-        borderRadius: '4px',
-        marginBottom: '20px',
-        cursor: 'pointer',
-      }}
-      onClick={fetchMintedNfts}
-    >
-      FETCH
-    </button>
-    <form
-      style={{
-        marginBottom: '20px',
-      }}
-      onSubmit={handleSubmit}
-    >
-      <div>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={handleNameChange}
-          style={{
-            padding: '5px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-          }}
-        />
-      </div>
-      <div>
-        <label htmlFor="description">Description:</label>
-        <input
-          type="text"
-          id="description"
-          value={description}
-          onChange={handleDescriptionChange}
-          style={{
-            padding: '5px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-          }}
-        />
-      </div>
-      <div>
-        <label htmlFor="image">Image:</label>
-        <div
-          style={{
-            border: '2px dashed #ccc',
-            padding: '10px',
-            borderRadius: '4px',
-            marginBottom: '10px',
-          }}
-          {...getRootProps()}
-        >
-          <input {...getInputProps()} />
-          {imageHash ? (
-            <img
-              src={`https://ipfs.infura.io/ipfs/${imageHash}`}
-              alt="NFT"
-              style={{
-                maxWidth: '200px',
-              }}
-            />
-          ) : (
-            <p
-              style={{
-                textAlign: 'center',
-                color: '#999',
-              }}
-            >
-              Drag 'n' drop some files here, or click to select files
-            </p>
-          )}
-        </div>
-      </div>
-      <button
-        type="submit"
-        style={{
-          backgroundColor: '#000',
-          color: '#fff',
-          padding: '10px 20px',
-          borderRadius: '4px',
-          cursor: 'pointer',
-        }}
-      >
-        Mint NFT
-      </button>
-    </form>
 
-      <div>
-	  <div
+<BannerImage src={nftImage} alt="NFT Minter Banner" />
+
+<div style={{ textAlign: 'center', padding: '20px' }}>
+<Title>Create Your Own NFTs</Title>
+    <Description>
+      Mint and customize unique NFTs effortlessly with the NFT Minter. Empower your creativity and explore the world of digital art and collectibles.
+    </Description>
+
+</div>
+      <Grid container spacing={2} alignItems="center" justify="center">
+        <Grid item>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => dispatch(connect())}
+          >
+            CONNECT
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={fetchMintedNfts}
+          >
+            FETCH
+          </Button>
+        </Grid>
+      </Grid>
+
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Name"
+              value={name}
+              onChange={handleNameChange}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Description"
+              value={description}
+              onChange={handleDescriptionChange}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <div
+              style={{
+                border: '2px dashed #ccc',
+                padding: '10px',
+                borderRadius: '4px',
+                marginBottom: '10px',
+              }}
+              {...getRootProps()}
+            >
+              <input {...getInputProps()} />
+              {imageHash ? (
+                <img
+                  src={`https://ipfs.infura.io/ipfs/${imageHash}`}
+                  alt="NFT"
+                  style={{
+                    maxWidth: '200px',
+                  }}
+                />
+              ) : (
+                <div style={{ textAlign: 'center' }}>
+  <div
     style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(3, 1fr)',
-      gap: '20px',
+      width: '200px',
+      height: '200px',
+      border: '2px dashed #ccc',
+      borderRadius: '4px',
+      margin: '10px auto',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     }}
+    {...getRootProps()}
   >
-  {nfts.map(nft => (
-    <div
-	key={nft.tokenId}
-	style={{
-	  marginBottom: '20px',
-	  textAlign: 'center',
-	}}
-  >
-	<img
-	  src={nft.image}
-	  alt={nft.name}
-	  style={{
-		maxWidth: '200px',
-		height: 'auto',
-		borderRadius: '4px',
-	  }}
-	/>
-	<h2
-	  style={{
-		marginTop: '10px',
-		fontSize: '18px',
-	  }}
-	>
-	  {nft.metadata.name}
-	</h2>
-	<p
-	  style={{
-		fontSize: '14px',
-		color: '#888',
-	  }}
-	>
-	  {nft.metadata.description}
-	</p>
-    </div>
-  ))}
+    <input {...getInputProps()} />
+    <p
+      style={{
+        color: '#999',
+      }}
+    >
+      Drag 'n' drop some files here, or click to select files
+    </p>
+  </div>
 </div>
 
+              )}
+            </div>
+          </Grid>
+          <Grid item>
+            <Button type="submit" variant="contained" color="primary">
+              Mint NFT
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+
+      <div style={{ marginTop: '20px' }}>
+        <Grid container spacing={2}>
+          {nfts.map((nft) => (
+            <Grid item key={nft.tokenId} xs={12} sm={4}>
+              <div
+                style={{
+                  marginBottom: '20px',
+                  textAlign: 'center',
+                }}
+              >
+                <img
+                  src={nft.image}
+                  alt={nft.name}
+                  style={{
+                    maxWidth: '200px',
+                    height: 'auto',
+                    borderRadius: '4px',
+                  }}
+                />
+                <h2
+                  style={{
+                    marginTop: '10px',
+                    fontSize: '18px',
+                  }}
+                >
+                  {nft.metadata.name}
+                </h2>
+                <p
+                  style={{
+                    fontSize: '14px',
+                    color: '#888',
+                  }}
+                >
+                  {nft.metadata.description}
+                </p>
+              </div>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+
+      <Button onClick={handleButtonClick}>Button</Button>
+      <TextField type="text" placeholder="Input 2" />
+      <h2>{contractData}</h2>
     </div>
-	<button onClick={handleButtonClick} >Button</button>
-	<input type="text" placeholder="input 2"/>
-                    <h2>{contractData}</h2>
-	</div>
   );
 };
 
