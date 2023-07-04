@@ -235,7 +235,7 @@ align-items: flex-start;
 height: 100vh;
 overflow: auto;
 overflow-y: scroll;
-background-image:url(https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXQ5NTlheDNtcjQ0dXNzczczYnVreWdzZXoweWN3ZWI1dDRtczFiZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tVM0hQmU52iKcLI1Kk/giphy.gif);
+background-image:url(https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2QzdnI1ejU0ZWdwMm83NGJ4YW9wOGE3c3FhaTk1cjl5cW56dzNpMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3cAV2HGSSMljwOpS9/giphy-downsized-large.gif);
 
 
 @media (max-width: 768px) {
@@ -243,7 +243,7 @@ background-image:url(https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYXQ5NTlheD
 	justify-content: flex-start;
 align-items: flex-start;
 height: 100vh;
-background-image:url(https://i.imgur.com/gaevovg.gif);
+background-image:url(https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2QzdnI1ejU0ZWdwMm83NGJ4YW9wOGE3c3FhaTk1cjl5cW56dzNpMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3cAV2HGSSMljwOpS9/giphy-downsized-large.gif);
 overflow: auto;
 overflow-y: scroll;
 
@@ -3380,23 +3380,15 @@ function generateNFTCard(image, metadata, tokenId) {
 		box-shadow: 0 0 5px rgba(31, 135, 245, 0.5);
 	  }
 	  
-		.card-wrapper {
-		  width: 100%;
-		  max-width: 100%;
-		  padding: 20px;
-		  box-sizing: border-box;
-		  display: flex;
-		  align-items: stretch;
-		}
+		
 		.card {
 		  background-color: #fff;
 		  border: 12px solid #1f87f5;
 		  border-radius: 10px;
 		  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		  margin-bottom: 20px;
-		  padding: 20px;
-		  flex-grow: 1;
+		  
 		  height: 100%;
+		  width: 100%;
 		}
   
 		.card-title {
@@ -3474,18 +3466,13 @@ function generateNFTCard(image, metadata, tokenId) {
 	`;
   }
   
-  // Usage example
- 
-  
-
-
 const generateSecretKey = () => {
 	const randomBytes = CryptoJS.lib.WordArray.random(16);
 	const secretKey = randomBytes.toString();
 	return secretKey;
   };
 
-  const secretKey = generateSecretKey();
+const secretKey = generateSecretKey();
 
 // Example initial reward balances
 
@@ -3586,9 +3573,6 @@ const handleSwitchFeed = async () => {
 	  }
 	}
   };
-
-
-
 
 
 const handleBackToTop = () => {

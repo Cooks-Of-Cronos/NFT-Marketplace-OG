@@ -9,7 +9,7 @@ import NFTMinter from './pages/mintNFTs';
 import Dashboard from './pages/Dashboard';
 import PreviewUI from './pages/Preview';
 import BattleUI from './BattleRoyale';
-
+import NFTContractUI from './vote';
 
 
 const App = () => {
@@ -28,6 +28,7 @@ const App = () => {
             <Route path="/dashboard" element={<Dashboard />} /> 
             <Route path="/preview" element={<PreviewUI />} />
             <Route path="/battle" element={<BattleUI />} />
+            <Route path="/vote" element={<NFTContractUI />} />
           </Routes>
           
 
