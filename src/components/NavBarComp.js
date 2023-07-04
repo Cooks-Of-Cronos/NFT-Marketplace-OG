@@ -13,8 +13,6 @@ import { BsSegmentedNav } from "react-icons/bs";
 
 
 
-
-
 const NavbarContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -23,9 +21,10 @@ const NavbarContainer = styled.div`
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 90%;
-  max-width: 600px;
-  background-color: #3ba8f8;
+  width: 100%;
+  max-width: 100%;
+  background-image:url(https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGRybHh3bDB5M3BqemRxMXNxcWMwdjBjc28yemJsNWl5MHpja21jNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l2JhwdnrGvfnoXrzi/giphy.gif);
+  height: 100%;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -139,7 +138,6 @@ const StyledConnectButton = styled(ConnectButton)`
   width: 100%;
 `;
 
-
 const StyledBattleButton = styled(BattleButton)`
   width: 100%;
 `;
@@ -152,15 +150,10 @@ const StyledBadgeButton = styled(ConnectButton)`
   justify-content: center;
 `;
 
-
-
-
 const StyledBadge = styled(Badge)`
   display: flex;
   align-items: center;
 `;
-
-
 
 const ButtonGroupContainer = styled.div`
   display: flex;
@@ -174,7 +167,6 @@ const ButtonGroupContainer = styled.div`
     min-width: 0;
   }
 `;
-
 
 const ButtonGroupItem = styled.div`
   flex: 1;
@@ -190,7 +182,6 @@ const StyledCard = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
 
 
 const Navbar = ({ activeListings }) => {
@@ -250,7 +241,14 @@ const Navbar = ({ activeListings }) => {
 								  <BsSegmentedNav />
 							  </BigWhiteButton>
       
-      <Modal isOpen={modalOpen} closeModal={handleModalClose}>
+      <Modal isOpen={modalOpen} closeModal={handleModalClose} style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundImage: 'url("path/to/background-image.jpg")',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }}>
 
     <NavbarContainer>
         <Card>

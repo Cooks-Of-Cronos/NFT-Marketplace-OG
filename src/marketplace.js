@@ -31,6 +31,9 @@ import Footer from './Footer.js';
 import Modal from 'react-modal';
 import logo from '../src/images/logo.png'
 import logokitchen from '../src/images/logokitchen.gif'
+import logokit from '../src/images/kitlogo.png'
+import BigLogo from '../src/images/BitKitchen.png'
+
 
 import { Tooltip, Snackbar } from "@material-ui/core";
 import { FaUserCircle, FaDiscord, FaEthereum, FaItunesNote, FaMedium, FaTelegram, FaAngleUp } from 'react-icons/fa';
@@ -61,6 +64,7 @@ const StyledCard = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
+
 `;
 
 const StyledHeading = styled.h2`
@@ -68,6 +72,7 @@ const StyledHeading = styled.h2`
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
+  width: 100%;
 `;
 
 const StyledModalContent = styled.div`
@@ -150,7 +155,7 @@ button {
 padding: 0.5rem 1rem;
 border: none;
 border-radius: 4px;
-background-color: #007bff;
+background-color: rgb(19,167,197);
 color: #fff;
 cursor: pointer;
 }
@@ -252,7 +257,7 @@ overflow-y: scroll;
 
 const Sidebar = styled.div`
 width: 20%;
-background-color: #c33f56;
+background-color: rgb(114,41,130);
 padding-right: 20px;
 position: fixed;
 margin-right: 100px;
@@ -269,7 +274,7 @@ width: 100px;
 position: fixed;
 overflow: auto;
 height: 100%;
-background-color: #c33f56;
+background-color: rgb(114,41,130);
 padding: 10px;
 border: 5px solid white;
 }
@@ -303,7 +308,7 @@ const SidebarScrollableContent = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: red;
+  background-color: rgb(19,167,197);
   color: white;
   padding: 10px;
   border: none;
@@ -345,7 +350,9 @@ const ModalContent = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  background-color: #3ba8f8;
+  background-image:url(https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3RhOWU5eXc4anpjaWo2eGdyb2duaTExdWY4d3ZjNzExbHR2dmI3aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ov9k2xUFIixxIdeKI/giphy.gif);
+  height: 100%;
+
 `;
 
 const ModalImg = styled.img`
@@ -367,20 +374,16 @@ const MainContent = styled.div`
   flex-direction: column;
   overflow-y: auto;
   padding: 20px;
-
   flex: 1;
- 
   width: 300px;
+  margin-left: 20%;
 
   @media (max-width: 768px) {
 	width: 300px;
 	flex: 1;
-	
 	padding: 20px;
 	height: 100vh;
-
 	flex-direction: column;
-	
 	}
 
   
@@ -389,8 +392,8 @@ const MainContent = styled.div`
 const Content = styled.div`
 flex: 1;
 padding: 20px;
-overflow-y: scroll;
 overflow-x: hidden;
+width: 100%;
 `;
 
 const Feed = styled.div`
@@ -3383,10 +3386,9 @@ function generateNFTCard(image, metadata, tokenId) {
 		
 		.card {
 		  background-color: #fff;
-		  border: 12px solid #1f87f5;
+		  border: 3px solid rgb(114,41,130);
 		  border-radius: 10px;
 		  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		  
 		  height: 100%;
 		  width: 100%;
 		}
@@ -3420,11 +3422,12 @@ function generateNFTCard(image, metadata, tokenId) {
   
 		.btn {
 		  transition: background-color 0.5s ease;
-		  color: #fff;
+		  color: white;
+		  background-color: rgb(19,167,197);
 		}
   
 		.btn:hover {
-		  background-color: #1f87f5;
+		  background-color: rgb(244,215,17);
 		}
   
 		#stakeBtn,
@@ -4596,7 +4599,7 @@ async function displayNFTsFeatures() {
 				const buyButton = document.createElement("button");
 				buyButton.innerHTML = `
   <span class="custom-icon" width="10px" height="10px">
-    <img src="https://i.imgur.com/ItF0nFjs.png" width="10px" height="10px" alt="Custom Icon" />
+    
   </span>
   Buy
 `;
@@ -5089,7 +5092,7 @@ useEffect(() => {
 			  
 
 				  <SidebarWrapper>
-					  <img class="logo-img" src={logokitchen}></img>
+					  <img class="logo-img" src={BigLogo}></img>
 					  <Navbar activeListings={activeListings} >
 		</Navbar>
 
@@ -5193,6 +5196,8 @@ useEffect(() => {
       ) : (
         <StyledHeading>Please Connect Your Wallet!</StyledHeading>
       )}
+	  {blockchain.account ? (<Button onClick={displayNFTs}>Fetch NFTs</Button>
+					  ) : (<></>)}
     </StyledCard>
 
 					  <Feed>
@@ -5213,8 +5218,7 @@ useEffect(() => {
 
 						  </>
 					  </Feed>
-					  {blockchain.account ? (<button onClick={handleNextClick}>Next</button>
-					  ) : (<></>)}
+					  
 
 				  </Content>
 			  </MainContent>

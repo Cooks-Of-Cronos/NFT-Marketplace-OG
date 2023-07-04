@@ -910,7 +910,7 @@ body {
       
       #marketplaceItems div {
         background-color: #fff;
-        border: 1px solid #ccc;
+        border: 3px solid rgb(114,41,130);
         border-radius: 0.5rem;
         overflow: hidden;
         position: relative;
@@ -950,7 +950,7 @@ body {
         display: block;
         margin-top: 1rem;
         padding: 0.5rem 1rem;
-        background-color: #c33f56;
+        background-color: rgb(19,167,197);
         color: #fff;
         border: none;
         border-radius: 0.25rem;
@@ -959,7 +959,7 @@ body {
       }
       
       #marketplaceItems button:hover {
-        background-color: #c33f56;
+        background-color: rgb(114,41,130);
       }
       
       #marketplaceItems .item-overlay {
@@ -1386,3 +1386,8 @@ button.footer-button{
         color: green;
     }
     
+
+    .custom-icon{
+        width: 10px;
+        height: 10px;
+    }
