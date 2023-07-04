@@ -3887,13 +3887,8 @@ async function getCellNFTs(startIndex) {
 		}
 
 		const address = account;
-
-
 		let totalNFTs = 0;
 		let nfts = [];
-
-
-
 		// Get the total number of NFTs held by the user
 		totalNFTs = await contract.methods.balanceOf(blockchain.account).call();
 		//console.log(totalNFTs)
@@ -3908,15 +3903,7 @@ async function getCellNFTs(startIndex) {
 		const itemsForSale = await marketplaceContract.methods
 			.getItemsForSale()
 			.call({ from: blockchain.account });
-
-
-
-
-
-		// Loop through all of the NFTs held by the user
-
-
-
+		// Loop through all of the NFTs held by the use
 		for (let i = startIndex; i < startIndex + 10; i++) {
 			if (i >= totalNFTs) {
 				break;
@@ -3939,7 +3926,6 @@ async function getCellNFTs(startIndex) {
 				continue;
 			}
 
-
 			// Get the NFT metadata and image URI
 			const uri = await contract.methods.tokenURI(tokenId).call();
 			const ipfsURL = addIPFSProxy(uri);
@@ -3955,13 +3941,10 @@ async function getCellNFTs(startIndex) {
 			//console.log(metadata.artist);
 			//console.log(image);
 
-
 			let jsonString = JSON.stringify(uri.replace(/ipfs:\/\//g, "https://"));
 
 			jsonData = JSON.parse(jsonString);
 			//console.log(jsonData);
-
-
 
 			let name = addIPFSProxy(metadata.name);
 			//console.log(metadata.name);
@@ -3981,111 +3964,7 @@ async function getCellNFTs(startIndex) {
 
 			// Build and display the HTML element for each NFT
 			// Build and display the HTML element for each NFT
-			let content = `
-			<div class="row justify-content-center">
-			  <div class="col-md-4">
-				<div class="card-wrapper">
-				  <div class="card">
-					<img src="${image}" class="card-img-top" width="100%" height="auto" />
-					<div class="card-body">
-					  <h5 class="card-title">${metadata.name}</h5>
-				  
-							<div class="form-group">
-									
-							<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput-${tokenId}" placeholder="Enter price">		
-									  </div>
-					  <button type="button" class="btn btn-primary cell-btn zoom" data-tokenid="${tokenId}">List NFT</button>
-					</div>
-				  </div>
-				</div>
-			  </div>
-			</div>
-
-							  <style>
-					.card {
-				  background-color: #fff;
-				  border: 5px solid red;
-				  border-radius: 10px;
-				  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-				  margin-bottom: 20px;
-				  padding: 20px;
-				}
-
-				.card-title {
-				  font-size: 24px;
-				  font-weight: 700;
-				  margin-bottom: 10px;
-				}
-
-				.card-text {
-				  font-size: 16px;
-				  margin-bottom: 20px;
-				}
-
-				.card-img-top {
-				  height: auto;
-				  max-width: 100%;
-				  object-fit: cover;
-				}
-
-
-				  .card-wrapper {
-					width: 100%;
-					max-width: 33.33%;
-					padding: 20px;
-					box-sizing: border-box;
-				}
-
-
-				  .zoom {
-					transition: transform 0.5s ease;
-				  }
-
-				  .zoom:hover {
-					transform: scale(1.1);
-				  }
-
-				  .btn {
-					transition: background-color 0.5s ease;
-					color: #fff;
-				  }
-
-				  .btn:hover {
-					background-color: #1f87f5;
-				  }
-
-				  #stakeBtn, #unstakeBtn, #claimBtn {
-					position: relative;
-				  }
-
-				  #stakeBtn:after, #unstakeBtn:after, #claimBtn:after {
-					content: '';
-					display: block;
-					width: 30px;
-					height: 30px;
-					border: 2px solid #fff;
-					border-top: 2px solid transparent;
-					border-radius: 50%;
-					position: absolute;
-					top: 50%;
-					left: 50%;
-					transform: translate(-50%, -50%) rotate(0deg);
-					animation: rotate 1s infinite linear;
-				  }
-
-				  @keyframes rotate {
-					0% {
-					  transform: translate(-50%, -50%) rotate(0deg);
-					}
-					100% {
-					  transform: translate(-50%, -50%) rotate(360deg);
-					}
-				  }
-
-				  #stakeBtn.loading:after, #unstakeBtn.loading:after, #claimBtn.loading:after,
-				</style>
-			</div>
-			`;
+			let content = generateNFTCard(image, metadata, tokenId);
 
 			document.getElementById("nftid").innerHTML += content;
 
@@ -4096,9 +3975,6 @@ async function getCellNFTs(startIndex) {
 					const askingPriceInput = document.getElementById(`askingPriceInput-${tokenId}`);
 					const askingPrice = Number(askingPriceInput.value);
 					console.log(askingPrice);
-
-
-
 
 					const nftTokenAddress = "0x1632568C5DeA50b5738c6C7bE2786657A9840485";
 					const marketplaceAddress = "0xa12A3A4ED947e38Ad0c177799De37DD77F520E62";
@@ -4143,7 +4019,6 @@ async function getCellNFTs(startIndex) {
 				});
 			});
 
-
 			let startIndex = 10;
 			const loadMoreBtn = document.querySelector("#load-more-btn");
 
@@ -4151,14 +4026,8 @@ async function getCellNFTs(startIndex) {
 				startIndex += 10;
 				await getCellNFTs();
 			});*/
-
-
-
 		}
 		console.log(nfts);
-
-	
-
 }
 
 // Get CroBadge NFTs
@@ -4272,113 +4141,7 @@ async function getBadgeNFTs(startIndex) {
 
 			// Build and display the HTML element for each NFT
 			// Build and display the HTML element for each NFT
-			let content = `
-			<div class="row justify-content-center">
-			  <div class="col-md-4">
-				<div class="card-wrapper">
-				  <div class="card">
-					<img src="${image}" class="card-img-top" width="100%" height="auto" />
-					<div class="card-body">
-					  <h5 class="card-title">${metadata.name}</h5>
-				  
-							<div class="form-group">
-									
-							<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput-${tokenId}" placeholder="Enter price">
-
-									  </div>
-					  <button type="button" class="btn btn-primary badge-btn zoom" data-tokenid="${tokenId}">List NFT</button>
-					</div>
-				  </div>
-				</div>
-			  </div>
-			</div>
-
-							  <style>
-					.card {
-				  background-color: #fff;
-				  border: 2px solid #1f87f5;
-				  border-radius: 10px;
-				  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-				  margin-bottom: 20px;
-				  padding: 20px;
-				  width: 300px;
-				}
-
-				.card-title {
-				  font-size: 24px;
-				  font-weight: 700;
-				  margin-bottom: 10px;
-				}
-
-				.card-text {
-				  font-size: 16px;
-				  margin-bottom: 20px;
-				}
-
-				.card-img-top {
-				  height: auto;
-				  max-width: 100%;
-				  object-fit: cover;
-				}
-
-
-				  .card-wrapper {
-					width: 100%;
-					max-width: 33.33%;
-					padding: 20px;
-					box-sizing: border-box;
-				}
-
-
-				  .zoom {
-					transition: transform 0.5s ease;
-				  }
-
-				  .zoom:hover {
-					transform: scale(1.1);
-				  }
-
-				  .btn {
-					transition: background-color 0.5s ease;
-					color: #fff;
-				  }
-
-				  .btn:hover {
-					background-color: #1f87f5;
-				  }
-
-				  #stakeBtn, #unstakeBtn, #claimBtn {
-					position: relative;
-				  }
-
-				  #stakeBtn:after, #unstakeBtn:after, #claimBtn:after {
-					content: '';
-					display: block;
-					width: 30px;
-					height: 30px;
-					border: 2px solid #fff;
-					border-top: 2px solid transparent;
-					border-radius: 50%;
-					position: absolute;
-					top: 50%;
-					left: 50%;
-					transform: translate(-50%, -50%) rotate(0deg);
-					animation: rotate 1s infinite linear;
-				  }
-
-				  @keyframes rotate {
-					0% {
-					  transform: translate(-50%, -50%) rotate(0deg);
-					}
-					100% {
-					  transform: translate(-50%, -50%) rotate(360deg);
-					}
-				  }
-
-				  #stakeBtn.loading:after, #unstakeBtn.loading:after, #claimBtn.loading:after,
-				</style>
-			</div>
-			`;
+			let content = generateNFTCard(image, metadata, tokenId);
 
 			document.getElementById("nftid").innerHTML += content;
 
@@ -4458,8 +4221,6 @@ async function getBadgeNFTs(startIndex) {
 async function getMinionsNFTs() {
 	const contract = new Web3EthContract(MINIONSABI, CroMinionsContract)
 	// initial loading screen
-	
-
 	// Initialize web3 using MetaMask
 	if (window.ethereum) {
 		const web3 = new Web3(window.ethereum);
@@ -4473,8 +4234,6 @@ async function getMinionsNFTs() {
 	}
 
 	const address = account;
-
-
 	let totalNFTs = 0;
 	let nfts = [];
 
@@ -4482,8 +4241,6 @@ async function getMinionsNFTs() {
 	totalNFTs = await contract.methods.balanceOf(blockchain.account).call();
 	//console.log(totalNFTs)
 	//console.log('totalNFTs:', totalNFTs);
-
-
 	// Loop through all of the NFTs held by the user
 	for (let i = 0; i <= 0; i++) {
 		if (i >= totalNFTs) {
@@ -4533,392 +4290,7 @@ async function getMinionsNFTs() {
 
 		console.log(nfts);
 		// Build and display the HTML element for each NFT
-		let content = `
-		<div class="row">
-		  <div class="col-md-4">
-			<div class="card-wrapper">
-			  <div class="card">
-				<img src="${image}" class="card-img-top" width="100%" height="auto" />
-				<div class="card-body">
-				  <h5 class="card-title">${metadata.name}</h5>
-				  <p class="card-text">${metadata.description}</p>
-					<div class="form-group">
-						<label for="priceInput">Price:</label>
-						<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput-${tokenId}" placeholder="Enter price">
-					  </div>
-				  <button type="button" class="m-btn btn-primary  zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</div>
-
-			  <style>
-			  .card {
-background-color: #fff;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-border-radius: 10px;
-border: 1px solid #ccc;
-width: 100%;
-height: 100%;
-display: flex;
-flex-direction: column;
-}
-
-.card-wrapper {
-max-width: 100%;
-padding: 20px;
-box-sizing: border-box;
-}
-
-.card-title {
-font-size: 20px;
-font-weight: bold;
-margin-bottom: 10px;
-}
-
-.card-description {
-font-size: 14px;
-margin-bottom: 15px;
-}
-
-.price-label {
-font-size: 14px;
-margin-bottom: 5px;
-font-weight: bold;
-}
-
-.price-input {
-width: 100%;
-padding: 10px;
-margin-bottom: 20px;
-font-size: 14px;
-border-radius: 5px;
-border: 1px solid #ccc;
-box-sizing: border-box;
-}
-
-.btn {
-transition: background-color 0.5s ease;
-color: #fff;
-display: inline-block;
-text-align: center;
-background-color: #1f87f5;
-border: none;
-border-radius: 5px;
-padding: 10px 20px;
-font-size: 16px;
-cursor: pointer;
-margin-top: auto;
-}
-
-.btn:hover {
-background-color: #1a73e8;
-}
-
-.btn:active {
-transform: translateY(2px);
-}
-
-.modal-background {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5);
-z-index: 999;
-display: flex;
-justify-content: center;
-align-items: center;
-}
-
-.modal {
-background-color: #fff;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-border-radius: 10px;
-border: 1px solid #ccc;
-width: 80%;
-max-width: 600px;
-max-height: 90%;
-overflow-y: auto;
-display: flex;
-flex-direction: column;
-padding: 20px;
-box-sizing: border-box;
-}
-
-.modal-close {
-position: absolute;
-top: 20px;
-right: 20px;
-font-size: 20px;
-cursor: pointer;
-}
-
-.modal-title {
-font-size: 24px;
-font-weight: bold;
-margin-bottom: 10px;
-}
-
-.modal-description {
-font-size: 18px;
-margin-bottom: 20px;
-}
-
-.modal-image {
-width: 100%;
-height: auto;
-margin-bottom: 20px;
-}
-
-.modal-price {
-font-size: 16px;
-font-weight: bold;
-margin-bottom: 10px;
-}
-
-.modal-price-input {
-width: 100%;
-padding: 10px;
-margin-bottom: 20px;
-font-size: 16px;
-border-radius: 5px;
-border: 1px solid #ccc;
-box-sizing: border-box;
-}
-
-.modal-btn {
-background-color: #1f87f5;
-border: none;
-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0, 0, 0, 0.6);
-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.form-control:focus {
-border-color: #1f87f5;
-outline: 0;
-box-shadow: 0 0 0 0.2rem rgba(31, 135, 245, 0.25);
-}
-
-.form-group label {
-font-size: 16px;
-font-weight: 600;
-margin-bottom: 5px;
-}
-
-.form-group input[type="number"] {
-appearance: textfield;
--moz-appearance: textfield;
-width: 100%;
-height: calc(2.25rem + 2px);
-font-size: 16px;
-line-height: 1.5;
-color: #495057;
-background-color: #fff;
-background-clip: padding-box;
-border: 1px solid #ccc;
-border-radius: 5px;
-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-padding: 0.375rem 0.75rem;
-}
-
-.form-group input[type="number"]::-webkit-inner-spin-button,
-.form-group input[type="number"]::-webkit-outer-spin-button {
--webkit-appearance: none;
-margin: 0;
-}
-
-.form-group .input-group-text {
-font-size: 16px;
-font-weight: 600;
-background-color: #fff;
-border: 1px solid #ccc;
-border-radius: 5px;
-padding: 0.375rem 0.75rem;
-margin-right: -1px;
-white-space: nowrap;
-}
-
-.modal {
-display: none;
-position: fixed;
-z-index: 1;
-padding-top: 100px;
-left: 0;
-top: 0;
-width: 100%;
-height: 100%;
-overflow: auto;
-background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-background-color: #fefefe;
-margin: auto;
-padding: 20px;
-border: 1px solid #888;
-width: 80%;
-max-width: 600px;
-border-radius: 10px;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-position: relative;
-}
-
-.close {
-color: #aaa;
-float: right;
-font-size: 28px;
-font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-color: black;
-text-decoration: none;
-cursor: pointer;
-}
-
-.modal-header {
-padding: 2px 16px;
-background-color: #1f87f5;
-color: white;
-border-top-left-radius: 10px;
-border-top-right-radius: 10px;
-}
-
-.modal-body {
-padding: 20px;
-}
-
-.modal-footer {
-padding: 20px;
-background-color: #f9f9f9;
-border-bottom-left-radius: 10px;
-border-bottom-right-radius: 10px;
-}
-
-.modal-footer .btn {
-border: none;
-border-radius: 5px;
-padding: 10px 20px;
-}
-.btn:focus {
-outline: none;
-}
-
-.form-control {
-border: none;
-border-radius: 5px;
-padding: 10px;
-font-size: 16px;
-background-color: #f5f5f5;
-margin-bottom: 10px;
-}
-
-.form-control:focus {
-outline: none;
-box-shadow: 0 0 0 2px #1f87f5;
-}
-
-.form-group {
-margin-bottom: 20px;
-}
-
-.card-title {
-font-size: 24px;
-font-weight: 600;
-margin-bottom: 10px;
-}
-
-.card-text {
-font-size: 16px;
-margin-bottom: 20px;
-line-height: 1.5;
-}
-
-.modal {
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background-color: rgba(0, 0, 0, 0.5);
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-.modal-dialog {
-width: 80%;
-max-width: 800px;
-background-color: #fff;
-border-radius: 10px;
-overflow: hidden;
-}
-
-.modal-header {
-background-color: #f5f5f5;
-padding: 20px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-font-size: 24px;
-font-weight: 600;
-border-bottom: 1px solid #ccc;
-}
-
-.modal-body {
-padding: 20px;
-max-height: 60vh;
-overflow-y: auto;
-font-size: 16px;
-line-height: 1.5;
-}
-
-.modal-close {
-color: #aaa;
-font-size: 24px;
-font-weight: 600;
-cursor: pointer;
-}
-
-.modal-close:hover {
-color: #777;
-}
-
-.overlay {
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background-color: rgba(0, 0, 0, 0.5);
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-.spinner {
-width: 40px;
-height: 40px;
-border-radius: 50%;
-border: 3px solid rgba(255, 255, 255, 0.3);
-border-top-color: #fff;
-animation: spinner 1s ease-in-out infinite;
-}
-
-@keyframes spinner {
-to {
-transform: rotate(360deg);
-}
-}
-
-
-			</style>
-		</div>
-		`;
+		let content = generateNFTCard(image, metadata, tokenId);
 
 		document.getElementById("nftid").innerHTML += content;
 
@@ -4933,8 +4305,6 @@ transform: rotate(360deg);
 				
 			});
 		});
-
-
 
 }
 }
@@ -4957,8 +4327,6 @@ async function getBdlNFTs() {
 	}
 
 	const address = account;
-
-
 	let totalNFTs = 0;
 	let nfts = [];
 
@@ -4966,7 +4334,6 @@ async function getBdlNFTs() {
 	totalNFTs = await contract.methods.balanceOf(blockchain.account).call({ from: blockchain.account });
 	//console.log(totalNFTs)
 	//console.log('totalNFTs:', totalNFTs);
-
 
 	// Loop through all of the NFTs held by the user
 	for (let i = 0; i <= totalNFTs; i++) {
@@ -4999,7 +4366,6 @@ async function getBdlNFTs() {
 		jsonData = JSON.parse(jsonString);
 		console.log(jsonData);
 
-
 		let name = addIPFSProxy(metadata.name);
 		//console.log(metadata.name);
 		let description = addIPFSProxy(metadata.description);
@@ -5017,392 +4383,7 @@ async function getBdlNFTs() {
 
 		console.log(nfts);
 		// Build and display the HTML element for each NFT
-		let content = `
-		<div class="row">
-		  <div class="col-md-4">
-			<div class="card-wrapper">
-			  <div class="card">
-				<img src="${image}" class="card-img-top" width="100%" height="auto" />
-				<div class="card-body">
-				  <h5 class="card-title">${metadata.name}</h5>
-				  <p class="card-text">${metadata.description}</p>
-					<div class="form-group">
-						<label for="priceInput">Price:</label>
-						<input type="number" name="AskingPrice" class="form-control" id="askingPriceInput-${tokenId}" placeholder="Enter price">
-					  </div>
-				  <button type="button" class="bdl-btn btn-primary bdl-btn zoom" name="Tid" data-tokenid="${tokenId}">List NFT</button>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</div>
-
-			  <style>
-						  .card {
-		  background-color: #fff;
-		  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		  border-radius: 10px;
-		  border: 1px solid #ccc;
-		  width: 100%;
-		  height: 100%;
-		  display: flex;
-		  flex-direction: column;
-		}
-
-		.card-wrapper {
-		  max-width: 100%;
-		  padding: 20px;
-		  box-sizing: border-box;
-		}
-
-		.card-title {
-		  font-size: 20px;
-		  font-weight: bold;
-		  margin-bottom: 10px;
-		}
-
-		.card-description {
-		  font-size: 14px;
-		  margin-bottom: 15px;
-		}
-
-		.price-label {
-		  font-size: 14px;
-		  margin-bottom: 5px;
-		  font-weight: bold;
-		}
-
-		.price-input {
-		  width: 100%;
-		  padding: 10px;
-		  margin-bottom: 20px;
-		  font-size: 14px;
-		  border-radius: 5px;
-		  border: 1px solid #ccc;
-		  box-sizing: border-box;
-		}
-
-		.btn {
-		  transition: background-color 0.5s ease;
-		  color: #fff;
-		  display: inline-block;
-		  text-align: center;
-		  background-color: #1f87f5;
-		  border: none;
-		  border-radius: 5px;
-		  padding: 10px 20px;
-		  font-size: 16px;
-		  cursor: pointer;
-		  margin-top: auto;
-		}
-
-		.btn:hover {
-		  background-color: #1a73e8;
-		}
-
-		.btn:active {
-		  transform: translateY(2px);
-		}
-
-		.modal-background {
-		  position: fixed;
-		  top: 0;
-		  left: 0;
-		  width: 100%;
-		  height: 100%;
-		  background-color: rgba(0, 0, 0, 0.5);
-		  z-index: 999;
-		  display: flex;
-		  justify-content: center;
-		  align-items: center;
-		}
-
-		.modal {
-		  background-color: #fff;
-		  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		  border-radius: 10px;
-		  border: 1px solid #ccc;
-		  width: 80%;
-		  max-width: 600px;
-		  max-height: 90%;
-		  overflow-y: auto;
-		  display: flex;
-		  flex-direction: column;
-		  padding: 20px;
-		  box-sizing: border-box;
-		}
-
-		.modal-close {
-		  position: absolute;
-		  top: 20px;
-		  right: 20px;
-		  font-size: 20px;
-		  cursor: pointer;
-		}
-
-		.modal-title {
-		  font-size: 24px;
-		  font-weight: bold;
-		  margin-bottom: 10px;
-		}
-
-		.modal-description {
-		  font-size: 18px;
-		  margin-bottom: 20px;
-		}
-
-		.modal-image {
-		  width: 100%;
-		  height: auto;
-		  margin-bottom: 20px;
-		}
-
-		.modal-price {
-		  font-size: 16px;
-		  font-weight: bold;
-		  margin-bottom: 10px;
-		}
-
-		.modal-price-input {
-		  width: 100%;
-		  padding: 10px;
-		  margin-bottom: 20px;
-		  font-size: 16px;
-		  border-radius: 5px;
-		  border: 1px solid #ccc;
-		  box-sizing: border-box;
-		}
-
-		.modal-btn {
-		  background-color: #1f87f5;
-		  border: none;
-		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0, 0, 0, 0.6);
-		transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-		}
-
-		.form-control:focus {
-		border-color: #1f87f5;
-		outline: 0;
-		box-shadow: 0 0 0 0.2rem rgba(31, 135, 245, 0.25);
-		}
-
-		.form-group label {
-		font-size: 16px;
-		font-weight: 600;
-		margin-bottom: 5px;
-		}
-
-		.form-group input[type="number"] {
-		appearance: textfield;
-		-moz-appearance: textfield;
-		width: 100%;
-		height: calc(2.25rem + 2px);
-		font-size: 16px;
-		line-height: 1.5;
-		color: #495057;
-		background-color: #fff;
-		background-clip: padding-box;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-		padding: 0.375rem 0.75rem;
-		}
-
-		.form-group input[type="number"]::-webkit-inner-spin-button,
-		.form-group input[type="number"]::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-		}
-
-		.form-group .input-group-text {
-		font-size: 16px;
-		font-weight: 600;
-		background-color: #fff;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		padding: 0.375rem 0.75rem;
-		margin-right: -1px;
-		white-space: nowrap;
-		}
-
-		.modal {
-		display: none;
-		position: fixed;
-		z-index: 1;
-		padding-top: 100px;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-		background-color: rgba(0, 0, 0, 0.4);
-		}
-
-		.modal-content {
-		background-color: #fefefe;
-		margin: auto;
-		padding: 20px;
-		border: 1px solid #888;
-		width: 80%;
-		max-width: 600px;
-		border-radius: 10px;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		position: relative;
-		}
-
-		.close {
-		color: #aaa;
-		float: right;
-		font-size: 28px;
-		font-weight: bold;
-		}
-
-		.close:hover,
-		.close:focus {
-		color: black;
-		text-decoration: none;
-		cursor: pointer;
-		}
-
-		.modal-header {
-		padding: 2px 16px;
-		background-color: #1f87f5;
-		color: white;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
-		}
-
-		.modal-body {
-		padding: 20px;
-		}
-
-		.modal-footer {
-		padding: 20px;
-		background-color: #f9f9f9;
-		border-bottom-left-radius: 10px;
-		border-bottom-right-radius: 10px;
-		}
-
-		.modal-footer .btn {
-		border: none;
-		border-radius: 5px;
-		padding: 10px 20px;
-		}
-		.btn:focus {
-		  outline: none;
-		}
-
-		.form-control {
-		  border: none;
-		  border-radius: 5px;
-		  padding: 10px;
-		  font-size: 16px;
-		  background-color: #f5f5f5;
-		  margin-bottom: 10px;
-		}
-
-		.form-control:focus {
-		  outline: none;
-		  box-shadow: 0 0 0 2px #1f87f5;
-		}
-
-		.form-group {
-		  margin-bottom: 20px;
-		}
-
-		.card-title {
-		  font-size: 24px;
-		  font-weight: 600;
-		  margin-bottom: 10px;
-		}
-
-		.card-text {
-		  font-size: 16px;
-		  margin-bottom: 20px;
-		  line-height: 1.5;
-		}
-
-		.modal {
-		  position: fixed;
-		  top: 0;
-		  left: 0;
-		  right: 0;
-		  bottom: 0;
-		  background-color: rgba(0, 0, 0, 0.5);
-		  display: flex;
-		  align-items: center;
-		  justify-content: center;
-		}
-
-		.modal-dialog {
-		  width: 80%;
-		  max-width: 800px;
-		  background-color: #fff;
-		  border-radius: 10px;
-		  overflow: hidden;
-		}
-
-		.modal-header {
-		  background-color: #f5f5f5;
-		  padding: 20px;
-		  display: flex;
-		  align-items: center;
-		  justify-content: space-between;
-		  font-size: 24px;
-		  font-weight: 600;
-		  border-bottom: 1px solid #ccc;
-		}
-
-		.modal-body {
-		  padding: 20px;
-		  max-height: 60vh;
-		  overflow-y: auto;
-		  font-size: 16px;
-		  line-height: 1.5;
-		}
-
-		.modal-close {
-		  color: #aaa;
-		  font-size: 24px;
-		  font-weight: 600;
-		  cursor: pointer;
-		}
-
-		.modal-close:hover {
-		  color: #777;
-		}
-
-		.overlay {
-		  position: fixed;
-		  top: 0;
-		  left: 0;
-		  right: 0;
-		  bottom: 0;
-		  background-color: rgba(0, 0, 0, 0.5);
-		  display: flex;
-		  align-items: center;
-		  justify-content: center;
-		}
-
-		.spinner {
-		  width: 40px;
-		  height: 40px;
-		  border-radius: 50%;
-		  border: 3px solid rgba(255, 255, 255, 0.3);
-		  border-top-color: #fff;
-		  animation: spinner 1s ease-in-out infinite;
-		}
-
-		@keyframes spinner {
-		  to {
-			transform: rotate(360deg);
-		  }
-		}
-
-
-			</style>
-		</div>
-		`;
+		let content = generateNFTCard(image, metadata, tokenId);
 
 		document.getElementById("nftid").innerHTML += content;
 
