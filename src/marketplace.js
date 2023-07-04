@@ -3541,7 +3541,7 @@ const handleModalClose = () => {
 
 const handleNFTCollapse = () => {
 	setIsNFTCollapsed((prevState) => !prevState);
-	console.log(isNFTCollapsed);
+	// console.log(isNFTCollapsed);
 };
 
 const handleSwitchFeed = async () => {
@@ -3553,7 +3553,7 @@ const handleSwitchFeed = async () => {
 	  await new Promise((resolve) => setTimeout(resolve, 300)); // Delay to allow the UI to update
 		
 	  await setActiveFeed(newActiveFeed);
-	  console.log(newActiveFeed);
+	//   console.log(newActiveFeed);
   
 	  if (newActiveFeed === "market") {
 		// Fetch market NFTs when switching to Market Feed
@@ -3564,7 +3564,7 @@ const handleSwitchFeed = async () => {
 		handleNFTCollapse(); 
 		await new Promise((resolve) => setTimeout(resolve, 100));
 	  await setActiveFeed(newActiveFeed);
-	  console.log(newActiveFeed);
+	//   console.log(newActiveFeed);
 	  await displayNFTs();
   
 	  if (activeFeed === "nft") {
@@ -3576,7 +3576,7 @@ const handleSwitchFeed = async () => {
 
 
 const handleBackToTop = () => {
-	console.log("firing");
+	// console.log("firing");
 	wrapperRef.current?.scrollTo(0, 0);
 	contentRef.current?.scrollTo(0, 0);
 };
@@ -3805,7 +3805,7 @@ async function getNFTs(startIndex) {
 					const tokenId = event.target.dataset.tokenid;
 					const askingPriceInput = document.getElementById(`askingPriceInput-${tokenId}`);
 					const askingPrice = Number(askingPriceInput.value);
-					console.log(askingPrice);
+					
 		
 					const nftTokenAddress = "0x230Bb7ce185CD0042973202f5F38B7072440e2C9";
 					const marketplaceAddress = "0xa12A3A4ED947e38Ad0c177799De37DD77F520E62"
@@ -4211,7 +4211,7 @@ async function getBadgeNFTs(startIndex) {
 
 
 		}
-		console.log(nfts);
+		
 
 
 
@@ -4270,7 +4270,7 @@ async function getMinionsNFTs() {
 		let jsonString = JSON.stringify(uri.replace(/ipfs:\/\//g, "https://"));
 
 		jsonData = JSON.parse(jsonString);
-		console.log(jsonData);
+		
 
 
 		let name = addIPFSProxy(metadata.name);
@@ -4288,7 +4288,7 @@ async function getMinionsNFTs() {
 		//console.log(nfts);
 		setNfts(nfts);
 
-		console.log(nfts);
+		
 		// Build and display the HTML element for each NFT
 		let content = generateNFTCard(image, metadata, tokenId);
 
@@ -4364,7 +4364,7 @@ async function getBdlNFTs() {
 		let jsonString = JSON.stringify(uri.replace(/ipfs:\/\//g, "https://"));
 
 		jsonData = JSON.parse(jsonString);
-		console.log(jsonData);
+		
 
 		let name = addIPFSProxy(metadata.name);
 		//console.log(metadata.name);
@@ -4381,7 +4381,7 @@ async function getBdlNFTs() {
 		//console.log(nfts);
 		setNfts(nfts);
 
-		console.log(nfts);
+		
 		// Build and display the HTML element for each NFT
 		let content = generateNFTCard(image, metadata, tokenId);
 
@@ -4541,13 +4541,11 @@ async function displayNFTsFeatures() {
 
 
 			const itemsForSale = await marketplaceContract.methods.getItemsForSale().call({ from: blockchain.account });
-			console.log(itemsForSale);
-			console.log(itemsForSale.length);
+			
 			let forSaleCount = itemsForSale.length;
 			setActiveListings(forSaleCount);
 
 
-			console.log(activeListings);
 			const marketplaceItemsDiv = document.getElementById("marketplaceItems");
 
 			itemsForSale.forEach(async item => {
@@ -4891,7 +4889,7 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-	console.log('Current reward balance:', rewardBalances);
+	// console.log('Current reward balance:', rewardBalances);
   }, [rewardBalances]);
   
 
@@ -4916,14 +4914,14 @@ useEffect(() => {
   useEffect(() => {
 	if (blockchain.connected && blockchain.account) {
 	  // Account information is available after connecting
-	  console.log(blockchain.account);
+	//   console.log(blockchain.account);
 	}
   }, [blockchain.connected, blockchain.account]);
 
 useEffect(() => {
     // Update displayed elements based on activeFeed value
     // Here, you can add your logic to render the appropriate elements
-    console.log('Active feed:', activeFeed);
+    // console.log('Active feed:', activeFeed);
 	
 
     if (activeFeed === 'market') {
